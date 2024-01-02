@@ -1,4 +1,4 @@
-import { createI18n, useI18n } from "vue-i18n";
+import { createI18n } from "vue-i18n";
 // @ts-ignore
 import zhCn from "element-plus/dist/locale/zh-cn.mjs";
 // @ts-ignore
@@ -15,11 +15,5 @@ export const LangMap: Record<Lang, any> = {
     "zh": zhCn,
     "en": en,
 };
-
-export {
-    useI18n,
-};
-
-
 
 export default i18n;

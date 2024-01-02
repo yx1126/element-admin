@@ -7,9 +7,11 @@ function setLang(value: Lang) {
 
 export function useLocales() {
     const set = useSetStore();
+    const { locale } = useI18n();
 
-    onMounted(() => {
+    onBeforeMount(() => {
         setLang(set.lang);
+        locale.value = set.lang;
     });
 
     return computed<Lang>({
@@ -19,6 +21,7 @@ export function useLocales() {
         set(value) {
             set.setState("lang", value);
             setLang(set.lang);
+            locale.value = set.lang;
         },
     });
 }

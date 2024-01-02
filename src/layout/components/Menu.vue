@@ -1,8 +1,10 @@
 <template>
     <el-menu
+        class="menu"
         :collapse="isCollapse"
         default-active="2"
-        class="el-menu-vertical-demo"
+        :background-color="darkColor"
+        :text-color="lightColor"
     >
         <el-sub-menu index="1">
             <template #title>
@@ -38,7 +40,14 @@
 </template>
 
 <script setup lang="ts">
-const isCollapse = ref(true);
+const isCollapse = ref(false);
+
+const { darkColor, lightColor } = useThemeColor();
+// #001428
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.menu {
+    border: none;
+}
+</style>

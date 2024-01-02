@@ -24,8 +24,11 @@ export default defineConfig({
         vueJsx(),
         AutoImport({
             dts: "./types/auto-imports.d.ts",
-            dirs: ["./src/hooks", "./src/stores/modules", "./src/locales", "./src/utils"],
-            imports: ["vue", "vue-router"],
+            dirs: ["./src/hooks", "./src/stores/modules", "./src/locales/exports", "./src/utils"],
+            imports: [
+                "vue",
+                "vue-router",
+            ],
             resolvers: [ElementPlusResolver()],
         }),
         AutoComponents({

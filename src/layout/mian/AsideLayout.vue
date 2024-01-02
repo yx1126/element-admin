@@ -1,7 +1,9 @@
 <template>
-    <el-container>
-        <el-aside style="--el-aside-width: auto;">
-            <Menu />
+    <el-container class="layout-container">
+        <el-aside class="layout-aside" style="--el-aside-width: auto;">
+            <el-scrollbar>
+                <Menu />
+            </el-scrollbar>
         </el-aside>
         <el-container>
             <el-header>Header</el-header>
@@ -17,4 +19,13 @@
 import Menu from "../components/Menu.vue";
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.layout-container {
+    height: 100%;
+}
+
+.layout-aside {
+    background-color: #001428;
+    overflow: hidden;
+}
+</style>

@@ -1,10 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import type { SetState, NavTheme, LayoutMode } from "#/stores";
+import type { SetState } from "#/stores";
 
-export const navTheme: NavTheme[] = ["light", "dark"];
-export const layoutMode: LayoutMode[] = ["aside", "top", "mixin", "asideMixin"];
-
-export const defaultSetting: SetState = {
+const defaultSetting: SetState = {
     drawerStatus: false, // 全局设置
     themeColor: "#409EFF", // 系统主题
     navMode: "dark", // 导航模式

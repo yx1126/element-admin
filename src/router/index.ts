@@ -27,4 +27,25 @@ const router = createRouter({
     ],
 });
 
+export enum MenuType {
+    BUTTON = 0,
+    MENU = 1,
+    FOLDER = 2,
+}
+
+router.beforeEach((to, from, next) => {
+    const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
+    title.value = to.matched.map(r => r.meta.title).filter(v => v).reverse().join("-");
+    next();
+});
+
+router.afterEach(() => {
+    
+});
+
+router.onError(error => {
+    console.error("路由错误", error);
+});
+
+
 export default router;
