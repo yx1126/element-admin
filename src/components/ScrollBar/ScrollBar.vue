@@ -1,5 +1,5 @@
 <template>
-    <div class="" :class="['scroll-bar', { 'is-hover': !always }]">
+    <div :class="['scroll-bar', { 'is-hover': !always }]">
         <div
             ref="scrollViewRef"
             :class="[

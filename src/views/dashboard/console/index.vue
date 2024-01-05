@@ -1,6 +1,6 @@
 <template>
-    <div class="" c-red hover:c-blue cursor-pointer>
-        workbench
+    <div class="">
+        console
     </div>
 </template>
 

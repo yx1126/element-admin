@@ -77,6 +77,7 @@ declare global {
   const useLocales: typeof import('../src/hooks/useLocales')['useLocales']
   const useResizeObserver: typeof import('../src/hooks/useResizeObserver')['default']
   const useRoute: typeof import('vue-router')['useRoute']
+  const useRouteStore: typeof import('../src/stores/modules/route')['useRouteStore']
   const useRouter: typeof import('vue-router')['useRouter']
   const useSetStore: typeof import('../src/stores/modules/setting')['useSetStore']
   const useSlots: typeof import('vue')['useSlots']

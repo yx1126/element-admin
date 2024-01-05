@@ -1,10 +1,10 @@
 export function useThemeColor() {
 
     const darkColor = "#001428";
-    const lightColor = "#fff";
+    const textColor = "#BBB";
 
     return {
         darkColor,
-        lightColor,
+        textColor,
     };
 }

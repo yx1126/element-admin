@@ -1,14 +1,19 @@
 import type { MenuType } from "@/router";
 
-export interface MenuItem {
+export interface RouteMeta {
+    readonly title: string;
+    readonly icon?: string;
+    readonly keepAlive: boolean;
+}
+
+export interface MenuItem extends RouteMeta {
     id: string;
-    parentId: string | null;
+    parentId?: Nullable<string>;
     type: MenuType;
     path: string;
-    name: string;
-    icom?: string;
-    keepAlive: boolean;
-    permission: string;
-    sort: number | null;
+    component?: string;
+    permission?: Nullable<string>;
+    sort: Nullable<number>;
     visible: boolean;
+    children: MenuItem[];
 }

@@ -17,4 +17,9 @@ const LayoutMap: Record<LayoutMode, any> = {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+:deep(.el-header),
+:deep(.el-main) {
+    padding: 0;
+}
+</style>
