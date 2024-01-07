@@ -16,4 +16,7 @@ app.use(pinia)
     .use(ScrollBar)
     .use(EleIcons);
 
-app.mount("#app");
+router.isReady().then(() => {
+    app.mount("#app");
+});
+

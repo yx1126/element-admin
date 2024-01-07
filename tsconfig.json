@@ -1,5 +1,6 @@
 {
     "files": [],
+    "include": ["uno.config.*"],
     "references": [
         {
             "path": "./tsconfig.node.json"

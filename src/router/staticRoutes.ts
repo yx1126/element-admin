@@ -28,5 +28,8 @@ export const staticRoutes: RouteRecordRaw[] = [
             },
         ],
     },
+];
+
+export const ayncStaticaRoutes: RouteRecordRaw[] = [
     { path: "/:path(.*)", redirect: "/error/404" },
 ];

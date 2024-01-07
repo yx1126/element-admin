@@ -3,9 +3,8 @@ import { getMenus } from "@/layout/menu";
 import type { MenuItem } from "#/menu";
 import type { RouteRecordRaw } from "vue-router";
 import { ParentLayout } from "@/router/layout";
-import { MenuType } from "@/router";
-import router from "@/router";
-import { staticRoutes } from "@/router/staticRoutes";
+import router, { MenuType } from "@/router";
+import { ayncStaticaRoutes } from "@/router/staticRoutes";
 
 function formatPath(data: MenuItem[]) {
     return data.reduce((pre, { path }) => {
@@ -33,7 +32,7 @@ function formateComp(pages: Record<string, any>, menu: MenuItem): RouteRecordRaw
     }
 }
 
-function formatRoute(data: MenuItem[], pages: Record<string, any>, parents: MenuItem[]): RouteRecordRaw[] {
+function formatRoute(data: MenuItem[], pages: Record<string, any>, parents: MenuItem[] = []): RouteRecordRaw[] {
     return data.map(menu => {
         const realPath = formatPath([...parents, menu]);
         const result: RouteRecordRaw = {
@@ -62,9 +61,9 @@ export const useRouteStore = defineStore("route", () => {
     });
 
     async function initRoutes() {
-        const pages: Record<string, () => Promise<any>> = import.meta.glob("@/views/**/*.{vue,tsx}");
+        const pages = import.meta.glob("@/views/**/*.{vue,tsx}");
         const menuList = await getMenus();
-        const asyncRoutes = [...formatRoute(menuList, pages, []), ...staticRoutes];
+        const asyncRoutes = [...formatRoute(menuList, pages), ...ayncStaticaRoutes];
         state.routerList.push(...asyncRoutes);
         asyncRoutes.forEach(route => {
             router.addRoute(route);

@@ -1,4 +1,5 @@
 import axios, {
+    mergeConfig,
     type AxiosInstance,
     type AxiosRequestConfig,
     type CreateAxiosDefaults,
@@ -21,21 +22,40 @@ interface InterceptorsType {
     response: AxiosResponseManager;
 }
 
-export class Interceptors {
+export interface CreateAxios<D = any> extends CreateAxiosDefaults<D>  {
+    /**
+     * 是否开启全局拦截器
+     * @default true
+     */
+    useInterceptor?: boolean;
+}
+
+class GlobalConfig {
     service: AxiosInstance;
+
+    /**
+     * 全局配置
+     */
+    static config: CreateAxios = {};
+
+    /**
+     * 全局拦截器
+     */
     static request: Parameters<AxiosInterceptorManager<InternalAxiosRequestConfig>["use"]>[] = [];
     static response: Parameters<AxiosInterceptorManager<AxiosResponse>["use"]>[] = [];
+
     constructor(service: AxiosInstance) {
         this.service = service;
     }
+
     request() {
-        Interceptors.request.forEach(request => {
+        GlobalConfig.request.forEach(request => {
             this.service.interceptors.request.use(...request);
         });
     }
 
     response() {
-        Interceptors.response.forEach(response => {
+        GlobalConfig.response.forEach(response => {
             this.service.interceptors.response.use(...response);
         });
     }
@@ -59,7 +79,40 @@ class InterceptorsInject<K extends keyof InterceptorsType> implements AxiosInter
     }
 }
 
-export class Http {
+/**
+ *
+ * @param {String} url
+ * @param {any} params
+ * @example
+ *
+ * // object
+ * const result = matchUrl("/admin/:id/:test", { id: "20240107" });
+ * console.log(result.url); // "/admin/20240107/:test"
+ *
+ * // array
+ * const result = matchUrl("/admin/:0/:0/:1", ["20240107"]);
+ * console.log(result.url); // "/admin/20240107/20240107/:1"
+ */
+function matchUrl(url: string, data: any) {
+    (url.match(/\/:[a-z0-9]+/g) || []).forEach((k) => {
+        let val = "";
+        const key = k.replace(/\/:/, "");
+        if(isObject<any>(data)) {
+            val = data[key];
+        } else if(isArray(data)) {
+            const value = parseInt(key);
+            if(!isNaN(value)) {
+                val = data[value];
+            }
+        }
+        if(!isEmpty(val)) {
+            url = url.replace(k, "/" + val.toString());
+        }
+    });
+    return url;
+}
+
+export class Http<D = any> {
 
     private readonly service: AxiosInstance;
 
@@ -71,25 +124,23 @@ export class Http {
     static interceptors: InterceptorsStaticType = {
         request: {
             use(...args) {
-                return Interceptors.request.push(args);
+                return GlobalConfig.request.push(args);
             },
         },
         response: {
             use(...args) {
-                return Interceptors.response.push(args);
+                return GlobalConfig.response.push(args);
             },
         },
     };
 
     /**
-     * 
-     * @param {CreateAxiosDefaults} config 
-     * @param {Boolean} use 是否使用全局拦截器
+     * @param {CreateAxios} config
      */
-    constructor(config?: CreateAxiosDefaults, use: boolean = true) {
-        this.service = axios.create(config);
-        if(use) {
-            const interceptors = new Interceptors(this.service);
+    constructor(config: CreateAxios<D> = {}) {
+        this.service = axios.create(mergeConfig(GlobalConfig.config, config));
+        if(config?.useInterceptor ?? true) {
+            const interceptors = new GlobalConfig(this.service);
             interceptors.request();
             interceptors.response();
         }
@@ -99,7 +150,83 @@ export class Http {
         };
     }
 
-    request<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>): Promise<R> {
-        return this.service.request(config);
+    static setConfig<D = any>(config?: CreateAxios<D>) {
+        GlobalConfig.config = Object.assign({}, config);
+    }
+
+    static create<D = any>(config?: CreateAxios<D>) {
+        return new Http(config);
+    }
+
+    get defaults() {
+        return this.service.defaults;
+    }
+
+    get getUri() {
+        return this.service.getUri;
+    }
+
+    abortRequest<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>) {
+        const controller = new AbortController();
+        const request = this.service.request<T, R, D>({
+            ...config,
+            signal: controller.signal,
+        });
+        return {
+            request,
+            r: request,
+            abort: controller.abort,
+        };
+    }
+
+    request<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>) {
+        return this.service.request<T, R, D>(config);
+    }
+
+    get<T = any, R = AxiosResponse<T>, D = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.get<T, R, D>(matchUrl(url, params), {
+            params,
+            headers,
+        });
+    }
+
+    post<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.post<T, R, D>(matchUrl(url, data), data, {
+            headers,
+        });
+    }
+
+    postForm<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.postForm<T, R, D>(matchUrl(url, data), data, {
+            headers,
+        });
+    }
+
+    download<T = Blob, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.post<T, R, D>(matchUrl(url, data), data, {
+            headers,
+            responseType: "blob",
+        });
+    }
+
+    put<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.put<T, R, D>(matchUrl(url, data), data, {
+            headers,
+        });
+    }
+
+    putForm<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.putForm<T, R, D>(matchUrl(url, data), data, {
+            headers,
+        });
+    }
+
+    delete<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.delete<T, R, D>(matchUrl(url, data), {
+            data: data,
+            headers,
+        });
     }
 }
+
+export default Http;

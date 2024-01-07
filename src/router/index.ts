@@ -1,21 +1,20 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Nprogress from "nprogress";
 import "nprogress/nprogress.css";
+import { staticRoutes } from "./staticRoutes";
+export * from "./helper";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
-        
+        ...staticRoutes,
     ],
 });
 
-export enum MenuType {
-    FOLDER = 0, // 目录
-    MENU = 1,   // 菜单
-    BUTTON = 2, // 按钮
-}
+
 
 router.beforeEach(async (to, from, next) => {
+    console.log("beforeEach");
     Nprogress.start();
     const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
     title.value = to.matched.map(r => r.meta.title).filter(v => v).reverse().join("-");
@@ -24,7 +23,7 @@ router.beforeEach(async (to, from, next) => {
         next();
     } else {
         await route.initRoutes();
-        next(to);
+        next({ ...to, replace: true });
     }
 });
 

@@ -20,7 +20,7 @@ export function isNumber(val: unknown): val is number {
 }
 
 export function isObject<T extends object>(val: unknown): val is T {
-    return toString(val) === "[object Object]"; 
+    return toString(val) === "[object Object]";
 }
 
 export function isString(val: unknown): val is string {
@@ -53,6 +53,32 @@ export function isPromise<T = any>(val: unknown): val is Promise<T> {
 
 export function isRegExp(val: unknown) {
     return toString(val) === "[object RegExp]";
+}
+
+export function isNull(val: unknown) {
+    return val === null;
+}
+
+export function isUndefined(val: unknown) {
+    return val === void 0;
+}
+
+export function isEmpty(val: unknown) {
+    return isNull(val) || isUndefined(val);
+}
+
+export function isDeepEmpty(val: unknown) {
+    if(isNumber(val)) {
+        return val === 0;
+    } else if(isArray<any[]>(val) || isString(val)) {
+        return val.length === 0;
+    } else if(isObject(val)) {
+        return Object.keys(val).length === 0;
+    } else if(isBoolean(val)) {
+        return val === false;
+    } else {
+        return isNull(val) || isUndefined(val);
+    }
 }
 
 export function isPhoneNum(val: string) {
