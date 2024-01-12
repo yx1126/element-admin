@@ -1,4 +1,4 @@
-import type { MenuType } from "@/router";
+import type { MenuType } from "@/enum/menu";
 
 export interface RouteMeta {
     readonly title: string;

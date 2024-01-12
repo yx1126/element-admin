@@ -2,6 +2,8 @@ export {};
 
 declare global {
 
+    export type Noop = () => void;
+
     export type ObjKeys<T> = keyof T;
 
     export type Nullable<T> = T | null;

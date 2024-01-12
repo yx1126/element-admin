@@ -10,7 +10,10 @@ http.interceptors.request.use((config) => {
 });
 
 http.interceptors.response.use((response) => {
-    const { data } = response;
+    const { data, config } = response;
+    if(config.responseType && ["blob", "arraybuffer", "stream"].includes(config.responseType)) {
+        return response;
+    }
     return data;
 });
 

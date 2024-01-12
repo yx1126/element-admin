@@ -25,16 +25,16 @@ export default defineConfig({
         vueJsx(),
         AutoImport({
             dts: "./types/auto-imports.d.ts",
-            dirs: ["./src/hooks", "./src/stores/modules", "./src/locales/exports", "./src/utils"],
+            dirs: ["./src/hooks", "./src/enums", "./src/stores/modules", "./src/locales/exports"],
             imports: [
                 "vue",
                 "vue-router",
             ],
-            resolvers: [ElementPlusResolver()],
+            resolvers: [ElementPlusResolver({ importStyle: "sass" })],
         }),
         AutoComponents({
             dts: "./types/components.d.ts",
-            resolvers: [ElementPlusResolver()],
+            resolvers: [ElementPlusResolver({ importStyle: "sass" })],
         }),
         VueI18nPlugin({}),
         Uoncss(),

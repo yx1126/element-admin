@@ -7,6 +7,9 @@ import axios, {
     type InternalAxiosRequestConfig,
     type AxiosResponse,
 } from "axios";
+import { isArray, isEmpty, isObject } from "../validata";
+import download from "../download";
+import type { ResponseResult } from "#/axios";
 
 type AxiosRequestManager = AxiosInterceptorManager<InternalAxiosRequestConfig>;
 
@@ -166,9 +169,9 @@ export class Http<D = any> {
         return this.service.getUri;
     }
 
-    abortRequest<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>) {
+    abortRequest<T = any>(config: AxiosRequestConfig<D>) {
         const controller = new AbortController();
-        const request = this.service.request<T, R, D>({
+        const request = this.service.request<T>({
             ...config,
             signal: controller.signal,
         });
@@ -179,50 +182,72 @@ export class Http<D = any> {
         };
     }
 
-    request<T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>) {
-        return this.service.request<T, R, D>(config);
+    request<T = any>(config: AxiosRequestConfig<D>) {
+        return this.service.request<T>(config);
     }
 
-    get<T = any, R = AxiosResponse<T>, D = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.get<T, R, D>(matchUrl(url, params), {
+    get<T = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.get<T, ResponseResult<T>>(matchUrl(url, params), {
             params,
             headers,
         });
     }
 
-    post<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.post<T, R, D>(matchUrl(url, data), data, {
+    post<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.post<T, ResponseResult<T>>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    postForm<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.postForm<T, R, D>(matchUrl(url, data), data, {
+    postForm<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.postForm<T, ResponseResult<T>>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    download<T = Blob, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.post<T, R, D>(matchUrl(url, data), data, {
+    down<T = Blob>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.post<T>(matchUrl(url, data), data, {
             headers,
             responseType: "blob",
         });
     }
 
-    put<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.put<T, R, D>(matchUrl(url, data), data, {
+    download<T extends Blob = Blob>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return new Promise<AxiosResponse<T>>(async (resolve, reject) => {
+            try {
+                const response = await this.service.post<T>(matchUrl(url, data), data, {
+                    headers,
+                    responseType: "blob",
+                });
+                const contentDisposition = response.headers["content-disposition"];
+                if(contentDisposition) {
+                    const decodedHeader = decodeURIComponent(contentDisposition);
+                    const texts = /filename=(.*?)$/.exec(decodedHeader || "");
+                    if(texts && texts[1]) {
+                        download(response.data, texts[1]);
+                    }
+                }
+                resolve(response);
+            } catch (error) {
+                reject(error);
+            }
+        });
+    }
+
+    put<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.put<T, ResponseResult<T>>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    putForm<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.putForm<T, R, D>(matchUrl(url, data), data, {
+    putForm<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.putForm<T, ResponseResult<T>>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    delete<T = any, R = AxiosResponse<T>, D = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.delete<T, R, D>(matchUrl(url, data), {
+    delete<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.delete<T, ResponseResult<T>>(matchUrl(url, data), {
             data: data,
             headers,
         });

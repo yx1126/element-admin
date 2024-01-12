@@ -1,7 +1,6 @@
 @use "element-plus";
 
-:root {
-}
+:root {}
 
 *,
 *::before,
@@ -11,7 +10,9 @@
     font-weight: normal;
 }
 
-html,body, #app {
+html,
+body,
+#app {
     height: 100%;
 }
 

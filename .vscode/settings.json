@@ -78,5 +78,5 @@
     "i18n-ally.enabledFrameworks": [
         "vue-sfc",
         "vue"
-    ]
+    ],
 }

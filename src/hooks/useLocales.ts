@@ -7,7 +7,9 @@ function setLang(value: Lang) {
 
 export function useLocales() {
     const set = useSetStore();
-    const { locale } = useI18n();
+    const { locale } = useI18n({
+        useScope: "global",
+    });
 
     onBeforeMount(() => {
         setLang(set.lang);

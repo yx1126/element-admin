@@ -3,7 +3,7 @@ import { getMenus } from "@/layout/menu";
 import type { MenuItem } from "#/menu";
 import type { RouteRecordRaw } from "vue-router";
 import { ParentLayout } from "@/router/layout";
-import router, { MenuType } from "@/router";
+import router from "@/router";
 import { ayncStaticaRoutes } from "@/router/staticRoutes";
 
 function formatPath(data: MenuItem[]) {
@@ -15,9 +15,18 @@ function formatPath(data: MenuItem[]) {
     }, "");
 }
 
+/**
+ * 获取页面名称
+ * @param {String} path menu path
+ */
+export function getMenuRouteName(path: string) {
+    const names = path.toLowerCase().split(/\_|\/|\-/).filter(v => v);
+    return names.map(v => v.substring(0, 1).toUpperCase() + v.substring(1)).join("");
+}
+
 function formateComp(pages: Record<string, any>, menu: MenuItem): RouteRecordRaw["component"] {
     if(menu.type === MenuType.FOLDER) {
-        return ParentLayout("realPath");
+        return ParentLayout(getMenuRouteName(menu.path));
     } else if(menu.type === MenuType.MENU) {
         if(!menu.component) return;
         const compPath = ("/src/views/" + menu.component).replace(/\/\//g, "\/");
@@ -37,7 +46,7 @@ function formatRoute(data: MenuItem[], pages: Record<string, any>, parents: Menu
         const realPath = formatPath([...parents, menu]);
         const result: RouteRecordRaw = {
             path: realPath,
-            name: realPath,
+            name: getMenuRouteName(menu.path),
             meta: {
                 title: menu.title,
                 icon: menu.icon,
@@ -48,6 +57,15 @@ function formatRoute(data: MenuItem[], pages: Record<string, any>, parents: Menu
         };
         return result;
     });
+}
+
+export function getRedirectPath(data: RouteRecordRaw[] | MenuItem[]) {
+    let path: string = "";
+    while(data.length > 0) {
+        path = data[0].path;
+        data = data[0].children || [];
+    }
+    return path;
 }
 
 interface RouteState {
@@ -63,9 +81,10 @@ export const useRouteStore = defineStore("route", () => {
     async function initRoutes() {
         const pages = import.meta.glob("@/views/**/*.{vue,tsx}");
         const menuList = await getMenus();
-        const asyncRoutes = [...formatRoute(menuList, pages), ...ayncStaticaRoutes];
+        const asyncRoutes = formatRoute(menuList, pages);
+        const routes: RouteRecordRaw[] = [{ path: "/", redirect: getRedirectPath(asyncRoutes) }, ...asyncRoutes, ...ayncStaticaRoutes];
         state.routerList.push(...asyncRoutes);
-        asyncRoutes.forEach(route => {
+        routes.forEach(route => {
             router.addRoute(route);
         });
     }

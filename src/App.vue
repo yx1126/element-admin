@@ -1,7 +1,6 @@
 <template>
     <el-config-provider :locale="local">
         <Layout />
-        <!-- <router-view /> -->
     </el-config-provider>
 </template>
 
@@ -14,8 +13,7 @@ const lang = useLocales();
 const local = computed(() => {
     return LangMap[lang.value];
 });
-
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 </style>
