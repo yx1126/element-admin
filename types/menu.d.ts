@@ -9,6 +9,7 @@ export interface RouteMeta {
 export interface MenuItem extends RouteMeta {
     id: string;
     parentId?: Nullable<string>;
+    name: string;
     type: MenuType;
     path: string;
     component?: string;

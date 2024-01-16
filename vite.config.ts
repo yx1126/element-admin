@@ -20,6 +20,13 @@ export default defineConfig({
             "#": resolve("./types"),
         },
     },
+    // css: {
+    //     preprocessorOptions: {
+    //         scss: {
+    //             additionalData: `@use "@/styles/element-plus.scss" as *;`,
+    //         },
+    //     },
+    // },
     plugins: [
         vue(),
         vueJsx(),

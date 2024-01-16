@@ -28,8 +28,16 @@ export const staticRoutes: RouteRecordRaw[] = [
             },
         ],
     },
+    {
+        path: "/:path(.*)",
+        name: "NotFound",
+        component: () => import("@/views/error/404.vue"),
+        meta: {
+            title: "404",
+        },
+    },
 ];
 
 export const ayncStaticaRoutes: RouteRecordRaw[] = [
-    { path: "/:path(.*)", redirect: "/error/404" },
+    // { path: "/:path(.*)", redirect: "/error/404" },
 ];

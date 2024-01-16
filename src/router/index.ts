@@ -10,18 +10,20 @@ const router = createRouter({
     ],
 });
 
-
-
 router.beforeEach(async (to, from, next) => {
-    Nprogress.start();
-    const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
-    title.value = to.matched.map(r => r.meta.title).filter(v => v).reverse().join("-");
-    const route = useRouteStore();
-    if(route.routerList.length > 0) {
-        next();
-    } else {
-        await route.initRoutes();
-        next({ ...to, replace: true });
+    try {
+        Nprogress.start();
+        const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
+        title.value = to.matched.map(r => r.meta.title).filter(v => v).reverse().join("-");
+        const route = useRouteStore();
+        if(route.routerList.length > 0) {
+            next();
+        } else {
+            await route.initRoutes();
+            next({ path: to.fullPath, query: to.query });
+        }
+    } catch (error) {
+        console.log(error);
     }
 });
 

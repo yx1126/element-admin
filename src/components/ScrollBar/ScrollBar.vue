@@ -190,7 +190,6 @@ export default defineComponent({
 
         return {
             wrapperStyle,
-            // eslint-disable-next-line vue/no-dupe-keys
             thumbStyle,
             scrollViewRef,
             thumbRef,
