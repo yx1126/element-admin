@@ -22,8 +22,9 @@ export const useRouteStore = defineStore("route", () => {
         const asyncRoutes = parseRoute(menuList);
         const routes: RouteRecordRaw[] = [{ path: "/", redirect: getRedirectPath(asyncRoutes) }, ...asyncRoutes, ...ayncStaticaRoutes];
         state.routerList.push(...asyncRoutes);
+        // router.addRoute({ path: "/", redirect: getRedirectPath(asyncRoutes) });
         routes.forEach(route => {
-            router.addRoute(route);
+            router.addRoute("LayoutMain", route);
         });
     }
 

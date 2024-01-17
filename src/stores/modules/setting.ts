@@ -23,18 +23,13 @@ export const useSetStore = defineStore("setting", () => {
 
     const state: SetState = reactive(Object.assign({}, defaultSetting));
 
-    function $reset() {
-        const set = useSetStore();
-        set.$patch(defaultSetting);
-    }
-
     return {
         ...toRefs(state),
-        $reset,
     };
 }, {
     persistedstate: {
         enabled: true,
+        reset: () => defaultSetting,
     },
 });
 

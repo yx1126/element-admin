@@ -7,6 +7,7 @@ import AutoComponents from "unplugin-vue-components/vite";
 import Uoncss from "unocss/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import VitePluginSvgIcon from "./scripts/build-icons";
 
 function resolve(path: string) {
     return fileURLToPath(new URL(path, import.meta.url));
@@ -20,13 +21,6 @@ export default defineConfig({
             "#": resolve("./types"),
         },
     },
-    // css: {
-    //     preprocessorOptions: {
-    //         scss: {
-    //             additionalData: `@use "@/styles/element-plus.scss" as *;`,
-    //         },
-    //     },
-    // },
     plugins: [
         vue(),
         vueJsx(),
@@ -45,6 +39,11 @@ export default defineConfig({
         }),
         VueI18nPlugin({}),
         Uoncss(),
+        VitePluginSvgIcon({
+            paths: [resolve("./src/assets/svg/")],
+            symbolId: "local-[name]",
+            type: "script",
+        }),
     ],
     server: {
         host: "0.0.0.0",

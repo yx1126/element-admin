@@ -1,17 +1,15 @@
 import type { PiniaPluginContext, PiniaPlugin } from "pinia";
+import type { WatchOptions } from "vue";
+import { isArray, isString, isFunction as isFn } from "@/utils/validata";
 
 const assign = Object.assign;
-const isArray = Array.isArray;
-const isString = (value: any): value is string => typeof value === "string";
 
 type Store = PiniaPluginContext["store"];
 
 type PartialState = Partial<Store["$state"]>;
 
-export interface Subscriptions {
+export interface Subscriptions extends WatchOptions {
     detached?: boolean;
-    immediate?: boolean;
-    deep?: boolean;
 }
 
 type BaseStorage = Pick<Storage, "getItem" | "setItem">;
@@ -31,6 +29,7 @@ interface StoreOption<S> {
     key?: string;
     paths?: Paths<S>;
     storage?: StorageOption<S>;
+    reset?: () => S;
 }
 
 export interface PiniaStateOptions {
@@ -56,7 +55,14 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
     }
 
     return (context: PiniaPluginContext) => {
+        const persistedstate = context.options.persistedstate;
+        if(!persistedstate?.enabled) return;
 
+        if(isFn(persistedstate?.reset)) {
+            context.store.$reset = function() {
+                context.store.$patch(persistedstate.reset!());
+            };
+        }
         context.store.setState = function(key, value) {
             context.store.$patch((state) => {
                 state[key] = value;
@@ -64,17 +70,16 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
         };
 
         const store = context.store;
-        const persistedstate = context.options.persistedstate;
-        if(!persistedstate?.enabled) return;
+
         function createStateList(state: Store["$state"]) {
-            return isArray(persistedstate?.storage)
+            return isArray<StorageOptions<Store["$state"]>[]>(persistedstate?.storage)
                 ? persistedstate?.storage || []
                 : [{ storage: persistedstate?.storage || storage, paths: persistedstate?.paths || Object.keys(state) }];
         }
 
         store.$subscribe((mutation, state) => {
             createStateList(state).forEach(s => {
-                const pathsList = typeof s.paths === "function" ? s.paths(Object.keys(state)) : s.paths;
+                const pathsList = isFn(s.paths) ? s.paths(Object.keys(state)) : s.paths;
                 const value = pathsList.reduce((baseState, cur) => {
                     baseState[cur] = state[cur];
                     return baseState;
@@ -83,12 +88,11 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
             });
         }, assign({ detached: true }, options?.subscriptions));
 
-        const storeState = createStateList(store.$state).reduce((state, s) => {
+        return createStateList(store.$state).reduce((state, s) => {
             const value = getItem(s.key || persistedstate?.key || store.$id, s.storage);
             if(value) state = assign(state, value);
             return state;
         }, {} as PartialState);
-        return storeState;
     };
 }
 
@@ -101,7 +105,7 @@ declare module "pinia" {
         persistedstate?: StoreOption<S>;
     }
 
-    
+
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface PiniaCustomProperties<Id extends string = string, S extends StateTree = StateTree> {
         // 你也可以定义更简单的值

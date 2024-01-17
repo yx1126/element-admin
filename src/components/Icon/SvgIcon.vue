@@ -1,6 +1,6 @@
 <template>
     <svg class="svg-icon" aria-hidden="true">
-        <use :xlink:href="symbolId" />
+        <use :href="symbolId" :xlink:href="symbolId" />
     </svg>
 </template>
 
@@ -8,7 +8,7 @@
 export default defineComponent({
     name: "SvgIcon",
     props: {
-        prefix: { type: String, default: "icon" },
+        prefix: { type: String, default: "local" },
         icon: { type: String, default: void 0 },
     },
     setup(props) {

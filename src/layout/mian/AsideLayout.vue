@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import Menu from "../components/Menu.vue";
+import Menu from "../components/menu";
 </script>
 
 <style lang="scss" scoped>

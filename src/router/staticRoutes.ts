@@ -1,40 +1,33 @@
 import type { RouteRecordRaw } from "vue-router";
-import { ParentLayout } from "./layout";
 
 export const staticRoutes: RouteRecordRaw[] = [
     {
-        path: "/error",
-        name: "Error",
-        component: ParentLayout("Error"),
+        path: "/login",
+        name: "Login",
         meta: {
-            title: "异常页面",
+            title: "登录",
+            keepAlive: false,
         },
+        component: () => import("@/views/login/index.vue"),
+    },
+    {
+        path: "/",
+        name: "LayoutMain",
+        meta: {
+            title: "",
+            keepAlive: true,
+        },
+        component: () => import("@/layout/index.vue"),
         children: [
             {
-                path: "404",
-                name: "404",
+                path: "/:pathMatch(.*)",
+                name: "NotFound",
                 component: () => import("@/views/error/404.vue"),
                 meta: {
                     title: "404",
                 },
             },
-            {
-                path: "401",
-                name: "401",
-                component: () => import("@/views/error/401.vue"),
-                meta: {
-                    title: "401",
-                },
-            },
         ],
-    },
-    {
-        path: "/:path(.*)",
-        name: "NotFound",
-        component: () => import("@/views/error/404.vue"),
-        meta: {
-            title: "404",
-        },
     },
 ];
 

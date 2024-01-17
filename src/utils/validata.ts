@@ -67,7 +67,7 @@ export function isEmpty(val: unknown) {
     return isNull(val) || isUndefined(val);
 }
 
-export function isDeepEmpty(val: unknown) {
+export function isZeroEmpty(val: unknown) {
     if(isNumber(val)) {
         return val === 0;
     } else if(isArray<any[]>(val) || isString(val)) {
@@ -75,7 +75,7 @@ export function isDeepEmpty(val: unknown) {
     } else if(isObject(val)) {
         return Object.keys(val).length === 0;
     } else if(isBoolean(val)) {
-        return val === false;
+        return !val;
     } else {
         return isNull(val) || isUndefined(val);
     }

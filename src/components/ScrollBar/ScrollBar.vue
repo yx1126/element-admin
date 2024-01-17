@@ -160,15 +160,15 @@ export default defineComponent({
                 scrollViewRef.value![isX ? "scrollLeft" : "scrollTop"] = moveXY / thumbScrollSize.value * scrollSize.value;
             }
 
-            function onMousemup() {
+            function onMouseup() {
                 document.removeEventListener("mousemove", onMousemove);
-                document.removeEventListener("mouseup", onMousemup);
+                document.removeEventListener("mouseup", onMouseup);
                 if(document.onselectstart !== originalOnSelectStart) {
                     document.onselectstart = originalOnSelectStart;
                 }
             }
             document.addEventListener("mousemove", onMousemove);
-            document.addEventListener("mouseup", onMousemup);
+            document.addEventListener("mouseup", onMouseup);
         }
 
         onMounted(async () => {

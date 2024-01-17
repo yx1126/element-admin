@@ -19,7 +19,7 @@ defineOptions({
 });
 
 const props = defineProps({
-    icon: { type: defineProp<string | Component>([String, Object, Function]) },
+    icon: { type: defineProp<string | Component>([String, Object, Function]), required: true },
     rotate: { type: [String, Number], validator: (value) => /^\d+$/.test(String(value)), default: 0 }
 });
 

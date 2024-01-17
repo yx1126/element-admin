@@ -1,27 +1,19 @@
 import { ParentLayout } from "@/router/layout";
 import type { RouteRecordRaw } from "vue-router";
 import type { MenuItem } from "#/menu";
+import { isLink } from "./validata";
 
 export const pages = import.meta.glob("@/views/**/*.{vue,tsx}");
 
 export const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
 
-export function parsePath(data: MenuItem[]) {
+function parsePath(data: MenuItem[]) {
     return data.reduce((pre, { path }) => {
         if(path.startsWith("/")) {
             return pre + path;
         }
         return pre + "/" + path;
     }, "");
-}
-
-/**
- * 获取页面名称
- * @param {String} path menu path
- */
-export function getMenuRouteName(path: string) {
-    const names = path.toLowerCase().split(/\_|\/|\-/).filter(v => v);
-    return names.map(v => v.substring(0, 1).toUpperCase() + v.substring(1)).join("");
 }
 
 export function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
@@ -41,9 +33,8 @@ export function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
 
 export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRecordRaw[] {
     return data.map(menu => {
-        const realPath = parsePath([...parents, menu]);
         const result: RouteRecordRaw = {
-            path: realPath,
+            path: isLink(menu.path) ? menu.path : parsePath([...parents, menu]),
             name: menu.name,
             meta: {
                 title: menu.title,

@@ -1,12 +1,12 @@
-import type { MenuType } from "@/enum/menu";
+import type { MenuType } from "@/enums/menu";
 
 export interface RouteMeta {
     readonly title: string;
     readonly icon?: string;
-    readonly keepAlive: boolean;
+    readonly keepAlive?: boolean;
 }
 
-export interface MenuItem extends RouteMeta {
+export interface MenuItem extends Writable<RouteMeta> {
     id: string;
     parentId?: Nullable<string>;
     name: string;
@@ -15,6 +15,6 @@ export interface MenuItem extends RouteMeta {
     component?: string;
     permission?: Nullable<string>;
     sort: Nullable<number>;
-    visible: boolean;
+    visible?: boolean;
     children: MenuItem[];
 }

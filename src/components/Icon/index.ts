@@ -2,6 +2,10 @@ import * as Icons from "@element-plus/icons-vue";
 import { withInstall } from "@/utils/withInstall";
 import Icon from "./Icon.vue";
 
+export {
+    Icon,
+};
+
 /**
  * element-plus icon names
  */

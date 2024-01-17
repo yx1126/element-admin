@@ -7,6 +7,9 @@ export {}
 declare global {
   const ContentType: typeof import('../src/enums/http')['ContentType']
   const EffectScope: typeof import('vue')['EffectScope']
+  const ElMessage: typeof import('element-plus/es')['ElMessage']
+  const ElMessageBox: typeof import('element-plus/es')['ElMessageBox']
+  const ElNotification: typeof import('element-plus/es')['ElNotification']
   const MenuType: typeof import('../src/enums/menu')['MenuType']
   const Methods: typeof import('../src/enums/http')['Methods']
   const ResultStatus: typeof import('../src/enums/http')['ResultStatus']

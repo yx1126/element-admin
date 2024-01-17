@@ -85,9 +85,9 @@ class InterceptorsInject<K extends keyof InterceptorsType> implements AxiosInter
 /**
  *
  * @param {String} url
- * @param {any} params
+ * @param {any} data
  * @example
- *
+ *```js
  * // object
  * const result = matchUrl("/admin/:id/:test", { id: "20240107" });
  * console.log(result.url); // "/admin/20240107/:test"
@@ -95,6 +95,7 @@ class InterceptorsInject<K extends keyof InterceptorsType> implements AxiosInter
  * // array
  * const result = matchUrl("/admin/:0/:0/:1", ["20240107"]);
  * console.log(result.url); // "/admin/20240107/20240107/:1"
+ *```
  */
 function matchUrl(url: string, data: any) {
     (url.match(/\/:[a-z0-9]+/g) || []).forEach((k) => {

@@ -19,48 +19,39 @@ const defaultMessage: MessageOptions = {
 
 const defaultMessageBox: ElMessageBoxOptions = {};
 
-const defaultNitify: Partial<NotificationOptions> = {};
+const defaultNotify: Partial<NotificationOptions> = {};
 
 // Message
 type Options = Omit<MessageOptions, "message">;
 const msgType = ["success", "info", "warn", "error"] as const;
 type MessageType = typeof msgType[number];
 type MessageReturn = Record<MessageType, {
-    (message: string): MessageHandler;
-    (message: VNode): MessageHandler;
-    (message: () => VNode): MessageHandler;
-    (message: string, options: Options): MessageHandler;
-    (message: VNode, options: Options): MessageHandler;
-    (message: () => VNode, options: Options): MessageHandler;
-    (message: string, options: Options, appContext: Nullable<AppContext>): MessageHandler;
-    (message: VNode, options: Options, appContext: Nullable<AppContext>): MessageHandler;
-    (message: () => VNode, options: Options, appContext: Nullable<AppContext>): MessageHandler;
+    (message: string | VNode | (() => VNode)): MessageHandler;
+    (message: string | VNode | (() => VNode), options: Options): MessageHandler;
+    (message: string | VNode | (() => VNode), options: Options, appContext: Nullable<AppContext>): MessageHandler;
 }>;
 
 // MessageBox
-const msgBoxType = ["success", "info", "warn", "error", "alert", "confirm", "prompt"] as const;
+const msgBoxType = [...msgType, "alert", "confirm", "prompt"] as const;
 type MessageBoxType = typeof msgBoxType[number];
 type MessageBoxReturn = Record<MessageBoxType, ElMessageBoxShortcutMethod>;
 
 // Notification
 export type NotifyOptions = Partial<Writable<Omit<NotificationProps, "title" | "message" | "type">>>;
-const notifyType = ["alert", "success", "info", "warn", "error"] as const;
+const notifyType = ["alert", ...msgType] as const;
 type NotifyType = typeof notifyType[number];
 type NotifyReturn = Record<NotifyType, {
-    (message: string): NotificationHandle;
-    (message: VNode): NotificationHandle;
-    (message: string, title: string): NotificationHandle;
-    (message: VNode, title: string): NotificationHandle;
-    (message: string, options: NotifyOptions): NotificationHandle;
-    (message: VNode, options: NotifyOptions): NotificationHandle;
-    (message: string, title: string, appContext: Nullable<AppContext>): NotificationHandle;
-    (message: VNode, title: string, appContext: Nullable<AppContext>): NotificationHandle;
-    (message: string, options: NotifyOptions, appContext: Nullable<AppContext>): NotificationHandle;
-    (message: VNode, options: NotifyOptions, appContext: Nullable<AppContext>): NotificationHandle;
+    (message: string | VNode): NotificationHandle;
+    (message: string | VNode, title: string): NotificationHandle;
+    (message: string | VNode, options: NotifyOptions): NotificationHandle;
+    (message: string | VNode, title: string, appContext: Nullable<AppContext>): NotificationHandle;
+    (message: string | VNode, options: NotifyOptions, appContext: Nullable<AppContext>): NotificationHandle;
 }>;
 
 function transformType(type: MessageType): messageType {
-    return type === "warn" ? "warning" : type;
+    return ({
+        warn: "warning",
+    } as any)[type] || type;
 }
 
 export function useMessage(options?: MessageOptions, appContext?: Nullable<AppContext>): MessageReturn {
@@ -106,7 +97,7 @@ export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullab
 }
 
 export function useNotification(options?: NotifyOptions, appContext?: Nullable<AppContext>) {
-    const opt: NotifyOptions = Object.assign(defaultNitify, options);
+    const opt: NotifyOptions = Object.assign(defaultNotify, options);
     const ctx = appContext;
     const result: any = {};
     notifyType.forEach(key => {

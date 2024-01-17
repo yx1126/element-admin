@@ -1,5 +1,4 @@
 import type { App, Plugin, DefineComponent, AppContext } from "vue";
-import { isObject, isString } from "./validata";
 
 export type WithInstall<T> = T & Plugin;
 
@@ -48,18 +47,13 @@ export function withInstallFunction<T extends Function>(fn: T, name: string) {
 
 export function withInstallProps<T extends object>(props: T): Plugin;
 export function withInstallProps<T>(prop: T, name: string): Plugin;
-export function withInstallProps(prop: unknown, name?: unknown): Plugin {
-    const installs: [string, any][] = [];
-    if(isObject(prop)) {
-        installs.push(...Object.entries(prop));
-    } else if(isString(name)) {
-        installs.push([name, prop]);
-    }
+export function withInstallProps(prop: unknown, name?: string): Plugin {
+    const installs: Record<string, any> = arguments.length === 2 ? { [name!]: prop } : Object.assign({}, prop);
     return {
         install(app) {
-            installs.forEach(([n, value]) => {
-                app.config.globalProperties[n] = value;
-            });
+            for(const name in installs) {
+                app.config.globalProperties[name] = installs[name];
+            }
         },
     };
 }
