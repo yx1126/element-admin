@@ -44,14 +44,14 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
     const suffix = options?.suffix ?? "";
     const storage = options?.storage || window.localStorage;
 
-    const createDefaultKey = (key: string) => prefix + key + suffix;
+    const createKey = (key: string) => prefix + key + suffix;
 
     function getItem(key: string, storage: BaseStorage) {
-        const value = storage.getItem(createDefaultKey(key));
+        const value = storage.getItem(createKey(key));
         return value ? JSON.parse(value) : {};
     }
     function setItem(key: string, value: any, storage: BaseStorage) {
-        storage.setItem(createDefaultKey(key), isString(value) ? value : JSON.stringify(value));
+        storage.setItem(createKey(key), isString(value) ? value : JSON.stringify(value));
     }
 
     return (context: PiniaPluginContext) => {

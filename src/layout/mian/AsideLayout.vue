@@ -6,7 +6,7 @@
             </el-scrollbar>
         </el-aside>
         <el-container>
-            <el-header>Header</el-header>
+            <el-header><Header /></el-header>
             <el-main>
                 <el-button type="primary">click</el-button>
                 <slot></slot>
@@ -16,7 +16,8 @@
 </template>
 
 <script setup lang="ts">
-import Menu from "../components/menu";
+import Menu from "../components/menu/index.vue";
+import Header from "../components/header/index.vue";
 </script>
 
 <style lang="scss" scoped>

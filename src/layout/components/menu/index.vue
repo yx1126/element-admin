@@ -10,11 +10,10 @@
     >
         <menu-item :routes="routeStore.routerList" />
     </el-menu>
-    <el-button @click="isCollapse = !isCollapse">Click</el-button>
 </template>
 
 <script setup lang="ts">
-import MenuItem from "./MenuItem.vue";
+import MenuItem from "./MenuItem";
 import { isLink } from "@/utils/validata";
 
 const { darkColor, textColor } = useThemeColor();
@@ -25,7 +24,7 @@ const set = useSetStore();
 
 const defaultActive = computed(() => route.fullPath);
 
-const isCollapse = ref(false);
+const isCollapse = computed(() => set.collapsed);
 
 function onMenuSelect(index: string) {
     if(isLink(index)) {

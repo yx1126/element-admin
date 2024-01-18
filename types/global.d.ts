@@ -2,6 +2,8 @@ export {};
 
 declare global {
 
+    export type Unit = string | number;
+
     export type Noop = () => void;
 
     export type ObjKeys<T> = keyof T;

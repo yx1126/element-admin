@@ -1,4 +1,3 @@
-<script lang="tsx">
 import { Icon } from "@/components/Icon";
 import { defineProp } from "@/utils/defineProp";
 import type { RouteRecordRaw } from "vue-router";
@@ -6,7 +5,7 @@ import type { RouteRecordRaw } from "vue-router";
 export default defineComponent({
     name: "MenuItem",
     props: {
-        routes: { type: defineProp<RouteRecordRaw[]>(Array), required: true }
+        routes: { type: defineProp<RouteRecordRaw[]>(Array), required: true },
     },
     setup(props) {
         return () => {
@@ -23,14 +22,13 @@ export default defineComponent({
                         <el-sub-menu index={route.path}>
                             {{
                                 title: () => menuItem,
-                                default: () => <menu-item routes={route.children} />
+                                default: () => <menu-item routes={route.children} />,
                             }}
                         </el-sub-menu>
                     );
                 }
-                return <el-menu-item index={route.path}>{menuItem}</el-menu-item>
+                return <el-menu-item index={route.path}>{menuItem}</el-menu-item>;
             });
-        }
-    }
+        };
+    },
 });
-</script>

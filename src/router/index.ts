@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
             next();
         } else {
             await route.initRoutes();
-            next({ path: to.fullPath, query: to.query });
+            next({ path: to.fullPath, query: to.query, replace: true });
         }
     } catch (error) {
         console.log(error);

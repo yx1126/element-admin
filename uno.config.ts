@@ -1,4 +1,5 @@
 import { defineConfig, presetUno, presetAttributify, type DynamicMatcher, type CSSValue } from "unocss";
+import transformerDirectives from "@unocss/transformer-directives";
 import type { CSSProperties } from "vue";
 
 function baseParseColor(color, value) {
@@ -61,5 +62,8 @@ export default defineConfig({
     presets: [
         presetUno(),
         presetAttributify(),
+    ],
+    transformers: [
+        transformerDirectives(),
     ],
 });

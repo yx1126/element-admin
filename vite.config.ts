@@ -36,6 +36,7 @@ export default defineConfig({
         AutoComponents({
             dts: "./types/components.d.ts",
             resolvers: [ElementPlusResolver({ importStyle: "sass" })],
+            include: [/\.tsx$/, /\.vue$/, /\.vue\?vue/],
         }),
         VueI18nPlugin({}),
         Uoncss(),
