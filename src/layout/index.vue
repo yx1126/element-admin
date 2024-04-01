@@ -1,12 +1,17 @@
 <template>
     <component :is="LayoutMap[set.layoutMode]">
-        <router-view />
+        <el-scrollbar>
+            <Main />
+        </el-scrollbar>
     </component>
+    <Setting />
 </template>
 
 <script setup lang="ts">
 import type { LayoutMode } from "#/stores";
 import type { Component } from "vue";
+import Setting from "./components/Setting.vue"
+import Main from "./components/Main.vue"
 
 defineOptions({
     name: "LayoutMain"
@@ -26,5 +31,8 @@ const LayoutMap: Record<LayoutMode, Component> = {
 :deep(.el-header),
 :deep(.el-main) {
     padding: 0;
+}
+:deep(.el-main) {
+    background-color: #f5f7f9;
 }
 </style>

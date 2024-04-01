@@ -6,8 +6,7 @@ import en from "element-plus/dist/locale/en.mjs";
 import type { Lang } from "#/stores";
 
 const i18n = createI18n({
-    legacy: false,
-    fallbackLocale: "enUS",
+    fallbackLocale: "zh",
     messages: {},
 });
 

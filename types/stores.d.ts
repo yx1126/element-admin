@@ -8,7 +8,7 @@ export type RouterTrans = "fade" | "scale" | "scale-slide" | "null";
 export type Lang = "zh" | "en";
 
 export interface SetState {
-    drawerStatus: boolean;
+    isShowDrawer: boolean;
     themeColor: string;
     navMode: NavTheme;
     layoutMode: LayoutMode;

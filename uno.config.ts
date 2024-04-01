@@ -2,7 +2,7 @@ import { defineConfig, presetUno, presetAttributify, type DynamicMatcher, type C
 import transformerDirectives from "@unocss/transformer-directives";
 import type { CSSProperties } from "vue";
 
-function baseParseColor(color, value) {
+function baseParseColor(color: string, value: string) {
     const result: CSSValue = {
         color,
     };
@@ -45,19 +45,14 @@ const parseDistance: DynamicMatcher = ([, nameLeft, nameRight, value]) => {
     };
 };
 
-const FLEX_CENTER: CSSProperties = {
-    "display": "flex",
-    "justify-content": "center",
-    "align-items": "center",
-};
-
 export default defineConfig({
     rules: [
         [/^(c|color)-([a-zA-Z]+)-(\d{0,2}|100)$/, parseColorV2],
         [/^(c|color)-(([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3}))(-(\d{0,2}|100))?$/, parseColor],
         [/^(w|h|width|height)-(\d+)(p?)$/, parsePercent, { autocomplete: ["(w|h|width|height)-<num>"] }],
         [/^(m|p)(t|b|l|r)?-([\.\d]+)$/, parseDistance, { autocomplete: ["(m|p)(t|b|l|r)-<num>"] }],
-        ["flex-center", FLEX_CENTER as CSSValue],
+        ["flex-center", { "display": "flex", "justify-content": "center", "align-items": "center" }],
+        ["flex-between", { "display": "flex", "justify-content": "space-between", "align-items": "center" }],
     ],
     presets: [
         presetUno(),

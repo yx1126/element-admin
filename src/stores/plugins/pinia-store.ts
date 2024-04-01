@@ -108,7 +108,6 @@ declare module "pinia" {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface PiniaCustomProperties<Id extends string = string, S extends StateTree = StateTree> {
-        // 你也可以定义更简单的值
         setState: <K extends ObjKeys<S>>(key: K, value: S[K]) => void;
     }
 }

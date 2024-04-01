@@ -7,12 +7,16 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    copy: typeof import('./../src/components/ScrollBar copy/index.ts')['default']
+    Drawer: typeof import('./../src/components/Drawer/index.ts')['default']
     ElAside: typeof import('element-plus/es')['ElAside']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']
     ElConfigProvider: typeof import('element-plus/es')['ElConfigProvider']
     ElContainer: typeof import('element-plus/es')['ElContainer']
+    ElDivider: typeof import('element-plus/es')['ElDivider']
+    ElDrawer: typeof import('element-plus/es')['ElDrawer']
     ElHeader: typeof import('element-plus/es')['ElHeader']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElMain: typeof import('element-plus/es')['ElMain']
@@ -20,11 +24,14 @@ declare module 'vue' {
     ElMenuItem: typeof import('element-plus/es')['ElMenuItem']
     ElRow: typeof import('element-plus/es')['ElRow']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
+    ElSpace: typeof import('element-plus/es')['ElSpace']
     ElSubMenu: typeof import('element-plus/es')['ElSubMenu']
-    Icon: typeof import('./../src/components/Icon/Icon.vue')['default']
+    ElTooltip: typeof import('element-plus/es')['ElTooltip']
+    Icon: typeof import('./../src/components/Icon/index.ts')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    ScrollBar: typeof import('./../src/components/ScrollBar/ScrollBar.vue')['default']
-    SvgIcon: typeof import('./../src/components/Icon/SvgIcon.vue')['default']
+    ScrollBar: typeof import('./../src/components/ScrollBar/index.ts')['default']
+    ScrollBarVatural: typeof import('./../src/components/ScrollBarVatural/index.ts')['default']
+    ScrollBarVirtual: typeof import('./../src/components/ScrollBarVirtual/index.ts')['default']
   }
 }

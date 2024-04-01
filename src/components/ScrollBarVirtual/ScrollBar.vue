@@ -27,7 +27,6 @@
     </div>
 </template>
 
-
 <script setup lang="ts">
 import { isObject, isNumber } from "@/utils/validata";
 import { parseUnit } from "@/utils/unit";

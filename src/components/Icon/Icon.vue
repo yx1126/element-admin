@@ -1,10 +1,8 @@
 <template>
     <el-icon>
         <slot>
-            <template v-if="icon">
-                <svg-icon v-if="isString(icon) && !(icon.startsWith('ele-') || icon.startsWith('Ele'))" :icon="icon" :style="style" />
-                <component :is="icon" v-else :style="style" />
-            </template>
+            <svg-icon v-if="isString(icon) && !(icon.startsWith('ele-') || icon.startsWith('Ele'))" :icon="icon" :style="style" />
+            <component :is="icon" v-else :style="style" />
         </slot>
     </el-icon>
 </template>
@@ -28,8 +26,8 @@ const props = defineProps({
 const style = computed<CSSProperties>(() => {
     const { rotate } = props;
     return {
-        "transform": `rotate(${rotate}deg)`
-    }
+        transform: `rotate(${rotate}deg)`,
+    };
 })
 
 </script>

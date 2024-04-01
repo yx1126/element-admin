@@ -98,7 +98,7 @@ class InterceptorsInject<K extends keyof InterceptorsType> implements AxiosInter
  *```
  */
 function matchUrl(url: string, data: any) {
-    (url.match(/\/:[a-z0-9]+/g) || []).forEach((k) => {
+    (url.match(/\/:[a-zA-Z0-9-_]+/g) || []).forEach((k) => {
         let val = "";
         const key = k.replace(/\/:/, "");
         if(isObject<any>(data)) {

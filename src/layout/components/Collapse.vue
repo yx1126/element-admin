@@ -10,6 +10,7 @@
 import MenuFoldOutlined from "@vicons/antd/MenuFoldOutlined";
 import MenuUnfoldOutlined from "@vicons/antd/MenuUnfoldOutlined";
 import { parseUnit } from "@/utils/unit";
+import Icon from "@/components/Icon";
 
 const props = withDefaults(defineProps<{
     mode?: "collapse" | "menu";

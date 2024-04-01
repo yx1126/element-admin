@@ -8,6 +8,7 @@ import Uoncss from "unocss/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import VitePluginSvgIcon from "./scripts/build-icons";
+// import VueDevTools from "vite-plugin-vue-devtools";
 
 function resolve(path: string) {
     return fileURLToPath(new URL(path, import.meta.url));
@@ -36,7 +37,8 @@ export default defineConfig({
         AutoComponents({
             dts: "./types/components.d.ts",
             resolvers: [ElementPlusResolver({ importStyle: "sass" })],
-            include: [/\.tsx$/, /\.vue$/, /\.vue\?vue/],
+            include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],
+            globs: ["src/components/**/index.ts"],
         }),
         VueI18nPlugin({}),
         Uoncss(),
@@ -45,8 +47,16 @@ export default defineConfig({
             symbolId: "local-[name]",
             type: "script",
         }),
+        // VueDevTools(),
     ],
     server: {
         host: "0.0.0.0",
+    },
+    css: {
+        preprocessorOptions: {
+            scss: {
+                additionalData: `@use "@/styles/golbal" as *;`,
+            },
+        },
     },
 });

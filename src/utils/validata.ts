@@ -27,7 +27,7 @@ export function isString(val: unknown): val is string {
     return typeof val === "string";
 }
 
-export function isArray<T>(val: unknown): val is T {
+export function isArray<T = any>(val: unknown): val is T {
     return Array.isArray(val);
 }
 

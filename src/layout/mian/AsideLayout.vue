@@ -8,7 +8,6 @@
         <el-container>
             <el-header><Header /></el-header>
             <el-main>
-                <el-button type="primary">click</el-button>
                 <slot></slot>
             </el-main>
         </el-container>

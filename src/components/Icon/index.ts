@@ -11,9 +11,11 @@ export {
  */
 export const EleIconNames = Object.keys(Icons).map(v => `Ele${v}`);
 
-export default withInstall((app) => {
-    app.component(Icon.name, Icon);
+export const ElIcon = withInstall((app) => {
     for(const [key, component] of Object.entries(Icons)) {
         app.component(`Ele${key}`, component);
     }
+    app.component("Icon", Icon);
 });
+
+export default Icon;

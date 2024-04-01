@@ -3,9 +3,9 @@ import type { RouteRecordRaw } from "vue-router";
 import type { MenuItem } from "#/menu";
 import { isLink } from "./validata";
 
-export const pages = import.meta.glob("@/views/**/*.{vue,tsx}");
+const pages = import.meta.glob("@/views/**/*.{vue,tsx}");
 
-export const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
+const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
 
 function parsePath(data: MenuItem[]) {
     return data.reduce((pre, { path }) => {
@@ -16,7 +16,7 @@ function parsePath(data: MenuItem[]) {
     }, "");
 }
 
-export function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
+function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
     if(menu.type === MenuType.FOLDER) {
         return ParentLayout(menu.name);
     } else if(menu.type === MenuType.MENU) {
