@@ -6,21 +6,6 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": "always"
     },
-    "eslint.options": {
-        "extensions": [
-            ".vue",
-            ".js",
-            ".ts",
-            ".jsx",
-            ".tsx",
-            ".cjs",
-            ".mjs",
-            ".cts",
-            ".mts",
-            ".html",
-            ".html5"
-        ]
-    },
     "eslint.validate": [
         "vue",
         "javascript",
@@ -79,4 +64,5 @@
         "vue-sfc",
         "vue"
     ],
+    "vue.server.hybridMode": true
 }
