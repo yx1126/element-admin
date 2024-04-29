@@ -22,4 +22,3 @@ app.use(pinia)
 router.isReady().then(() => {
     app.mount("#app");
 });
-

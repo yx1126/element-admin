@@ -1,8 +1,8 @@
 <template>
-    <el-icon>
+    <el-icon :style="style">
         <slot>
-            <svg-icon v-if="isString(icon) && !(icon.startsWith('ele-') || icon.startsWith('Ele'))" :icon="icon" :style="style" />
-            <component :is="icon" v-else :style="style" />
+            <svg-icon v-if="isString(icon) && !(icon.startsWith('ele-') || icon.startsWith('Ele'))" :icon="icon" />
+            <component :is="icon" v-else />
         </slot>
     </el-icon>
 </template>
@@ -11,22 +11,26 @@
 <script setup lang="ts">
 import { isString } from "@/utils/validata";
 import SvgIcon from "./SvgIcon.vue";
-import { defineProp } from "@/utils/defineProp";
 import type { CSSProperties } from "vue";
 
 defineOptions({
     name: "Icon"
 });
 
-const props = defineProps({
-    icon: { type: defineProp<string | Component>([String, Object, Function]) },
-    rotate: { type: [String, Number], validator: (value) => /^\d+$/.test(String(value)), default: 0 }
+const props = withDefaults(defineProps<{
+    icon?: string | Component;
+    rotate?: string | number;
+    cursor?: boolean | CSSProperties["cursor"];
+}>(), {
+    rotate: 0,
+    default: false
 });
 
 const style = computed<CSSProperties>(() => {
-    const { rotate } = props;
+    const { rotate, cursor } = props;
     return {
         transform: `rotate(${rotate}deg)`,
+        cursor: cursor ? isString(cursor) ? cursor : "pointer" : undefined
     };
 })
 

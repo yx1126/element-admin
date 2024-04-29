@@ -11,7 +11,7 @@ function toInstall<T extends DefineComponent>(app: App, comps: Array<T>) {
         if(import.meta.env.MODE === "development" && !comp.name) {
             throw new Error("The component name cannot be empty");
         }
-        app.component(comp.name, comp);
+        app.component(comp.name!, comp);
     }
 }
 
