@@ -1,7 +1,7 @@
 <template>
     <el-input v-model="inputValue">
         <template v-for="slot in Object.keys($slots)" #[slot] :key="slot">
-            <slot :name="slot"></slot>
+            <slot :name="slot" />
         </template>
     </el-input>
 </template>

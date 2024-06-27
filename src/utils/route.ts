@@ -49,7 +49,7 @@ export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRec
 }
 
 export function getRedirectPath(data: RouteRecordRaw[] | MenuItem[]) {
-    let path: string = "";
+    let path = "";
     while(data.length > 0) {
         path = data[0].path;
         data = data[0].children || [];

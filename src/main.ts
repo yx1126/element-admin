@@ -1,14 +1,14 @@
-import "@/styles/index.scss";
-import "virtual:uno.css";
-import "virtual:svg-icons-load";
 import { createApp } from "vue";
-import pinia from "@/stores";
 import App from "@/App.vue";
-import router from "@/router";
-import i18n from "@/locales";
 import { ElIcon } from "@/components/Icon";
 import ScrollBar from "@/components/ScrollBar";
-import Directive from "./directive";
+import i18n from "@/locales";
+import router from "@/router";
+import pinia from "@/stores";
+import "@/styles/index.scss";
+import "virtual:svg-icons-load";
+import "virtual:uno.css";
+import Directive from "@/directive";
 
 const app = createApp(App);
 

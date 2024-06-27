@@ -1,13 +1,13 @@
 import { isObject, isString, isUndefined } from "@/utils/validata";
 import type {
-    MessageOptions,
-    MessageHandler,
     ElMessageBoxOptions,
     ElMessageBoxShortcutMethod,
-    messageType,
-    NotificationProps,
-    NotificationOptions,
+    MessageHandler,
+    MessageOptions,
     NotificationHandle,
+    NotificationOptions,
+    NotificationProps,
+    messageType,
 } from "element-plus";
 import type { AppContext, VNode } from "vue";
 
@@ -60,6 +60,7 @@ export function useMessage(options?: MessageOptions, appContext?: Nullable<AppCo
     const result: any = {};
     msgType.forEach((key) => {
         result[key] = (message: string | VNode | (() => VNode), options?: Options, appContext?: Nullable<AppContext>) => {
+            // @ts-ignore
             return ElMessage[transformType(key)]({
                 ...defOptions,
                 ...options,
@@ -84,8 +85,10 @@ export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullab
             }
             const opt = Object.assign(defOptions, options);
             if(["alert", "confirm", "prompt"].includes(key)) {
+                // @ts-ignore
                 return (ElMessageBox as any)[key](message, title, opt, appContext ?? ctx);
             } else {
+                // @ts-ignore
                 return ElMessageBox.alert(message, title, {
                     ...opt,
                     type: transformType(key as MessageType),
@@ -102,12 +105,13 @@ export function useNotification(options?: NotifyOptions, appContext?: Nullable<A
     const result: any = {};
     notifyType.forEach(key => {
         result[key] = (message: string | VNode, options?: NotifyOptions | string, appContext?: Nullable<AppContext>) => {
-            let title: string = "";
+            let title = "";
             if(isString(options)) {
                 title = options;
                 options = {};
             }
             if(key === "alert") {
+                // @ts-ignore
                 return (ElNotification as Function)({
                     ...assign({}, options, opt),
                     title,
@@ -115,6 +119,7 @@ export function useNotification(options?: NotifyOptions, appContext?: Nullable<A
                 }, appContext ?? ctx);
             } else {
                 const type = transformType(key);
+                // @ts-ignore
                 return (ElNotification[type] as Function)({
                     title: title || type.substring(0, 1).toUpperCase() + type.substring(1),
                     ...assign({}, options, opt),

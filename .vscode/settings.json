@@ -1,11 +1,12 @@
 {
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "always",
+    },
     "eslint.format.enable": true,
     "eslint.codeAction.showDocumentation": {
         "enable": true
     },
-    "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "always"
-    },
+    "eslint.useFlatConfig": true,
     "eslint.validate": [
         "vue",
         "javascript",
@@ -16,7 +17,8 @@
         "json",
         "json5",
         "yaml",
-        "yml"
+        "yml",
+        "github-actions-workflow"
     ],
     "editor.cursorSmoothCaretAnimation": "on",
     "[typescript]": {
@@ -31,25 +33,25 @@
     "[html]": {
         "editor.defaultFormatter": "vscode.html-language-features"
     },
-	"[json]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
-	},
-	"[jsonc]": {
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
-	},
+    "[json]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
+    "[jsonc]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
     "[css]": {
         "editor.defaultFormatter": "vscode.css-language-features"
     },
     "[sass]": {
         "editor.defaultFormatter": "vscode.css-language-features"
     },
-	"[yaml]": {
-		"editor.insertSpaces": true,
-		"editor.tabSize": 2,
-		"editor.autoIndent": "advanced",
-		"diffEditor.ignoreTrimWhitespace": false,
-		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
-	},
+    "[yaml]": {
+        "editor.insertSpaces": true,
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced",
+        "diffEditor.ignoreTrimWhitespace": false,
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    },
     "i18n-ally.localesPaths": [],
     "i18n-ally.keystyle": "nested",
     "i18n-ally.namespace": true,

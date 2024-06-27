@@ -6,9 +6,11 @@
             </el-scrollbar>
         </el-aside>
         <el-container>
-            <el-header><Header /></el-header>
+            <el-header>
+                <Header />
+            </el-header>
             <el-main>
-                <slot></slot>
+                <slot />
             </el-main>
         </el-container>
     </el-container>

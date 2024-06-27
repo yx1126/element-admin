@@ -1,7 +1,7 @@
 <template>
     <div class="">
         AsideMixinLayout.vue
-        <slot></slot>
+        <slot />
     </div>
 </template>
 

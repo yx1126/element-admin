@@ -1,6 +1,6 @@
-import type { PiniaPluginContext, PiniaPlugin } from "pinia";
+import { isArray, isFunction as isFn, isString } from "@/utils/validata";
+import type { PiniaPlugin, PiniaPluginContext } from "pinia";
 import type { WatchOptions } from "vue";
-import { isArray, isString, isFunction as isFn } from "@/utils/validata";
 
 const assign = Object.assign;
 
@@ -58,7 +58,7 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
         const persistedstate = context.options.persistedstate;
         if(!persistedstate?.enabled) return;
 
-        if(isFn(persistedstate?.reset)) {
+        if(isFn(persistedstate.reset)) {
             context.store.$reset = function() {
                 context.store.$patch(persistedstate.reset!());
             };
@@ -73,7 +73,7 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
 
         function createStateList(state: Store["$state"]) {
             return isArray<StorageOptions<Store["$state"]>[]>(persistedstate?.storage)
-                ? persistedstate?.storage || []
+                ? persistedstate.storage || []
                 : [{ storage: persistedstate?.storage || storage, paths: persistedstate?.paths || Object.keys(state) }];
         }
 
@@ -84,12 +84,12 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
                     baseState[cur] = state[cur];
                     return baseState;
                 }, {} as PartialState);
-                setItem(s.key || persistedstate?.key || mutation.storeId, value, s.storage);
+                setItem(s.key || persistedstate.key || mutation.storeId, value, s.storage);
             });
         }, assign({ detached: true }, options?.subscriptions));
 
         return createStateList(store.$state).reduce((state, s) => {
-            const value = getItem(s.key || persistedstate?.key || store.$id, s.storage);
+            const value = getItem(s.key || persistedstate.key || store.$id, s.storage);
             if(value) state = assign(state, value);
             return state;
         }, {} as PartialState);

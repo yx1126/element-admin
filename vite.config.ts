@@ -1,12 +1,12 @@
-import { fileURLToPath, URL } from "node:url";
-import { defineConfig } from "vite";
+import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
-import AutoImport from "unplugin-auto-import/vite";
-import AutoComponents from "unplugin-vue-components/vite";
+import { fileURLToPath, URL } from "node:url";
 import Uoncss from "unocss/vite";
-import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+import AutoImport from "unplugin-auto-import/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
+import AutoComponents from "unplugin-vue-components/vite";
+import { defineConfig } from "vite";
 import VitePluginSvgIcon from "./scripts/build-icons";
 // import VueDevTools from "vite-plugin-vue-devtools";
 

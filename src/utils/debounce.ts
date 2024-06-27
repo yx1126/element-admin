@@ -4,8 +4,8 @@ export interface DebounceFn<T extends (...args: any) => any> {
     cancel(): void;
 }
 
-function debounce<T extends (...args: any) => any>(fn: T, delay: number = 0): DebounceFn<T> {
-    let timer: any | null;
+function debounce<T extends (...args: any) => any>(fn: T, delay = 0): DebounceFn<T> {
+    let timer: number | null;
     function cancel() {
         if(timer) {
             clearTimeout(timer);

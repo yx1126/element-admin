@@ -12,7 +12,7 @@
 
             @scroll="onScroll"
         >
-            <slot></slot>
+            <slot />
         </div>
         <template v-if="!native && isExistScroll">
             <div :class="['scroll-bar__bar', xScrollable ? 'is-horizontal' : 'is-vertical']">
@@ -21,7 +21,7 @@
                     class="scroll-bar__thumb"
                     :style="thumbStyle"
                     @mousedown="onMousedown"
-                ></div>
+                />
             </div>
         </template>
     </div>
@@ -53,13 +53,13 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-    scroll: [UIEvent];
+    scroll: [Event];
 }>();
 
 const scrollViewRef = ref<HTMLDivElement | null>(null);
 const thumbRef = ref<HTMLDivElement | null>(null);
-let originalOnSelectStart: any;
-let resizeObserver: any = null;
+let originalOnSelectStart: Nullable<typeof document.onselectstart>;
+let resizeObserver: Nullable<ResizeObserver> = null;
 
 // 是否存在滚动条
 const isExistScroll = ref(false);
@@ -129,9 +129,9 @@ function init() {
 }
 
 function scrollTo(options: ScrollToOptions): void;
-// eslint-disable-next-line no-redeclare
+
 function scrollTo(x: number, y: number): void;
-// eslint-disable-next-line no-redeclare
+
 function scrollTo(x: unknown, y?: unknown) {
     if(isObject(x)) {
         scrollViewRef.value!.scrollTo(x);
@@ -146,7 +146,7 @@ function update() {
     translateXY.value = scrollViewRef.value[props.xScrollable ? "scrollLeft" : "scrollTop"] / scrollSize.value * thumbScrollSize.value;
 }
 
-function onScroll(e: UIEvent) {
+function onScroll(e: Event) {
     update();
     emit("scroll", e);
 }

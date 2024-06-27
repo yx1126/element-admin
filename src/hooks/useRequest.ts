@@ -1,6 +1,6 @@
 import type { Result } from "#/axios";
+import { isArray, isFunction as isFn, isObject } from "@/utils/validata";
 import type { Ref } from "vue";
-import { isFunction as isFn, isObject, isArray } from "@/utils/validata";
 
 
 type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
@@ -53,7 +53,7 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
     }
 
     const loading = ref(false);
-    const data = ref(defOptions.default) as Ref<any>;
+    const data = ref(defOptions.default) as Ref;
 
     async function query(...query: any) {
         try {
@@ -69,6 +69,7 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
                 data.value = reqData;
             }
         } catch (err: any) {
+            // @ts-ignore
             ElMessage.error(err?.msg || err?.data?.msg || "查询失败");
         } finally {
             loading.value = false;

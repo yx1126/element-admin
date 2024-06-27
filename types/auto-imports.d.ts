@@ -90,4 +90,10 @@ declare global {
   // @ts-ignore
   export type { Component, ComponentPublicInstance, ComputedRef, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, VNode, WritableComputedRef } from 'vue'
   import('vue')
+  // @ts-ignore
+  export type { ResultStatus, Methods, ContentType } from '../src/enums/http'
+  import('../src/enums/http')
+  // @ts-ignore
+  export type { MenuType } from '../src/enums/menu'
+  import('../src/enums/menu')
 }

@@ -1,7 +1,7 @@
 <template>
     <div class="">
         TopLayout.vue
-        <slot></slot>
+        <slot />
     </div>
 </template>
 
