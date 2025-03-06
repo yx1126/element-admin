@@ -42,7 +42,7 @@
         "@vitejs/plugin-vue": "^5.2.1",
         "@vitejs/plugin-vue-jsx": "^4.1.1",
         "@vue/tsconfig": "^0.5.1",
-        "@yx1126/lint-config": "^0.0.17",
+        "@yx1126/lint-config": "^0.0.18",
         "eslint": "^9.21.0",
         "fast-glob": "^3.3.3",
         "fs-extra": "^11.3.0",

@@ -85,8 +85,8 @@ importers:
         specifier: ^0.5.1
         version: 0.5.1
       '@yx1126/lint-config':
-        specifier: ^0.0.17
-        version: 0.0.17(@vue/compiler-sfc@3.5.13)(eslint@9.21.0(jiti@2.4.2))(postcss@8.5.3)(stylelint@16.14.1(typescript@5.8.2))(typescript@5.8.2)
+        specifier: ^0.0.18
+        version: 0.0.18(@vue/compiler-sfc@3.5.13)(eslint@9.21.0(jiti@2.4.2))(postcss@8.5.3)(stylelint@16.14.1(typescript@5.8.2))(typescript@5.8.2)
       eslint:
         specifier: ^9.21.0
         version: 9.21.0(jiti@2.4.2)
@@ -1133,8 +1133,8 @@ packages:
   '@vueuse/shared@9.13.0':
     resolution: {integrity: sha512-UrnhU+Cnufu4S6JLCPZnkWh0WwZGUp72ktOF2DFptMlOs3TOdVv8xJN53zhHGARmVOsz5KqOls09+J1NR6sBKw==}
 
-  '@yx1126/lint-config@0.0.17':
-    resolution: {integrity: sha512-iHCQq6SUEg7bUgDmfEJI2BbKQDI0UaZTCwhM3BOy/BAe+vg3pqES5X+vQjQlzGtvz8L1fCspsJjLns3BJfBlUg==}
+  '@yx1126/lint-config@0.0.18':
+    resolution: {integrity: sha512-Kd9m8b0k/cbXIqThTIgWQAr4TS2d9pbcYZsP51itotP1ISOXj4l94o+BdyNy5DBvFmlrl8xYE9cXPDLAxwCDtQ==}
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3857,7 +3857,7 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@yx1126/lint-config@0.0.17(@vue/compiler-sfc@3.5.13)(eslint@9.21.0(jiti@2.4.2))(postcss@8.5.3)(stylelint@16.14.1(typescript@5.8.2))(typescript@5.8.2)':
+  '@yx1126/lint-config@0.0.18(@vue/compiler-sfc@3.5.13)(eslint@9.21.0(jiti@2.4.2))(postcss@8.5.3)(stylelint@16.14.1(typescript@5.8.2))(typescript@5.8.2)':
     dependencies:
       '@stylistic/eslint-plugin': 2.13.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)
       '@typescript-eslint/eslint-plugin': 8.26.0(@typescript-eslint/parser@8.26.0(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2))(eslint@9.21.0(jiti@2.4.2))(typescript@5.8.2)

@@ -2,12 +2,8 @@
 import { defineEslint } from "@yx1126/lint-config";
 
 export default defineEslint({
-    yaml: {
-        enable: true,
-    },
     vue: {
         sfcBlocks: {
-            enable: true,
             blocks: {
                 customBlocks: true,
             },
