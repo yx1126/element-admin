@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter } from "vue-router";
+import { createWebHistory } from "vue-router";
 import Nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { staticRoutes } from "./staticRoutes";
@@ -23,7 +24,7 @@ router.beforeEach(async (to, from, next) => {
             next({ path: to.fullPath, query: to.query, replace: true });
         }
     } catch (error) {
-        console.log(error);
+        console.error(error);
     }
 });
 
@@ -34,6 +35,5 @@ router.afterEach(() => {
 router.onError(error => {
     console.error("路由错误", error);
 });
-
 
 export default router;

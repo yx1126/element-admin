@@ -3,7 +3,10 @@ import type { RouteRecordRaw } from "vue-router";
 import type { MenuItem } from "#/menu";
 import { isLink } from "./validata";
 
-const pages = import.meta.glob("@/views/**/*.{vue,tsx}");
+/**
+ * 自动导入所有目录下index.vue,index.tsx
+ */
+const pages = import.meta.glob(["@/views/**/index.{vue,tsx}", "@/views/error/*.vue"]);
 
 const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
 
@@ -19,9 +22,9 @@ function parsePath(data: MenuItem[]) {
 function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
     if(menu.type === MenuType.FOLDER) {
         return ParentLayout(menu.name);
-    } else if(menu.type === MenuType.MENU) {
+    } if(menu.type === MenuType.MENU) {
         if(!menu.component) return;
-        const compPath = ("/src/views/" + menu.component).replace(/\/\//g, "\/");
+        const compPath = ("/src/views/" + menu.component).replace(/\/\//g, "/");
         for(let i = 0; i < PAGE_SUFFIX.length; i++) {
             const vuePath = compPath + PAGE_SUFFIX[i];
             if(Object.hasOwn(pages, vuePath)) {

@@ -73,5 +73,4 @@ function drag(el: string | Element, options?: DragOptions) {
     target.addEventListener("mousedown", mousedown);
 }
 
-
 export default drag;

@@ -11,7 +11,6 @@ const golbalOptions: DailogOptions = {
     draggable: true,
 };
 
-
 export default function useDailog<T extends Record<string, any> = Record<string, any>>(
     component: DefineComponent | Component,
     options?: DailogOptions<T>,
@@ -27,7 +26,6 @@ export default function useDailog<T extends Record<string, any> = Record<string,
     function createDialog(props?: DailogOptions) {
         const { rowProps, ...otherPorps } = Object.assign({}, props);
         return defineComponent(() => {
-
             function onUpdateModeValue(value: boolean) {
                 visible.value = value;
             }

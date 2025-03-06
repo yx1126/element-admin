@@ -8,7 +8,7 @@ type Store = PiniaPluginContext["store"];
 
 type PartialState = Partial<Store["$state"]>;
 
-export interface Subscriptions extends WatchOptions {
+interface Subscriptions extends WatchOptions {
     detached?: boolean;
 }
 
@@ -24,15 +24,19 @@ interface StorageOptions<S> {
 
 type StorageOption<S> = BaseStorage | StorageOptions<S>[];
 
-interface StoreOption<S> {
+type OmitRef<T extends object> = {
+    [K in keyof T]: T[K] extends { value: infer V; } ? V : T[K]
+};
+
+interface StoreOption<S extends object> {
     enabled?: boolean;
     key?: string;
     paths?: Paths<S>;
     storage?: StorageOption<S>;
-    reset?: () => S;
+    reset?: () => Partial<OmitRef<S>>;
 }
 
-export interface PiniaStateOptions {
+interface PiniaStateOptions {
     prefix?: string;
     suffix?: string;
     storage?: BaseStorage;
@@ -59,12 +63,13 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
         if(!persistedstate?.enabled) return;
 
         if(isFn(persistedstate.reset)) {
+            const s = persistedstate.reset();
             context.store.$reset = function() {
-                context.store.$patch(persistedstate.reset!());
+                context.store.$patch(s);
             };
         }
         context.store.setState = function(key, value) {
-            context.store.$patch((state) => {
+            context.store.$patch(state => {
                 state[key] = value;
             });
         };
@@ -73,7 +78,7 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
 
         function createStateList(state: Store["$state"]) {
             return isArray<StorageOptions<Store["$state"]>[]>(persistedstate?.storage)
-                ? persistedstate.storage || []
+                ? persistedstate.storage
                 : [{ storage: persistedstate?.storage || storage, paths: persistedstate?.paths || Object.keys(state) }];
         }
 
@@ -98,16 +103,15 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
 
 export { createPiniaState as default };
 
-
 declare module "pinia" {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface DefineStoreOptionsBase<S, Store> {
         persistedstate?: StoreOption<S>;
     }
 
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface PiniaCustomProperties<Id extends string = string, S extends StateTree = StateTree> {
-        setState: <K extends ObjKeys<S>>(key: K, value: S[K]) => void;
+        setState: <K extends ObjKeys<S>, V = S[K] extends { value: infer V2; } ? V2 : S[K] >(key: K, value: V) => void;
+        reset?: () => Partial<OmitRef<S>>;
     }
 }

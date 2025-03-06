@@ -7,31 +7,26 @@
     </el-icon>
 </template>
 
-
 <script setup lang="ts">
 import { isString } from "@/utils/validata";
 import SvgIcon from "./SvgIcon.vue";
-import type { CSSProperties } from "vue";
+import type { CSSProperties, Component } from "vue";
 
 defineOptions({
-    name: "Icon"
+    name: "Icon",
 });
 
-const props = withDefaults(defineProps<{
+const { rotate = 0, cursor = false } = defineProps<{
     icon?: string | Component;
     rotate?: string | number;
     cursor?: boolean | CSSProperties["cursor"];
-}>(), {
-    rotate: 0,
-    default: false
-});
+}>();
 
 const style = computed<CSSProperties>(() => {
-    const { rotate, cursor } = props;
     return {
         transform: `rotate(${rotate}deg)`,
-        cursor: cursor ? isString(cursor) ? cursor : "pointer" : undefined
+        cursor: cursor ? isString(cursor) ? cursor : "pointer" : undefined,
     };
-})
+});
 
 </script>

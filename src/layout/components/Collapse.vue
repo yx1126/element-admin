@@ -23,8 +23,8 @@ const props = withDefaults(defineProps<{
     height: 42,
     collapsedWidth: 64,
     size: 22,
-    mode: "collapse"
-})
+    mode: "collapse",
+});
 
 const set = useSetStore();
 
@@ -32,8 +32,8 @@ const collapseStyle = computed(() => {
     const { width, height, collapsedWidth } = props;
     return {
         width: parseUnit(set.collapsed ? collapsedWidth : width),
-        height: parseUnit(height)
-    }
+        height: parseUnit(height),
+    };
 });
 
 function onClick() {

@@ -48,9 +48,8 @@ export default function vitePluginSvgIcon(options?: SVGLoadOptions): PluginOptio
                 if(viteConfig.command === "build" && opt.type === "html") {
                     const svgList = getSvgFiles(opt);
                     return `export default ${JSON.stringify(svgList.map(resolveSvgList))}`;
-                } else {
-                    return `export default ${JSON.stringify(svgNames)}`;
                 }
+                return `export default ${JSON.stringify(svgNames)}`;
             }
             if(id === resolvedRegisterVirtualModuleId) {
                 if(opt.type === "script") {

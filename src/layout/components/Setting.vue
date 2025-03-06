@@ -23,7 +23,7 @@
         <el-scrollbar>
             <div class="drawer-set-container">
                 <el-divider>{{ t("navTheme") }}</el-divider>
-                <div flex justify-center style="gap: 8px 12px;">
+                <div class="flex justify-center gap-[8px 12px]">
                     <template v-for="n in navTheme" :key="n">
                         <nav-mode :mode="n" :chose="set.navMode === n" :color="set.themeColor" @click="set.navMode = n" />
                     </template>
@@ -51,14 +51,14 @@ const { t } = useI18n();
 
 const isShowDrawer = computed({
     get: () => set.isShowDrawer,
-    set: v => set.setState("isShowDrawer", v)
+    set: v => set.setState("isShowDrawer", v),
 });
 
 const drawerStyles = computed(() => {
     return {
         "--drawer-set-color": set.themeColor,
         "z-index": nextZIndex(),
-        "right": isShowDrawer.value ? "280px" : "0"
+        right: isShowDrawer.value ? "280px" : "0",
     };
 });
 

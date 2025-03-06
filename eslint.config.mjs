@@ -1,6 +1,4 @@
-import yx1126 from "@yx1126/eslint-config";
-import { defineFlatConfig } from "eslint-define-config";
+// @ts-check
+import { defineEslint } from "@yx1126/lint-config";
 
-export default defineFlatConfig([
-    ...yx1126.configs["base"],
-]);
+export default defineEslint();

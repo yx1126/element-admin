@@ -1,5 +1,5 @@
-export enum MenuType {
+export const enum MenuType {
     FOLDER, // 目录
-    MENU,   // 菜单
+    MENU, // 菜单
     BUTTON, // 按钮
 }

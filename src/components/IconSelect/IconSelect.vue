@@ -1,5 +1,5 @@
 <template>
-    <el-popover v-bind="popverAttrs" @after-leave="onAfterLeave">
+    <el-popover ref="popoverRef" v-bind="popverAttrs" @before-enter="onBeforeEnter" @after-leave="onAfterLeave">
         <template #reference>
             <el-input
                 v-model="modelValue"
@@ -10,23 +10,31 @@
                 @mouseenter="onMouseenter"
                 @mouseleave="onMouseleave"
             >
-                <template v-if="placement === 'preffix'" #prepend>
-                    <Icon :icon="modelValue" />
+                <template v-if="placement === 'prefix'" #prepend>
+                    <Icon :icon="modelValue" size="18" />
                 </template>
                 <template #suffix>
-                    <Icon v-if="showClear" icon="ele-circle-close" cursor @click="onClear" />
+                    <Icon v-if="showClear" icon="ele-circle-close" cursor @click.stop="onClear" />
                 </template>
                 <template v-if="placement === 'suffix'" #append>
-                    <Icon :icon="modelValue" />
+                    <Icon :icon="modelValue" size="18" />
                 </template>
             </el-input>
         </template>
         <div class="icon-select-wrapper">
             <div class="search">
-                <lazy-input v-model.lazy="searchKey" placeholder="请输入图标名称" clearable />
+                <lazy-input v-model.lazy="searchKey" prefix-icon="ele-search" placeholder="请输入图标名称" clearable />
             </div>
-            <div class="icon-select-list"></div>
-            <div class="paging"></div>
+            <div class="tabs">
+                <el-tabs v-model="iconType">
+                    <el-tab-pane label="ele" name="ele">
+                        <icon-list ref="eleIconRef" :options="options.eleIcons" :value="modelValue" @change="onChange" />
+                    </el-tab-pane>
+                    <el-tab-pane label="local" name="local">
+                        <icon-list ref="localIconRef" :options="options.localIcons" :value="modelValue" @change="onChange" />
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
         </div>
     </el-popover>
 </template>
@@ -35,34 +43,49 @@
 import Icon from "@/components/Icon";
 import LazyInput from "@/components/LazyInput";
 import type { PopoverProps } from "./";
-// import LocalIcons from "virtual:svg-icons-list";
+import IconList from "./IconList.vue";
+import { EleIconNames, LocalIconNames } from "@/components/Icon";
 
 defineOptions({
     name: "IconSelect",
-    inheritAttrs: false
+    inheritAttrs: false,
 });
 
-const { disabled: formDisabled, validate } = useElForm();
+type IconType = "ele" | "local";
 
 const modelValue = defineModel<string>();
 
-const props = withDefaults(defineProps<{
+const {
+    clearable,
+    placeholder = "请选择图标",
+    placement = "prefix",
+    popoverProps,
+} = defineProps<{
     placeholder?: string;
     closeable?: boolean;
-    placement?: "preffix" | "suffix";
+    placement?: "prefix" | "suffix";
     disabled?: boolean;
     clearable?: boolean;
     popoverProps?: PopoverProps;
-}>(), {
-    placeholder: "请选择图标",
-    closeable: true,
-    placement: "preffix",
-});
+}>();
+
+const { disabled: formDisabled, validate } = useElForm();
+
+const popoverRef = useTemplateRef("popoverRef");
+const eleIconRef = useTemplateRef("eleIconRef");
+const localIconRef = useTemplateRef("localIconRef");
 
 const hovering = ref(false);
 const searchKey = ref("");
+const iconType = ref<IconType>("ele");
 
-const showClear = computed(() => props.clearable && modelValue.value && !formDisabled.value && hovering.value);
+const options = computed(() => {
+    return {
+        eleIcons: search(searchKey.value, EleIconNames),
+        localIcons: search(searchKey.value, LocalIconNames),
+    };
+});
+const showClear = computed(() => clearable && modelValue.value && !formDisabled.value && hovering.value);
 
 const popverAttrs = computed<PopoverProps>(() => {
     return {
@@ -71,16 +94,25 @@ const popverAttrs = computed<PopoverProps>(() => {
         showArrow: false,
         offset: 6,
         hideAfter: 0,
-        ...props.popoverProps,
+        ...popoverProps,
         width: "378px",
-    }
+    };
 });
 
 watch(modelValue, (val, oldVal) => {
     if(val !== oldVal) {
         validate();
     }
-})
+});
+
+function search(value?: string, list?: string[]) {
+    return list?.filter(n => value ? n?.toLowerCase()?.includes(value?.toLowerCase()) : n) || [];
+}
+
+function onChange(icon: string) {
+    modelValue.value = icon;
+    popoverRef.value?.hide();
+}
 
 function onMouseenter() {
     hovering.value = true;
@@ -91,8 +123,31 @@ function onMouseleave() {
 function onClear() {
     modelValue.value = undefined;
 }
+function onBeforeEnter() {
+    nextTick(() => {
+        iconType.value = getIconType();
+        eleIconRef.value?.reset();
+        localIconRef.value?.reset();
+    });
+}
 function onAfterLeave() {
     searchKey.value = "";
+}
+
+const ICON_MAP: ([IconType, string[]])[] = [
+    ["ele", EleIconNames],
+    ["local", LocalIconNames],
+];
+
+function getIconType(): IconType {
+    const icon = modelValue.value || "";
+    for(let i = 0; i < ICON_MAP.length; i++) {
+        const [type, list] = ICON_MAP[i];
+        if(list.includes(icon)) {
+            return type;
+        }
+    }
+    return "ele";
 }
 </script>
 
@@ -107,18 +162,5 @@ function onAfterLeave() {
 }
 .icon-select-wrapper {
     width: 100%;
-    .icon-select-list {
-        height: 166px;
-        margin: 10px 0;
-        display: grid;
-        grid-template-columns: repeat(6, 50px);
-        grid-template-rows: repeat(4, 34px);
-        grid-gap: 10px;
-        align-content: flex-start;
-    }
-    .paging {
-        display: flex;
-        justify-content: space-between;
-    }
 }
 </style>

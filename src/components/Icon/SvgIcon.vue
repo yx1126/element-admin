@@ -12,7 +12,6 @@ export default defineComponent({
         icon: { type: String, default: void 0 },
     },
     setup(props) {
-
         const symbolId = computed(() => `#${props.prefix}-${props.icon}`);
 
         return {

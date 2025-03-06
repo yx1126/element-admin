@@ -4,8 +4,6 @@ import vueJsx from "@vitejs/plugin-vue-jsx";
 import { fileURLToPath, URL } from "node:url";
 import Uoncss from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
-import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-import AutoComponents from "unplugin-vue-components/vite";
 import { defineConfig } from "vite";
 import VitePluginSvgIcon from "./scripts/build-icons";
 // import VueDevTools from "vite-plugin-vue-devtools";
@@ -27,18 +25,12 @@ export default defineConfig({
         vueJsx(),
         AutoImport({
             dts: "./types/auto-imports.d.ts",
-            dirs: ["./src/hooks", "./src/enums", "./src/stores/modules", "./src/locales/exports"],
+            dirs: ["./src/hooks", "./src/enums", "./src/stores/modules"],
             imports: [
                 "vue",
                 "vue-router",
+                "vue-i18n",
             ],
-            resolvers: [ElementPlusResolver({ importStyle: "sass" })],
-        }),
-        AutoComponents({
-            dts: "./types/components.d.ts",
-            resolvers: [ElementPlusResolver({ importStyle: "sass" })],
-            include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/],
-            globs: ["src/components/**/index.ts"],
         }),
         VueI18nPlugin({}),
         Uoncss(),
@@ -49,8 +41,12 @@ export default defineConfig({
         }),
         // VueDevTools(),
     ],
+    optimizeDeps: {
+
+    },
     server: {
         host: "0.0.0.0",
+        port: 9527,
     },
     css: {
         preprocessorOptions: {

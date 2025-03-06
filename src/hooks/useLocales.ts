@@ -1,6 +1,5 @@
 import type { Lang } from "#/stores";
 
-
 function setLang(value: Lang) {
     document.documentElement.setAttribute("lang", value);
 }

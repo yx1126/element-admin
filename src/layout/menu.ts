@@ -89,7 +89,7 @@ export const menuList: MenuItem[] = [
 ];
 
 export function getMenus() {
-    return new Promise<MenuItem[]>((resolve) => {
+    return new Promise<MenuItem[]>(resolve => {
         resolve(menuList);
     });
 }

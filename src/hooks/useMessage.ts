@@ -58,7 +58,7 @@ export function useMessage(options?: MessageOptions, appContext?: Nullable<AppCo
     const defOptions = Object.assign(defaultMessage, options);
     const ctx = appContext;
     const result: any = {};
-    msgType.forEach((key) => {
+    msgType.forEach(key => {
         result[key] = (message: string | VNode | (() => VNode), options?: Options, appContext?: Nullable<AppContext>) => {
             // @ts-ignore
             return ElMessage[transformType(key)]({
@@ -87,13 +87,12 @@ export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullab
             if(["alert", "confirm", "prompt"].includes(key)) {
                 // @ts-ignore
                 return (ElMessageBox as any)[key](message, title, opt, appContext ?? ctx);
-            } else {
-                // @ts-ignore
-                return ElMessageBox.alert(message, title, {
-                    ...opt,
-                    type: transformType(key as MessageType),
-                }, appContext ?? ctx);
             }
+            // @ts-ignore
+            return ElMessageBox.alert(message, title, {
+                ...opt,
+                type: transformType(key as MessageType),
+            }, appContext ?? ctx);
         };
     });
     return result;
@@ -117,15 +116,14 @@ export function useNotification(options?: NotifyOptions, appContext?: Nullable<A
                     title,
                     message,
                 }, appContext ?? ctx);
-            } else {
-                const type = transformType(key);
-                // @ts-ignore
-                return (ElNotification[type] as Function)({
-                    title: title || type.substring(0, 1).toUpperCase() + type.substring(1),
-                    ...assign({}, options, opt),
-                    message,
-                }, appContext ?? ctx);
             }
+            const type = transformType(key);
+            // @ts-ignore
+            return (ElNotification[type] as Function)({
+                title: title || type.substring(0, 1).toUpperCase() + type.substring(1),
+                ...assign({}, options, opt),
+                message,
+            }, appContext ?? ctx);
         };
     });
     return result as NotifyReturn;

@@ -6,7 +6,7 @@ export interface PathOptions {
 }
 
 export interface SVGLoadOptions {
-    paths: Array<string | PathOptions>;
+    paths: string[] | PathOptions[];
     svgoOptions?: Config;
     type?: "html" | "script";
     symbolId?: string;

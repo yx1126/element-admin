@@ -7,39 +7,37 @@
 </template>
 
 <script setup lang="ts">
-import debounce, { type DebounceFn } from "@/utils/debounce";
+import { debounce } from "lodash-es";
+
+defineOptions({
+    name: "LazyInput",
+});
 
 const modelValue = defineModel<string>();
 
-const props = withDefaults(defineProps<{
-    modelModifiers?: { lazy?: boolean };
+const { delay = 500, modelModifiers = { lazy: false } } = defineProps<{
+    modelModifiers?: { lazy?: boolean; };
     delay?: number;
-}>(), {
-    modelModifiers: () => ({ lazy: false }),
-    delay: 500
-})
+}>();
 
 const inputValue = ref<Noable<string>>(modelValue.value);
 
-let updateValue: DebounceFn<(value?: string) => void>;
+let updateValue: ReturnType<typeof debounce>;
 
-watch(() => props.delay, () => {
-    if(updateValue) {
-        updateValue.cancel();
-    }
-    updateValue = debounce(function(value?: string) {
+watch(() => delay, value => {
+    updateValue = debounce((value?: string) => {
         modelValue.value = value;
-    }, props.modelModifiers?.lazy ? props.delay : 0);
+    }, modelModifiers?.lazy ? value : 0);
+    onWatcherCleanup(updateValue.cancel);
 }, {
     immediate: true,
-    deep: true
-})
+});
 
-watch(inputValue, (value) => {
+watch(inputValue, value => {
     updateValue(value);
 });
 
-watch(modelValue, (value) => {
+watch(modelValue, value => {
     inputValue.value = value;
-})
+});
 </script>

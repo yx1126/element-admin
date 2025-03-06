@@ -54,6 +54,7 @@ function parseSVG(file: string, id: string, config?: Config): Output {
             ],
         }, config!));
     } catch (error) {
+        console.error(error);
         return { data: file };
     }
 }
@@ -138,7 +139,7 @@ export function parseScript(value: string, options: SVGLoadOptions) {
 
 export function getOptions(options?: SVGLoadOptions): SVGLoadOptions {
     const opt: any = assign({}, options);
-    const def: any  = {
+    const def: any = {
         symbolId: "icon-[id]-[dir]-[name]",
         SVG_DOM_ID: "__svg__icons__dom__",
         type: "html",

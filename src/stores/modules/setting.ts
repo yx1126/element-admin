@@ -20,7 +20,6 @@ const defaultSetting: SetState = {
 };
 
 export const useSetStore = defineStore("setting", () => {
-
     const state: SetState = reactive(Object.assign({}, defaultSetting));
 
     return {

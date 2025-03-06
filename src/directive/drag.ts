@@ -1,5 +1,4 @@
 import type { Directive } from "vue";
-
 import drag, { type DragOptions } from "@/utils/drag";
 
 export default {
@@ -17,4 +16,4 @@ export default {
             el.__v_drag_stop();
         }
     },
-} as Directive<any, DragOptions>;
+} satisfies Directive<any, DragOptions>;

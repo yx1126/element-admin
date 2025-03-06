@@ -1,18 +1,15 @@
-import { defineStore } from "pinia";
+import { acceptHMRUpdate, defineStore } from "pinia";
 import { getMenus } from "@/layout/menu";
 import type { RouteRecordRaw } from "vue-router";
 import router from "@/router";
 import { ayncStaticaRoutes } from "@/router/staticRoutes";
 import { parseRoute, getRedirectPath } from "@/utils/route";
 
-
-
 interface RouteState {
     routerList: RouteRecordRaw[];
 }
 
 export const useRouteStore = defineStore("route", () => {
-
     const state: RouteState = reactive({
         routerList: [],
     });
@@ -33,3 +30,7 @@ export const useRouteStore = defineStore("route", () => {
         initRoutes,
     };
 });
+
+if(import.meta.hot) {
+    import.meta.hot.accept(acceptHMRUpdate(useSetStore, import.meta.hot));
+}

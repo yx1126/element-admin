@@ -1,9 +1,9 @@
 <template>
     <div class="collapse">
-        <div class="h-100p flex items-center">
+        <div class="h-[100%] flex items-center">
             <Collapse width="60" height="60" />
         </div>
-        <div class="h-100p flex items-center">
+        <div class="h-[100%] flex items-center">
             right
         </div>
     </div>

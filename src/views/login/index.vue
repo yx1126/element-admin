@@ -7,7 +7,6 @@
 
 <script setup lang="ts">
 function onLogin() {
-    
 }
 </script>
 

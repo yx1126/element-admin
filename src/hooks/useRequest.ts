@@ -2,9 +2,7 @@ import type { Result } from "#/axios";
 import { isArray, isFunction as isFn, isObject } from "@/utils/validata";
 import type { Ref } from "vue";
 
-
 type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
-
 
 export interface RequestOptions<T, D extends any[]> {
     request: Request<T, D>;

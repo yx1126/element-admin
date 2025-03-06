@@ -10,12 +10,12 @@
 <script setup lang="ts">
 import type { LayoutMode } from "#/stores";
 import type { Component } from "vue";
-import Setting from "./components/Setting.vue"
-import Main from "./components/Main.vue"
+import Setting from "./components/Setting.vue";
+import Main from "./components/Main.vue";
 
 defineOptions({
-    name: "LayoutMain"
-})
+    name: "LayoutMain",
+});
 
 const set = useSetStore();
 
@@ -24,7 +24,7 @@ const LayoutMap: Record<LayoutMode, Component> = {
     top: defineAsyncComponent(() => import("./mian/TopLayout.vue")),
     mixin: defineAsyncComponent(() => import("./mian/MixinLayout.vue")),
     asideMixin: defineAsyncComponent(() => import("./mian/AsideMixinLayout.vue")),
-}
+};
 </script>
 
 <style lang="scss" scoped>

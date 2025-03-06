@@ -1,4 +1,3 @@
-
 export type NavTheme = "light" | "dark";
 
 export type LayoutMode = "aside" | "top" | "mixin" | "asideMixin";

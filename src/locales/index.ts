@@ -11,8 +11,8 @@ const i18n = createI18n({
 });
 
 export const LangMap: Record<Lang, any> = {
-    "zh": zhCn,
-    "en": en,
+    zh: zhCn,
+    en: en,
 };
 
 export default i18n;

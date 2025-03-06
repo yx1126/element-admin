@@ -5,11 +5,11 @@ http.setConfig({
     timeout: 60 * 1000,
 });
 
-http.interceptors.request.use((config) => {
+http.interceptors.request.use(config => {
     return config;
 });
 
-http.interceptors.response.use((response) => {
+http.interceptors.response.use(response => {
     const { data, config } = response;
     if(config.responseType && ["blob", "arraybuffer", "stream"].includes(config.responseType)) {
         return response;

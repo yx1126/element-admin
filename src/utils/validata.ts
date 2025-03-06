@@ -1,9 +1,8 @@
-
 // 手机号正则验证
 const MOBILE_REG = /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/;
 // 身份证正则验证
-const IDCARD_REG =
-    /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+const IDCARD_REG
+    = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
 // 超链接正则验证
 const LINK_REG = /^https?:\/\/(([a-zA-Z0-9_-])+(\.)?)*(:\d+)?(\/((\.)?(\?)?=?&?[a-zA-Z0-9_-](\?)?)*)*$/;
 // email正则验证
@@ -70,15 +69,14 @@ export function isEmpty(val: unknown) {
 export function isZeroEmpty(val: unknown) {
     if(isNumber(val)) {
         return val === 0;
-    } else if(isArray<any[]>(val) || isString(val)) {
+    } if(isArray<any[]>(val) || isString(val)) {
         return val.length === 0;
-    } else if(isObject(val)) {
+    } if(isObject(val)) {
         return Object.keys(val).length === 0;
-    } else if(isBoolean(val)) {
+    } if(isBoolean(val)) {
         return !val;
-    } else {
-        return isNull(val) || isUndefined(val);
     }
+    return isNull(val) || isUndefined(val);
 }
 
 export function isPhoneNum(val: string) {

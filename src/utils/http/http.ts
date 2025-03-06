@@ -9,7 +9,6 @@ import axios, {
 } from "axios";
 import { isArray, isEmpty, isObject } from "../validata";
 import download from "../download";
-import type { ResponseResult } from "#/axios";
 
 type AxiosRequestManager = AxiosInterceptorManager<InternalAxiosRequestConfig>;
 
@@ -25,7 +24,7 @@ interface InterceptorsType {
     response: AxiosResponseManager;
 }
 
-export interface CreateAxios<D = any> extends CreateAxiosDefaults<D>  {
+export interface CreateAxios<D = any> extends CreateAxiosDefaults<D> {
     /**
      * 是否开启全局拦截器
      * @default true
@@ -71,12 +70,15 @@ class InterceptorsInject<K extends keyof InterceptorsType> implements AxiosInter
         this.service = service;
         this.type = type;
     }
+
     use(...args: any) {
         return this.service.interceptors[this.type].use(...args);
     }
+
     eject(id: number) {
         return this.service.interceptors[this.type].eject(id);
     }
+
     clear() {
         this.service.interceptors[this.type].clear();
     }
@@ -98,7 +100,7 @@ class InterceptorsInject<K extends keyof InterceptorsType> implements AxiosInter
  *```
  */
 function matchUrl(url: string, data: any) {
-    (url.match(/\/:[a-zA-Z0-9-_]+/g) || []).forEach((k) => {
+    (url.match(/\/:[a-zA-Z0-9-_]+/g) || []).forEach(k => {
         let val = "";
         const key = k.replace(/\/:/, "");
         if(isObject<any>(data)) {
@@ -117,7 +119,6 @@ function matchUrl(url: string, data: any) {
 }
 
 export class Http<D = any> {
-
     private readonly service: AxiosInstance;
 
     interceptors: InterceptorsType;
@@ -187,21 +188,21 @@ export class Http<D = any> {
         return this.service.request<T>(config);
     }
 
-    get<T = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.get<T, ResponseResult<T>>(matchUrl(url, params), {
+    get<T = any, R = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.get<T, R>(matchUrl(url, params), {
             params,
             headers,
         });
     }
 
-    post<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.post<T, ResponseResult<T>>(matchUrl(url, data), data, {
+    post<T = any, R = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.post<T, R>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    postForm<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.postForm<T, ResponseResult<T>>(matchUrl(url, data), data, {
+    postForm<T = any, R = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.postForm<T, R>(matchUrl(url, data), data, {
             headers,
         });
     }
@@ -235,20 +236,20 @@ export class Http<D = any> {
         });
     }
 
-    put<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.put<T, ResponseResult<T>>(matchUrl(url, data), data, {
+    put<T = any, R = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.put<T, R>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    putForm<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.putForm<T, ResponseResult<T>>(matchUrl(url, data), data, {
+    putForm<T = any, R = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.putForm<T, R>(matchUrl(url, data), data, {
             headers,
         });
     }
 
-    delete<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
-        return this.service.delete<T, ResponseResult<T>>(matchUrl(url, data), {
+    delete<T = any, R = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.delete<T, R>(matchUrl(url, data), {
             data: data,
             headers,
         });
