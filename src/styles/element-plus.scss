@@ -1,1 +1,5 @@
 @use "element-plus/theme-chalk/src/index.scss" as *;
+
+.el-card {
+    --el-card-border-color: rgb(239, 239, 245);
+}
