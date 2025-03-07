@@ -24,8 +24,6 @@ export default defineComponent({
 import { CheckOutlined } from "@vicons/antd";
 import type { NavTheme, LayoutMode } from "#/stores";
 
-const attrs = useAttrs();
-
 withDefaults(
     defineProps<{
         mode?: NavTheme | LayoutMode;
@@ -38,6 +36,8 @@ withDefaults(
         color: "#409eff",
     },
 );
+
+const attrs = useAttrs();
 </script>
 
 <style lang="scss" scoped>

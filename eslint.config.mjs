@@ -2,25 +2,21 @@
 import { defineEslint } from "@yx1126/lint-config";
 
 export default defineEslint({
-    yaml: {
-        enable: true,
-    },
     vue: {
         sfcBlocks: {
-            enable: true,
             blocks: {
                 customBlocks: true,
             },
         },
-        rules: {
-            "vue/block-lang": ["error", {
-                script: {
-                    lang: ["ts", "tsx"],
-                },
-                i18n: {
-                    lang: "yaml",
-                },
-            }],
+        blockLang: {
+            i18n: {
+                lang: ["yaml", "json"],
+                allowNoLang: true,
+            },
+            style: {
+                lang: ["scss", "sass"],
+                allowNoLang: true,
+            },
         },
     },
     rules: {

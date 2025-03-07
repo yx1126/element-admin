@@ -4,13 +4,11 @@
             <Main />
         </el-scrollbar>
     </component>
-    <Setting />
 </template>
 
 <script setup lang="ts">
 import type { LayoutMode } from "#/stores";
 import type { Component } from "vue";
-import Setting from "./components/Setting.vue";
 import Main from "./components/Main.vue";
 
 defineOptions({

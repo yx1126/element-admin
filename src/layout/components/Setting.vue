@@ -1,3 +1,43 @@
+<script setup lang="ts">
+import { SettingOutlined, CloseOutlined } from "@vicons/antd";
+import { routerTransList } from "@/stores/modules/setting";
+import { useZIndex } from "element-plus";
+import Icon from "@/components/Icon";
+import NavMode from "./NavMode.vue";
+import { navTheme } from "@/stores/helper";
+import { langList } from "@/locales";
+
+defineOptions({
+    name: "Setting",
+});
+
+const set = useSetStore();
+const { nextZIndex } = useZIndex();
+
+const { t, locale } = useI18n();
+
+const isShowDrawer = computed({
+    get: () => set.isShowDrawer,
+    set: v => set.setState("isShowDrawer", v),
+});
+
+const drawerStyles = computed(() => {
+    return {
+        "--drawer-set-color": set.themeColor,
+        "z-index": nextZIndex(),
+        right: isShowDrawer.value ? "280px" : "0",
+    };
+});
+
+function onDrawerClose() {
+    isShowDrawer.value = false;
+}
+
+function onLangChange(value: string) {
+    locale.value = value;
+}
+</script>
+
 <template>
     <div
         v-drag="{ axis: 'y', eventType: 'right' }"
@@ -23,7 +63,7 @@
         <el-scrollbar>
             <div class="drawer-set-container">
                 <el-divider>{{ t("navTheme") }}</el-divider>
-                <div class="flex justify-center gap-[8px 12px]">
+                <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
                     <template v-for="n in navTheme" :key="n">
                         <nav-mode :mode="n" :chose="set.navMode === n" :color="set.themeColor" @click="set.navMode = n" />
                     </template>
@@ -32,41 +72,43 @@
                 <el-divider>{{ t("pageDisplay") }}</el-divider>
                 <el-divider>{{ t("pageFunction") }}</el-divider>
                 <el-divider>{{ t("otherSet") }}</el-divider>
+                <div class="divider-content">
+                    <div class="divider-content-item">
+                        <el-text>{{ t("routerTrans") }}</el-text>
+                        <el-select
+                            v-model="set.routerTrans"
+                            class="input"
+                            placeholder="请选择"
+                        >
+                            <el-option
+                                v-for="item, i in routerTransList"
+                                :key="i"
+                                :value="item.value"
+                                :label="item.label"
+                            />
+                        </el-select>
+                    </div>
+                    <div class="divider-content-item">
+                        <el-text>{{ t("lang") }}</el-text>
+                        <el-select
+                            v-model="set.lang"
+                            class="input"
+                            placeholder="请选择"
+                            @change="onLangChange"
+                        >
+                            <el-option
+                                v-for="item, i in langList"
+                                :key="i"
+                                :value="item.value"
+                                :label="item.label"
+                            />
+                        </el-select>
+                    </div>
+                </div>
             </div>
         </el-scrollbar>
     </el-drawer>
 </template>
-
-<script setup lang="ts">
-import { SettingOutlined, CloseOutlined } from "@vicons/antd";
-import { useZIndex } from "element-plus";
-import Icon from "@/components/Icon";
-import NavMode from "./NavMode.vue";
-import { navTheme } from "@/stores/helper";
-
-const set = useSetStore();
-const { nextZIndex } = useZIndex();
-
-const { t } = useI18n();
-
-const isShowDrawer = computed({
-    get: () => set.isShowDrawer,
-    set: v => set.setState("isShowDrawer", v),
-});
-
-const drawerStyles = computed(() => {
-    return {
-        "--drawer-set-color": set.themeColor,
-        "z-index": nextZIndex(),
-        right: isShowDrawer.value ? "280px" : "0",
-    };
-});
-
-function onDrawerClose() {
-    isShowDrawer.value = false;
-}
-
-</script>
 
 <style lang="scss" scoped>
 .drawer-set {
@@ -86,6 +128,19 @@ function onDrawerClose() {
 }
 .drawer-set-container {
     padding: 0 15px;
+    .divider-content {
+        &-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            &:not(:last-child) {
+                margin-bottom: 15px;
+            }
+            .input {
+                width: 120px;
+            }
+        }
+    }
 }
 </style>
 
@@ -139,7 +194,7 @@ enUS:
   routerTrans: Routing animation
   themeColor: Component theme
   reset: reset
-  lang: Change language
+  lang: Language switching
   confirmSet: Are you sure to restore the default Settings?
   inverted: Reverse background color
   menuTrigger: menu trigger

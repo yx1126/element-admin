@@ -28,5 +28,4 @@ const style = computed<CSSProperties>(() => {
         cursor: cursor ? isString(cursor) ? cursor : "pointer" : undefined,
     };
 });
-
 </script>

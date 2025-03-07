@@ -1,10 +1,12 @@
+<script lang="ts" setup>
+import TransRouterView from "@/components/TransRouterView";
+</script>
+
 <template>
     <div class="layout-main">
-        <router-view />
+        <trans-router-view />
     </div>
 </template>
-
-<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 .layout-main {

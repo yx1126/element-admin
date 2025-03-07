@@ -3,3 +3,10 @@
 .el-card {
     --el-card-border-color: rgb(239, 239, 245);
 }
+
+.el-divider {
+    &__text {
+        width: max-content;
+        padding: 0 12px;
+    }
+}

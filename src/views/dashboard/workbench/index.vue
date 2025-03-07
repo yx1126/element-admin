@@ -20,5 +20,3 @@ const icon = ref("404");
 
 const lazyValue = ref("");
 </script>
-
-<style lang="scss" scoped></style>

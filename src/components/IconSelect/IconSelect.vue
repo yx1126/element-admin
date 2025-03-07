@@ -51,8 +51,6 @@ defineOptions({
     inheritAttrs: false,
 });
 
-type IconType = "ele" | "local";
-
 const modelValue = defineModel<string>();
 
 const {
@@ -68,6 +66,8 @@ const {
     clearable?: boolean;
     popoverProps?: PopoverProps;
 }>();
+
+type IconType = "ele" | "local";
 
 const { disabled: formDisabled, validate } = useElForm();
 
