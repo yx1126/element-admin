@@ -16,6 +16,6 @@ import Collapse from "../Collapse.vue";
 <style lang="scss" scoped>
 .collapse {
     @apply h-100p flex justify-between;
-    border-bottom: 1px solid var(--border-color);
+    // border-bottom: 1px solid var(--border-color);
 }
 </style>

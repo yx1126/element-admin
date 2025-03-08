@@ -16,7 +16,7 @@ defineOptions({
 const modelValue = defineModel<string>();
 
 const { delay = 500, modelModifiers = { lazy: false } } = defineProps<{
-    modelModifiers?: { lazy?: boolean; };
+    modelModifiers?: { lazy?: boolean };
     delay?: number;
 }>();
 

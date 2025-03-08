@@ -12,7 +12,8 @@
         "type-check": "vue-tsc --build --force",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "inspector": "npx @eslint/config-inspector@latest"
+        "inspector": "npx @eslint/config-inspector@latest",
+        "prepare": "simple-git-hooks"
     },
     "dependencies": {
         "@element-plus/icons-vue": "^2.3.1",
@@ -42,14 +43,16 @@
         "@vitejs/plugin-vue": "^5.2.1",
         "@vitejs/plugin-vue-jsx": "^4.1.1",
         "@vue/tsconfig": "^0.5.1",
-        "@yx1126/lint-config": "^0.0.18",
+        "@yx1126/lint-config": "^0.0.20",
         "eslint": "^9.21.0",
         "fast-glob": "^3.3.3",
         "fs-extra": "^11.3.0",
         "globals": "^15.15.0",
+        "lint-staged": "^15.4.3",
         "magic-string": "^0.30.17",
         "npm-run-all2": "^6.2.6",
         "sass": "^1.85.1",
+        "simple-git-hooks": "^2.11.1",
         "svgo": "^3.3.2",
         "typescript": "^5.8.2",
         "unocss": "^66.0.0",
@@ -58,5 +61,11 @@
         "vite": "^6.2.0",
         "vite-plugin-vue-devtools": "^7.7.2",
         "vue-tsc": "^2.2.8"
+    },
+    "simple-git-hooks": {
+        "pre-commit": "pnpm exec lint-staged"
+    },
+    "lint-staged": {
+        "*.{mjs,ts,vue,tsx,json,yaml,yml}": "eslint --fix"
     }
 }

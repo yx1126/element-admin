@@ -6,7 +6,7 @@ export interface PathOptions {
 }
 
 export interface SVGLoadOptions {
-    paths: string[] | PathOptions[];
+    paths: (string | PathOptions)[];
     svgoOptions?: Config;
     type?: "html" | "script";
     symbolId?: string;
@@ -19,11 +19,9 @@ export interface SVGItem {
     svg: string;
     symbol: string;
     symbolId: string;
-    dirs: string[];
 }
 
 export interface SymbolIdOptions {
-    dirs: string[];
     name: string;
     fileId: string;
     symbolId: string;

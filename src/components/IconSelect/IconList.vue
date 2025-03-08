@@ -50,7 +50,6 @@ function reset() {
 function onIconMouse(icon: string) {
     iconName.value = icon;
 }
-
 defineExpose({
     reset,
 });

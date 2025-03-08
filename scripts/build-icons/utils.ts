@@ -12,10 +12,9 @@ export const SVG_ATTRS: Record<string, string> = {
     style: "position: absolute; width: 0; height: 0",
 };
 
-function createSymbolId({ dirs, name, fileId, symbolId }: SymbolIdOptions): string {
+function createSymbolId({ name, fileId, symbolId }: SymbolIdOptions): string {
     [
         { rege: /\[id\]/g, value: fileId || "" },
-        { rege: /\[dir\]/g, value: dirs.join("-") },
         { rege: /\[name\]/g, value: name },
         { rege: /-+/g, value: "-" },
     ].forEach(({ rege, value }) => {
@@ -68,11 +67,8 @@ export function getSvgFiles(options: SVGLoadOptions) {
             absolute: true,
             dot: true,
         }).map<SVGItem>(v => {
-            const dir = v.path.slice(cwdPath.length, -("/" + v.name).length);
             const { name } = path.parse(v.name);
-            const dirs = dir ? dir.split("/") : [];
             const id = createSymbolId({
-                dirs,
                 name,
                 fileId: typeof _path === "string" ? "" : _path.id!,
                 symbolId: options.symbolId!,
@@ -80,7 +76,6 @@ export function getSvgFiles(options: SVGLoadOptions) {
             return {
                 name,
                 path: v.path,
-                dirs,
                 svg: "",
                 symbolId: id,
                 symbol: "",
@@ -140,7 +135,7 @@ export function parseScript(value: string, options: SVGLoadOptions) {
 export function getOptions(options?: SVGLoadOptions): SVGLoadOptions {
     const opt: any = assign({}, options);
     const def: any = {
-        symbolId: "icon-[id]-[dir]-[name]",
+        symbolId: "icon-[id]-[name]",
         SVG_DOM_ID: "__svg__icons__dom__",
         type: "html",
     };

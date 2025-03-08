@@ -1,5 +1,5 @@
 <template>
-    <div class="collapse cursor-pointer" :class="{ 'center': mode === 'collapse' }" :style="collapseStyle" @click="onClick">
+    <div class="collapse pointer box-center" :style="collapseStyle" @click="onClick">
         <Icon class="collapse-icon" :size="size">
             <component :is="set.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
         </Icon>
@@ -12,24 +12,22 @@ import MenuUnfoldOutlined from "@vicons/antd/MenuUnfoldOutlined";
 import { parseUnit } from "@/utils/unit";
 import Icon from "@/components/Icon";
 
-const props = withDefaults(defineProps<{
+const {
+    width = 220,
+    height = 42,
+    collapsedWidth = 60,
+    size = 22,
+} = defineProps<{
     mode?: "collapse" | "menu";
     width?: Unit;
     height?: Unit;
     collapsedWidth?: Unit;
     size?: Unit;
-}>(), {
-    width: 220,
-    height: 42,
-    collapsedWidth: 64,
-    size: 22,
-    mode: "collapse",
-});
+}>();
 
 const set = useSetStore();
 
 const collapseStyle = computed(() => {
-    const { width, height, collapsedWidth } = props;
     return {
         width: parseUnit(set.collapsed ? collapsedWidth : width),
         height: parseUnit(height),
@@ -43,11 +41,8 @@ function onClick() {
 
 <style lang="scss" scoped>
 .collapse {
-    &.center {
-        @apply flex-center;
-    }
     &:hover {
-
+        background-color: rgba($color: #F0F2F5, $alpha: 1);
     }
 }
 </style>
