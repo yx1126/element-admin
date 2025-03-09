@@ -18,7 +18,6 @@ export const ElIcon = withInstall(app => {
     for(const [key, component] of Object.entries(Icons)) {
         app.component(`Ele${key}`, component);
     }
-    app.component("Icon", Icon);
 });
 
-export default Icon;
+export default withInstall(Icon);

@@ -4,7 +4,7 @@ import { routerTransList } from "@/stores/modules/setting";
 import { useZIndex } from "element-plus";
 import Icon from "@/components/Icon";
 import NavMode from "./NavMode.vue";
-import { navTheme } from "@/stores/helper";
+import { navTheme, layoutMode } from "@/stores/helper";
 import { langList } from "@/locales";
 
 defineOptions({
@@ -12,9 +12,10 @@ defineOptions({
 });
 
 const set = useSetStore();
-const { nextZIndex } = useZIndex();
-
+const { currentZIndex } = useZIndex();
 const { t, locale } = useI18n();
+const { theme } = useTheme();
+const mitt = useMitt("toggleSetting");
 
 const isShowDrawer = computed({
     get: () => set.isShowDrawer,
@@ -24,9 +25,13 @@ const isShowDrawer = computed({
 const drawerStyles = computed(() => {
     return {
         "--drawer-set-color": set.themeColor,
-        "z-index": nextZIndex(),
+        "z-index": currentZIndex.value + 1,
         right: isShowDrawer.value ? "280px" : "0",
     };
+});
+
+mitt.on(() => {
+    isShowDrawer.value = !isShowDrawer.value;
 });
 
 function onDrawerClose() {
@@ -40,7 +45,7 @@ function onLangChange(value: string) {
 
 <template>
     <div
-        v-drag="{ axis: 'y', eventType: 'right' }"
+        v-drag="{ axis: 'y', eventType: 'right', moveOver: false }"
         class="drawer-set"
         :style="drawerStyles"
         @click="isShowDrawer = !isShowDrawer"
@@ -55,6 +60,7 @@ function onLangChange(value: string) {
         modal-class="drawer-wrapper"
         :show-close="false"
         append-to-body
+        destroy-on-close
         @close="onDrawerClose"
     >
         <template #header>
@@ -65,12 +71,49 @@ function onLangChange(value: string) {
                 <el-divider>{{ t("navTheme") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
                     <template v-for="n in navTheme" :key="n">
-                        <nav-mode :mode="n" :chose="set.navMode === n" :color="set.themeColor" @click="set.navMode = n" />
+                        <nav-mode :mode="n" :chose="theme === n" :color="set.themeColor" @click="theme = n" />
                     </template>
                 </div>
                 <el-divider>{{ t("layoutMode") }}</el-divider>
+                <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
+                    <template v-for="n in layoutMode" :key="n">
+                        <nav-mode :mode="n" :chose="set.layoutMode === n" :color="set.themeColor" @click="set.layoutMode = n" />
+                    </template>
+                </div>
                 <el-divider>{{ t("pageDisplay") }}</el-divider>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isShowLogo") }}</el-text>
+                    <el-switch v-model="set.isShowLogo" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isShowBreadcrumb") }}</el-text>
+                    <el-switch v-model="set.isShowBreadcrumb" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isShowTabs") }}</el-text>
+                    <el-switch v-model="set.isShowTabs" />
+                </div>
                 <el-divider>{{ t("pageFunction") }}</el-divider>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isKeepHeader") }}</el-text>
+                    <el-switch v-model="set.isKeepHeader" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isKeepTags") }}</el-text>
+                    <el-switch v-model="set.isKeepTags" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isCutMenu") }}</el-text>
+                    <el-switch v-model="set.isCutMenu" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("uniqueMenuOpened") }}</el-text>
+                    <el-switch v-model="set.uniqueMenuOpened" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("inverted") }}</el-text>
+                    <el-switch v-model="set.inverted" />
+                </div>
                 <el-divider>{{ t("otherSet") }}</el-divider>
                 <div class="divider-content">
                     <div class="divider-content-item">
@@ -88,7 +131,7 @@ function onLangChange(value: string) {
                             />
                         </el-select>
                     </div>
-                    <div class="divider-content-item">
+                    <div class="divider-content-item mt-[10px]">
                         <el-text>{{ t("lang") }}</el-text>
                         <el-select
                             v-model="set.lang"
@@ -127,15 +170,13 @@ function onLangChange(value: string) {
     transition: right .3s;
 }
 .drawer-set-container {
-    padding: 0 15px;
+    padding: 0 15px 10px;
     .divider-content {
         &-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            &:not(:last-child) {
-                margin-bottom: 15px;
-            }
+            gap: 10px;
             .input {
                 width: 120px;
             }

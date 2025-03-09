@@ -71,5 +71,7 @@
         "vue-sfc",
         "vue"
     ],
-    "vue.server.hybridMode": true
+    "vue.server.hybridMode": true,
+    "vue.complete.defineAssignment": true,
+    "vue.splitEditors.icon": true
 }

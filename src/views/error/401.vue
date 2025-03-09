@@ -1,3 +1,14 @@
+<script setup lang="ts">
+import ErrGif from "@/assets/image/401.gif";
+
+const router = useRouter();
+const errGif = ErrGif + "?" + +new Date();
+
+function back() {
+    router.push("/");
+}
+</script>
+
 <template>
     <el-card shadow="never">
         <div class="four-zero-three">
@@ -20,17 +31,6 @@
         </div>
     </el-card>
 </template>
-
-<script setup lang="ts">
-import ErrGif from "@/assets/image/401.gif";
-
-const router = useRouter();
-const errGif = ref(ErrGif + "?" + +new Date());
-
-function back() {
-    router.push("/");
-}
-</script>
 
 <style lang="scss" scoped>
 .four-zero-three {

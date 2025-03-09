@@ -1,6 +1,8 @@
 import type { Directive } from "vue";
 import drag, { type DragOptions } from "@/utils/drag";
 
+export const a = 2;
+
 export default {
     created(el, binding) {
         el.__v_drag_stop = drag(el, binding.value);

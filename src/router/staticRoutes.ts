@@ -18,16 +18,23 @@ export const staticRoutes: RouteRecordRaw[] = [
             keepAlive: true,
         },
         component: () => import("@/layout/index.vue"),
-        children: [
-            {
-                path: "/:pathMatch(.*)",
-                name: "NotFound",
-                component: () => import("@/views/error/404.vue"),
-                meta: {
-                    title: "404",
-                },
+        children: [{
+            path: "/person",
+            name: "Person",
+            component: () => import("@/views/person/index.vue"),
+            meta: {
+                title: "个人中心",
+                keepAlive: false,
             },
-        ],
+            children: [],
+        }, {
+            path: "/:pathMatch(.*)",
+            name: "NotFound",
+            component: () => import("@/views/error/404.vue"),
+            meta: {
+                title: "404",
+            },
+        }],
     },
 ];
 

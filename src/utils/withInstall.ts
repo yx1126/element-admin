@@ -8,10 +8,10 @@ type WithInstallContext<T> = WithInstall<T> & {
 
 function toInstall<T extends DefineComponent>(app: App, comps: Array<T>) {
     for(const comp of comps) {
-        if(import.meta.env.MODE === "development" && !comp.name) {
+        if(import.meta.env.MODE === "development" && !(comp.name || comp.__name)) {
             throw new Error("The component name cannot be empty");
         }
-        app.component(comp.name!, comp);
+        app.component(comp.name || comp.__name!, comp);
     }
 }
 

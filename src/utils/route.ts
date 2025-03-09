@@ -6,7 +6,11 @@ import { isLink } from "./validata";
 /**
  * 自动导入所有目录下index.vue,index.tsx
  */
-const pages = import.meta.glob(["@/views/**/index.{vue,tsx}", "@/views/error/*.vue"]);
+const pages = import.meta.glob([
+    "@/views/**/*.{vue,tsx}",
+    // 排除 component/components 文件夹
+    "!@/views/**/component(s)?/**/*.{vue,tsx}",
+]);
 
 const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
 

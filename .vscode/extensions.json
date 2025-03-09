@@ -1,3 +1,9 @@
 {
-    "recommendations": ["Vue.volar"]
+    "recommendations": [
+        "Vue.volar",
+        "dbaeumer.vscode-eslint",
+        "lokalise.i18n-ally",
+        "reallyx.vscode-location",
+        "reallyx.vscode-ui"
+    ]
 }

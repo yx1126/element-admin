@@ -1,12 +1,25 @@
 @use "element-plus/theme-chalk/src/index.scss" as *;
-
-.el-card {
-    --el-card-border-color: rgb(239, 239, 245);
-}
+@use "element-plus/theme-chalk/src/dark/css-vars" as *;
+@use "./global/mixins" as m;
 
 .el-divider {
     &__text {
         width: max-content;
         padding: 0 12px;
     }
+}
+.el-sub-menu.is-active .el-sub-menu__title {
+    @include m.when-light {
+        color: var(--el-menu-active-color);
+    }
+    @include m.when-dark {
+        color: var(--el-menu-active-color);
+    }
+    @include m.when-inverted {
+        color: #fff;
+    }
+}
+
+.el-dropdown, .el-dropdown * {
+    outline: none;
 }

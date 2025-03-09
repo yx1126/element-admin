@@ -1,5 +1,5 @@
 <template>
-    <el-input v-model="inputValue">
+    <el-input v-model="inputValue" v-bind="$attrs">
         <template v-for="slot in Object.keys($slots)" #[slot] :key="slot">
             <slot :name="slot" />
         </template>
@@ -22,19 +22,24 @@ const { delay = 500, modelModifiers = { lazy: false } } = defineProps<{
 
 const inputValue = ref<Noable<string>>(modelValue.value);
 
-let updateValue: ReturnType<typeof debounce>;
+let updateValue: Nullable<ReturnType<typeof debounce>> = null;
 
 watch(() => delay, value => {
     updateValue = debounce((value?: string) => {
         modelValue.value = value;
     }, modelModifiers?.lazy ? value : 0);
-    onWatcherCleanup(updateValue.cancel);
+    onWatcherCleanup(() => {
+        updateValue?.cancel();
+        updateValue = null;
+    });
 }, {
     immediate: true,
 });
 
 watch(inputValue, value => {
-    updateValue(value);
+    if(updateValue) {
+        updateValue(value);
+    }
 });
 
 watch(modelValue, value => {

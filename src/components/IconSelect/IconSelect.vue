@@ -1,49 +1,9 @@
-<template>
-    <el-popover ref="popoverRef" v-bind="popverAttrs" @before-enter="onBeforeEnter" @after-leave="onAfterLeave">
-        <template #reference>
-            <el-input
-                v-model="modelValue"
-                class="icon-select-input"
-                readonly
-                :placeholder
-                v-bind="$attrs"
-                @mouseenter="onMouseenter"
-                @mouseleave="onMouseleave"
-            >
-                <template v-if="placement === 'prefix'" #prepend>
-                    <Icon :icon="modelValue" size="18" />
-                </template>
-                <template #suffix>
-                    <Icon v-if="showClear" icon="ele-circle-close" cursor @click.stop="onClear" />
-                </template>
-                <template v-if="placement === 'suffix'" #append>
-                    <Icon :icon="modelValue" size="18" />
-                </template>
-            </el-input>
-        </template>
-        <div class="icon-select-wrapper">
-            <div class="search">
-                <lazy-input v-model.lazy="searchKey" prefix-icon="ele-search" placeholder="请输入图标名称" clearable />
-            </div>
-            <div class="tabs">
-                <el-tabs v-model="iconType">
-                    <el-tab-pane label="ele" name="ele">
-                        <icon-list ref="eleIconRef" :options="options.eleIcons" :value="modelValue" @change="onChange" />
-                    </el-tab-pane>
-                    <el-tab-pane label="local" name="local">
-                        <icon-list ref="localIconRef" :options="options.localIcons" :value="modelValue" @change="onChange" />
-                    </el-tab-pane>
-                </el-tabs>
-            </div>
-        </div>
-    </el-popover>
-</template>
-
 <script setup lang="ts">
 import Icon from "@/components/Icon";
 import LazyInput from "@/components/LazyInput";
 import type { PopoverProps } from "./";
 import IconList from "./IconList.vue";
+import { Search as ElSearchIcon, CircleClose } from "@element-plus/icons-vue";
 import { EleIconNames, LocalIconNames } from "@/components/Icon";
 
 defineOptions({
@@ -67,7 +27,7 @@ const {
     popoverProps?: PopoverProps;
 }>();
 
-type IconType = "ele" | "local";
+type IconType = "element" | "local";
 
 const { disabled: formDisabled, validate } = useElForm();
 
@@ -77,7 +37,7 @@ const localIconRef = useTemplateRef("localIconRef");
 
 const hovering = ref(false);
 const searchKey = ref("");
-const iconType = ref<IconType>("ele");
+const iconType = ref<IconType>("element");
 
 const options = computed(() => {
     return {
@@ -135,7 +95,7 @@ function onAfterLeave() {
 }
 
 const ICON_MAP: ([IconType, string[]])[] = [
-    ["ele", EleIconNames],
+    ["element", EleIconNames],
     ["local", LocalIconNames],
 ];
 
@@ -147,9 +107,50 @@ function getIconType(): IconType {
             return type;
         }
     }
-    return "ele";
+    return "element";
 }
 </script>
+
+<template>
+    <el-popover ref="popoverRef" v-bind="popverAttrs" @before-enter="onBeforeEnter" @after-leave="onAfterLeave">
+        <template #reference>
+            <el-input
+                v-model="modelValue"
+                class="icon-select-input"
+                readonly
+                :placeholder
+                v-bind="$attrs"
+                @mouseenter="onMouseenter"
+                @mouseleave="onMouseleave"
+            >
+                <template v-if="placement === 'prefix'" #prepend>
+                    <Icon :icon="modelValue" size="18" />
+                </template>
+                <template #suffix>
+                    <Icon v-if="showClear" :icon="CircleClose" cursor @click.stop="onClear" />
+                </template>
+                <template v-if="placement === 'suffix'" #append>
+                    <Icon :icon="modelValue" size="18" />
+                </template>
+            </el-input>
+        </template>
+        <div class="icon-select-wrapper">
+            <div class="search">
+                <lazy-input v-model.lazy="searchKey" :prefix-icon="ElSearchIcon" placeholder="请输入图标名称" clearable />
+            </div>
+            <div class="tabs">
+                <el-tabs v-model="iconType">
+                    <el-tab-pane label="element" name="element" lazy>
+                        <icon-list ref="eleIconRef" :options="options.eleIcons" :value="modelValue" @change="onChange" />
+                    </el-tab-pane>
+                    <el-tab-pane label="local" name="local" lazy>
+                        <icon-list ref="localIconRef" :options="options.localIcons" :value="modelValue" @change="onChange" />
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+        </div>
+    </el-popover>
+</template>
 
 <style lang="scss" scoped>
 .icon-select-input {

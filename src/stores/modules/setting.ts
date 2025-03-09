@@ -11,7 +11,7 @@ export interface RouterTransOptions {
 const defaultSetting: SetState = {
     isShowDrawer: false, // 全局设置
     themeColor: "#409EFF", // 系统主题
-    navMode: "dark", // 导航模式
+    navMode: "inverted", // 导航模式
     layoutMode: "aside",
     isShowLogo: true, // 显示 logo
     isShowTabs: true, // 显示 标签页
@@ -23,6 +23,7 @@ const defaultSetting: SetState = {
     routerTrans: "fade", // 路由动画
     lang: "zh", // 语言
     collapsed: false, // 菜单折叠
+    inverted: false, // 反转颜色
     asideMixinCollapsed: false, // asideMixin 布局 子菜单折叠
 };
 

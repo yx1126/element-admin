@@ -1,4 +1,4 @@
-export type NavTheme = "light" | "dark";
+export type NavTheme = "light" | "inverted" | "dark";
 
 export type LayoutMode = "aside" | "top" | "mixin" | "asideMixin";
 
@@ -22,4 +22,5 @@ export interface SetState {
     lang: Lang;
     collapsed: boolean;
     asideMixinCollapsed: boolean;
+    inverted: boolean;
 }

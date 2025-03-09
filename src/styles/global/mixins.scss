@@ -1,0 +1,25 @@
+@mixin when-dark {
+    @at-root html.dark & {
+        @content;
+    }
+}
+
+@mixin when-light {
+    @at-root html.light & {
+        @content;
+    }
+}
+
+@mixin when-inverted {
+    @at-root html.inverted & {
+        @content;
+    }
+}
+
+@mixin when($state) {
+    @at-root {
+        &.is-#{$state} {
+            @content;
+        }
+    }
+}

@@ -51,7 +51,7 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
-                additionalData: `@use "@/styles/golbal" as *;`,
+                additionalData: `@use "@/styles/global/global" as *; @use "@/styles/global/mixins" as *;`,
             },
         },
     },

@@ -3,9 +3,8 @@
         class="menu"
         :collapse="isCollapse"
         :default-active="defaultActive"
-        :background-color="darkColor"
-        :text-color="textColor"
         :unique-opened="set.uniqueMenuOpened"
+        popper-class="el-menu-aside"
         @select="onMenuSelect"
     >
         <menu-item :routes="routeStore.routerList" />
@@ -16,7 +15,6 @@
 import MenuItem from "./MenuItem";
 import { isLink } from "@/utils/validata";
 
-const { darkColor, textColor } = useThemeColor();
 const router = useRouter();
 const route = useRoute();
 const routeStore = useRouteStore();
@@ -38,10 +36,22 @@ function onMenuSelect(index: string) {
 <style lang="scss" scoped>
 .menu {
     border: none;
-    width: 220px;
-    max-width: 220px;
+    width: 200px;
+    max-width: 200px;
+    --el-menu-bg-color: var(--menu-bg-color);
+    --el-menu-hover-bg-color: var(--menu-hover-bg-color);
+    --el-menu-text-color: var(--menu-text-color);
+    --el-menu-item-height: 42px;
+    --el-menu-sub-item-height: 42px;
     &.el-menu--collapse {
         width: 64px;
     }
+}
+</style>
+
+<style lang="scss">
+.el-menu-aside {
+    --el-menu-item-height: 42px;
+    --el-menu-sub-item-height: 42px;
 }
 </style>

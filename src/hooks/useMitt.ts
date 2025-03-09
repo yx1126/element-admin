@@ -2,6 +2,7 @@ import mitt from "mitt";
 
 type EventType = {
     "*": any;
+    toggleSetting: [];
 };
 
 const emitter = mitt<EventType>();
@@ -12,12 +13,12 @@ export function useMitter() {
     return emitter;
 }
 
-export default function useMitt<T extends keyof EventType>(key: T) {
+export function useMitt<T extends keyof EventType>(key: T) {
     function on(fn: EventFunc<T>) {
         emitter.on(key, fn);
     }
-    function emit(data: EventType[T]) {
-        emitter.emit(key, data);
+    function emit(...args: EventType[T]) {
+        emitter.emit.apply(null, [key].concat(args) as any);
     }
     function off(fn: EventFunc<T>) {
         emitter.off(key, fn);
@@ -36,3 +37,5 @@ export default function useMitt<T extends keyof EventType>(key: T) {
         once,
     };
 }
+
+export default useMitt;

@@ -1,6 +1,25 @@
+<script lang="ts" setup>
+import { CheckOutlined } from "@vicons/antd";
+import type { NavTheme, LayoutMode } from "#/stores";
+
+defineOptions({
+    name: "NavMode",
+    inheritAttrs: false,
+});
+
+const {
+    mode = "aside",
+    color = "#409eff",
+} = defineProps<{
+    mode?: NavTheme | LayoutMode;
+    chose?: boolean;
+    color?: string;
+}>();
+</script>
+
 <template>
     <el-tooltip placement="top" :content="mode">
-        <div class="nav-mode" :class="'nav-mode-' + mode" v-bind="attrs">
+        <div class="nav-mode" :class="'nav-mode-' + mode" v-bind="$attrs">
             <div v-if="mode === 'asideMixin'" class="nav-mode-asideMixin-item"></div>
             <div class="nav-icon-box">
                 <slot v-if="chose" name="icon">
@@ -13,37 +32,10 @@
     </el-tooltip>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-    name: "NavMode",
-    inheritAttrs: false,
-});
-</script>
-
-<script lang="ts" setup>
-import { CheckOutlined } from "@vicons/antd";
-import type { NavTheme, LayoutMode } from "#/stores";
-
-withDefaults(
-    defineProps<{
-        mode?: NavTheme | LayoutMode;
-        chose?: boolean;
-        color?: string;
-    }>(),
-    {
-        mode: "aside",
-        chose: false,
-        color: "#409eff",
-    },
-);
-
-const attrs = useAttrs();
-</script>
-
 <style lang="scss" scoped>
 $light-color: #fff;
-$dark-color: #304156;
-$diablo-color: rgba(0, 0, 0, 0.7);
+$inverted-color: #304156;
+$dark-color: rgba(0, 0, 0, 0.7);
 $body-color: #f0f2f5;
 
 .nav-mode {
@@ -91,7 +83,7 @@ $body-color: #f0f2f5;
 }
 .nav-mode-aside {
     &::before {
-        background: $dark-color;
+        background: $inverted-color;
         z-index: 10;
     }
     &::after {
@@ -103,7 +95,7 @@ $body-color: #f0f2f5;
         background: $light-color;
     }
     &::after {
-        background: $dark-color;
+        background: $inverted-color;
     }
 }
 .nav-mode-top {
@@ -111,12 +103,12 @@ $body-color: #f0f2f5;
         background: $body-color;
     }
     &::after {
-        background: $dark-color;
+        background: $inverted-color;
     }
 }
 .nav-mode-asideMixin {
     &::before {
-        background: $dark-color;
+        background: $inverted-color;
         z-index: 10;
         width: 6px;
     }
@@ -140,16 +132,16 @@ $body-color: #f0f2f5;
         background: $light-color;
     }
 }
-.nav-mode-dark {
+.nav-mode-inverted {
     @extend .nav-mode-aside;
 }
-.nav-mode-diablo {
-    background: $dark-color;
+.nav-mode-dark {
+    background: $inverted-color;
     &::before {
-        background: $diablo-color;
+        background: $dark-color;
     }
     &::after {
-        background: $diablo-color;
+        background: $dark-color;
     }
 }
 </style>

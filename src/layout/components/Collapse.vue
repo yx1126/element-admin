@@ -1,11 +1,3 @@
-<template>
-    <div class="collapse pointer box-center" :style="collapseStyle" @click="onClick">
-        <Icon class="collapse-icon" :size="size">
-            <component :is="set.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
-        </Icon>
-    </div>
-</template>
-
 <script setup lang="ts">
 import MenuFoldOutlined from "@vicons/antd/MenuFoldOutlined";
 import MenuUnfoldOutlined from "@vicons/antd/MenuUnfoldOutlined";
@@ -15,7 +7,7 @@ import Icon from "@/components/Icon";
 const {
     width = 220,
     height = 42,
-    collapsedWidth = 60,
+    collapsedWidth = 50,
     size = 22,
 } = defineProps<{
     mode?: "collapse" | "menu";
@@ -39,10 +31,26 @@ function onClick() {
 }
 </script>
 
+<template>
+    <div class="collapse pointer box-center" :style="collapseStyle" @click="onClick">
+        <Icon class="collapse-icon" :size="size">
+            <component :is="set.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
+        </Icon>
+    </div>
+</template>
+
 <style lang="scss" scoped>
 .collapse {
     &:hover {
         background-color: rgba($color: #F0F2F5, $alpha: 1);
+    }
+    // @at-root html.dark &:hover {
+    //     background-color: var(--el-color-primary-light-9);
+    // }
+    @include when-dark {
+        &:hover {
+            background-color: var(--el-color-primary-light-9);
+        }
     }
 }
 </style>

@@ -1,11 +1,3 @@
-<template>
-    <component :is="LayoutMap[set.layoutMode]">
-        <el-scrollbar>
-            <Main />
-        </el-scrollbar>
-    </component>
-</template>
-
 <script setup lang="ts">
 import type { LayoutMode } from "#/stores";
 import type { Component } from "vue";
@@ -25,12 +17,23 @@ const LayoutMap: Record<LayoutMode, Component> = {
 };
 </script>
 
-<style lang="scss" scoped>
-:deep(.el-header),
-:deep(.el-main) {
+<template>
+    <component :is="LayoutMap[set.layoutMode]">
+        <el-scrollbar>
+            <Main />
+        </el-scrollbar>
+    </component>
+</template>
+
+<style lang="scss">
+.el-header,
+.el-main {
     padding: 0;
 }
-:deep(.el-main) {
+.el-main {
     background-color: #f5f7f9;
+    @include when-dark {
+        background-color: transparent;
+    }
 }
 </style>
