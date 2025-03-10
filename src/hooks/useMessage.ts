@@ -1,4 +1,4 @@
-import { isObject, isString, isUndefined } from "@/utils/validata";
+import { isObject, isStr, isUndefined } from "@/utils/validata";
 import type {
     ElMessageBoxOptions,
     ElMessageBoxShortcutMethod,
@@ -9,6 +9,7 @@ import type {
     NotificationProps,
     messageType,
 } from "element-plus";
+import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import type { AppContext, VNode } from "vue";
 
 const assign = Object.assign;
@@ -105,7 +106,7 @@ export function useNotification(options?: NotifyOptions, appContext?: Nullable<A
     notifyType.forEach(key => {
         result[key] = (message: string | VNode, options?: NotifyOptions | string, appContext?: Nullable<AppContext>) => {
             let title = "";
-            if(isString(options)) {
+            if(isStr(options)) {
                 title = options;
                 options = {};
             }

@@ -41,7 +41,7 @@ function reset() {
     if(value) {
         const index = options.findIndex(v => v === value);
         if(index !== -1) {
-            current = Math.max(1, Math.ceil(index / size.value));
+            current = Math.max(1, Math.ceil((index + 1) / size.value));
         }
     }
     page.value = current;

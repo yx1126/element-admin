@@ -1,4 +1,4 @@
-import { isString } from "./validata";
+import { isStr } from "./validata";
 
 export interface DragOptions {
     container?: string | Element;
@@ -8,12 +8,12 @@ export interface DragOptions {
 }
 
 function drag(el: string | Element, options?: DragOptions) {
-    const target = (isString(el) ? document.querySelector(el) : el) as HTMLElement;
+    const target = (isStr(el) ? document.querySelector(el) : el) as HTMLElement;
     if(!target) return;
 
     const { axis, container: conEl, eventType, moveOver }: DragOptions = Object.assign({}, options);
 
-    const container = (isString(conEl) ? document.querySelector(conEl) : conEl) as HTMLElement;
+    const container = (isStr(conEl) ? document.querySelector(conEl) : conEl) as HTMLElement;
 
     const preventDefault = (e: MouseEvent) => e.preventDefault();
 

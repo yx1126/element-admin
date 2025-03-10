@@ -8,6 +8,7 @@ defineOptions({
 type TabsName = "base" | "safety";
 
 const user = useUserStore();
+const pwdMitt = useMitt("updatePwd");
 const formRef = useTemplateRef("formRef");
 
 const tabsActive = ref<TabsName>("base");
@@ -34,7 +35,9 @@ function onReset() {
     formRef.value?.resetFields();
 }
 
-function onEditPwd() {}
+function onEditPwd() {
+    pwdMitt.emit();
+}
 </script>
 
 <template>
@@ -44,17 +47,17 @@ function onEditPwd() {}
                 <el-card header="个人信息" shadow="never">
                     <div class="userinfo">
                         <div class="avatar">
-                            <el-avatar :size="120" :src="form.avatar" />
+                            <el-avatar :size="120" :src="user.userInfo?.avatar" />
                         </div>
                         <el-button class="mt-[20px]" type="primary" link>修改头像</el-button>
                         <div class="w-[90%] mt-[30px]">
                             <div class="item-justify">
                                 <div>用户昵称</div>
-                                <div>{{ form.nickName }}</div>
+                                <div>{{ user.userInfo?.nickName }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>用户账号</div>
-                                <div>{{ form.username }}</div>
+                                <div>{{ user.userInfo?.username }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>手机号码</div>

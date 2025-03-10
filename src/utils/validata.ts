@@ -14,7 +14,7 @@ function toString(val: unknown) {
     return Object.prototype.toString.call(val);
 }
 
-export function isNumber(val: unknown): val is number {
+export function isNum(val: unknown): val is number {
     return typeof val === "number";
 }
 
@@ -22,7 +22,7 @@ export function isObject<T extends object>(val: unknown): val is T {
     return toString(val) === "[object Object]";
 }
 
-export function isString(val: unknown): val is string {
+export function isStr(val: unknown): val is string {
     return typeof val === "string";
 }
 
@@ -30,7 +30,7 @@ export function isArray<T = any>(val: unknown): val is T {
     return Array.isArray(val);
 }
 
-export function isFunction<T extends Function>(val: unknown): val is T {
+export function isFn<T extends Function>(val: unknown): val is T {
     return typeof val === "function";
 }
 
@@ -47,7 +47,7 @@ export function isSymbol(val: unknown): val is symbol {
 }
 
 export function isPromise<T = any>(val: unknown): val is Promise<T> {
-    return (isObject(val) || isFunction(val)) && isFunction((val as any).then) && isFunction((val as any).catch);
+    return (isObject(val) || isFn(val)) && isFn((val as any).then) && isFn((val as any).catch);
 }
 
 export function isRegExp(val: unknown) {
@@ -67,9 +67,9 @@ export function isEmpty(val: unknown) {
 }
 
 export function isZeroEmpty(val: unknown) {
-    if(isNumber(val)) {
+    if(isNum(val)) {
         return val === 0;
-    } if(isArray<any[]>(val) || isString(val)) {
+    } if(isArray<any[]>(val) || isStr(val)) {
         return val.length === 0;
     } if(isObject(val)) {
         return Object.keys(val).length === 0;

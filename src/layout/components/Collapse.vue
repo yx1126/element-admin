@@ -41,16 +41,6 @@ function onClick() {
 
 <style lang="scss" scoped>
 .collapse {
-    &:hover {
-        background-color: rgba($color: #F0F2F5, $alpha: 1);
-    }
-    // @at-root html.dark &:hover {
-    //     background-color: var(--el-color-primary-light-9);
-    // }
-    @include when-dark {
-        &:hover {
-            background-color: var(--el-color-primary-light-9);
-        }
-    }
+    @include hover;
 }
 </style>

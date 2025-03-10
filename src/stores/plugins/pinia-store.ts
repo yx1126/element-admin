@@ -1,4 +1,4 @@
-import { isArray, isFunction as isFn, isString } from "@/utils/validata";
+import { isArray, isFn as isFn, isStr } from "@/utils/validata";
 import type { PiniaPlugin, PiniaPluginContext } from "pinia";
 import type { WatchOptions } from "vue";
 
@@ -55,7 +55,7 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
         return value ? JSON.parse(value) : {};
     }
     function setItem(key: string, value: any, storage: BaseStorage) {
-        storage.setItem(createKey(key), isString(value) ? value : JSON.stringify(value));
+        storage.setItem(createKey(key), isStr(value) ? value : JSON.stringify(value));
     }
 
     return (context: PiniaPluginContext) => {

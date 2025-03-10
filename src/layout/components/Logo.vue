@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { isString } from "@/utils/validata";
+import { isStr } from "@/utils/validata";
 
 const {
     width = 200,
@@ -23,8 +23,8 @@ const set = useSetStore();
 
 const logoStyle = computed(() => {
     return {
-        "--logo-width": collapsed ? collapsedWidth + "px" : isString(width) ? width : width + "px",
-        "--logo-min-width": isString(minWidth) ? minWidth : minWidth + "px",
+        "--logo-width": collapsed ? collapsedWidth + "px" : isStr(width) ? width : width + "px",
+        "--logo-min-width": isStr(minWidth) ? minWidth : minWidth + "px",
         "--logo-height": height + "px",
         "--logo-padding": collapsed ? `0 ${(collapsedWidth - 32) / 2}px` : `0 18px 0 ${indent}px`,
         "--logo-icon-margin-right": collapsed ? 0 : "8px",

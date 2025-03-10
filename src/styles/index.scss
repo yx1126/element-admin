@@ -4,7 +4,8 @@
 
 :root {
     --dark-color: rgb(24, 24, 28);
-    --item-hover-color: #{rgba($color: #000, $alpha: 0.03)};
+    --item-hover-color: #{rgba($color: #000, $alpha: 0.05)};
+    --item-hover-dark-color: #{rgba($color: #fff, $alpha: 0.1)};
 }
 
 *,
@@ -25,6 +26,10 @@ html {
     &.dark {
         --menu-bg-color: var(--dark-color);
     }
+}
+// 解决全屏部分元素背景变黑
+::backdrop {
+    background-color: transparent;
 }
 
 html,

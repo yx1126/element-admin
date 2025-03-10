@@ -23,3 +23,15 @@
         }
     }
 }
+
+@mixin hover {
+    transition: background-color var(--el-transition-duration);
+    &:hover {
+        background-color: var(--item-hover-color);
+    }
+    @include when-dark {
+        &:hover {
+            background-color: var(--item-hover-dark-color);
+        }
+    }
+}

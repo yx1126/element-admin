@@ -4,8 +4,8 @@
             <Collapse width="50" height="50" />
         </div>
         <div class="h-[100%] flex items-center pr-[10px]">
-            <div class="header-item">
-                <Icon :icon="false ? FullscreenExitOutlined : FullscreenOutlined" />
+            <div class="header-item" @click="onToggle">
+                <Icon :icon="isFullScreen ? FullscreenExitOutlined : FullscreenOutlined" size="18" />
             </div>
             <el-dropdown class="h-[100%]" @command="onDropDown">
                 <div class="header-item">
@@ -20,9 +20,10 @@
                 </template>
             </el-dropdown>
             <div class="header-item" @click="onShowSetting">
-                <Icon icon="ele-setting" />
+                <Icon icon="ele-setting" size="18" />
             </div>
         </div>
+        <update-pwd ref="updatePwdRef" />
     </div>
 </template>
 
@@ -30,14 +31,21 @@
 import Collapse from "../Collapse.vue";
 import { FullscreenOutlined, FullscreenExitOutlined, UserOutlined, LogoutOutlined } from "@vicons/antd";
 import { renderIcon } from "@/utils/renderIcon";
+import UpdatePwd from "./UpdatePwd.vue";
 
 const router = useRouter();
 const user = useUserStore();
-const mitt = useMitt("toggleSetting");
+const { isFullScreen, onToggle } = useFullscreen();
+const [setMitt, pwdMitt] = useMitt("toggleSetting", "updatePwd");
+const updatePwdRef = useTemplateRef("updatePwdRef");
 
 function onShowSetting() {
-    mitt.emit();
+    setMitt.emit();
 }
+
+pwdMitt.on(() => {
+    updatePwdRef.value?.open();
+});
 
 function onDropDown(command: string) {
     if(command === "userinfo") {
@@ -45,6 +53,7 @@ function onDropDown(command: string) {
         return;
     }
     if(command === "password") {
+        updatePwdRef.value?.open();
         return;
     }
     if(command === "github") {
@@ -60,7 +69,17 @@ function onDropDown(command: string) {
 
 <style lang="scss" scoped>
 .header {
-    border-bottom: 1px solid var(--border-dark-color);
+    // border-bottom: 1px solid var(--border-dark-color);
+    position: relative;
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background-color: var(--border-dark-color);
+    }
     @include when-dark {
         background-color: var(--dark-color);
     }
@@ -71,12 +90,11 @@ function onDropDown(command: string) {
         align-items: center;
         gap: 10px;
         cursor: pointer;
+        transition: background-color var(--el-transition-duration);
         & > span {
             font-size: 14px;
         }
-        &:hover {
-            background-color: var(--item-hover-color);
-        }
+        @include hover;
     }
 }
 </style>

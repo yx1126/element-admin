@@ -1,7 +1,7 @@
-import { isNumber, isString } from "./validata";
+import { isNum, isStr } from "./validata";
 
 export function parseUnit(val: Empty<string | number>, defaultValue = "") {
-    if(isNumber(val) || (isString(val) && /^\d+$/.test(val))) {
+    if(isNum(val) || (isStr(val) && /^\d+$/.test(val))) {
         return val + "px";
     }
     return val || defaultValue;
