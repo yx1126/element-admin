@@ -1,5 +1,8 @@
 <script setup lang="ts">
+const router = useRouter();
+
 function onLogin() {
+    router.replace("/");
 }
 </script>
 

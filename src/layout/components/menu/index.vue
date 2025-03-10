@@ -17,7 +17,7 @@ import { isLink } from "@/utils/validata";
 
 const router = useRouter();
 const route = useRoute();
-const routeStore = useRouteStore();
+const routeStore = useUserStore();
 const set = useSetStore();
 
 const defaultActive = computed(() => route.fullPath);

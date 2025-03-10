@@ -16,7 +16,7 @@ router.beforeEach(async (to, from, next) => {
         Nprogress.start();
         const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
         title.value = to.matched.map(r => r.meta.title).filter(v => v).reverse().join("-");
-        const route = useRouteStore();
+        const route = useUserStore();
         if(route.routerList.length > 0) {
             next();
         } else {

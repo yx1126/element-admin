@@ -2,7 +2,7 @@
 import { SettingOutlined, CloseOutlined } from "@vicons/antd";
 import { routerTransList } from "@/stores/modules/setting";
 import { useZIndex } from "element-plus";
-import Icon from "@/components/Icon";
+import Icon from "@/components/GlobalRegister/Icon";
 import NavMode from "./NavMode.vue";
 import { navTheme, layoutMode } from "@/stores/helper";
 import { langList } from "@/locales";

@@ -1,4 +1,4 @@
-import { Icon } from "@/components/Icon";
+import { Icon } from "@/components/GlobalRegister/Icon";
 import type { RouteRecordRaw } from "vue-router";
 
 export default defineComponent({

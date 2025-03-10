@@ -9,7 +9,7 @@
             </div>
             <el-dropdown class="h-[100%]" @command="onDropDown">
                 <div class="header-item">
-                    <el-avatar :size="34" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" />
+                    <el-avatar :size="34" :src="user.userInfo?.avatar" />
                     <span>admin</span>
                 </div>
                 <template #dropdown>
@@ -32,6 +32,7 @@ import { FullscreenOutlined, FullscreenExitOutlined, UserOutlined, LogoutOutline
 import { renderIcon } from "@/utils/renderIcon";
 
 const router = useRouter();
+const user = useUserStore();
 const mitt = useMitt("toggleSetting");
 
 function onShowSetting() {

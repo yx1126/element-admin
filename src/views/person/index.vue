@@ -7,8 +7,10 @@ defineOptions({
 
 type TabsName = "base" | "safety";
 
-const tabsActive = ref<TabsName>("safety");
+const user = useUserStore();
+const formRef = useTemplateRef("formRef");
 
+const tabsActive = ref<TabsName>("base");
 const form = ref(getForm());
 
 const rules: FormRules = {
@@ -20,10 +22,8 @@ const rules: FormRules = {
 
 function getForm() {
     return {
-        username: "admin",
-        nickName: "admin",
-        sex: 1,
-        email: "yx17714503091@163.com",
+        ...user.userInfo,
+        email: "test1234@163.com",
         description: "你在干什么！",
     };
 }
@@ -31,8 +31,10 @@ function getForm() {
 function onSubmit() {}
 
 function onReset() {
-    form.value = getForm();
+    formRef.value?.resetFields();
 }
+
+function onEditPwd() {}
 </script>
 
 <template>
@@ -42,17 +44,17 @@ function onReset() {
                 <el-card header="个人信息" shadow="never">
                     <div class="userinfo">
                         <div class="avatar">
-                            <el-avatar :size="120" src="https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg" />
+                            <el-avatar :size="120" :src="form.avatar" />
                         </div>
                         <el-button class="mt-[20px]" type="primary" link>修改头像</el-button>
                         <div class="w-[90%] mt-[30px]">
                             <div class="item-justify">
                                 <div>用户昵称</div>
-                                <div>admin</div>
+                                <div>{{ form.nickName }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>用户账号</div>
-                                <div>admin</div>
+                                <div>{{ form.username }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>手机号码</div>
@@ -64,7 +66,7 @@ function onReset() {
                             </div>
                             <div class="item-justify">
                                 <div>邮箱地址</div>
-                                <div>yx17714503091@163.com</div>
+                                <div>test1234@163.com</div>
                             </div>
                             <div class="item-justify">
                                 <div>创建时间</div>
@@ -77,8 +79,9 @@ function onReset() {
             <el-col :span="17">
                 <el-card shadow="never">
                     <el-tabs v-model="tabsActive">
-                        <el-tab-pane label="基本资料" name="base">
+                        <el-tab-pane label="基本资料" name="base" lazy>
                             <el-form
+                                ref="formRef"
                                 class="w-[400px]"
                                 :model="form"
                                 :rules="rules"
@@ -111,19 +114,47 @@ function onReset() {
                                 </el-form-item>
                             </el-form>
                         </el-tab-pane>
-                        <el-tab-pane label="安全设置" name="safety">
-                            <el-list>
+                        <el-tab-pane label="安全设置" name="safety" lazy>
+                            <el-list class="list-no-padd">
                                 <el-list-item>
-                                    el-list-item
+                                    <el-thing title="账户密码">
+                                        <template #description>
+                                            <span class="description">设置密码，帐号更安全</span>
+                                        </template>
+                                    </el-thing>
+                                    <template #suffix>
+                                        <el-button type="primary" link @click="onEditPwd">修改</el-button>
+                                    </template>
                                 </el-list-item>
                                 <el-list-item>
-                                    el-list-item
+                                    <el-thing title="绑定手机">
+                                        <template #description>
+                                            <span class="description">已绑定手机号：+86 177****3090</span>
+                                        </template>
+                                    </el-thing>
+                                    <template #suffix>
+                                        <el-button type="primary" link>修改</el-button>
+                                    </template>
                                 </el-list-item>
                                 <el-list-item>
-                                    el-list-item
+                                    <el-thing title="绑定邮箱">
+                                        <template #description>
+                                            <span class="description">已绑定邮箱：test****@163.com</span>
+                                        </template>
+                                    </el-thing>
+                                    <template #suffix>
+                                        <el-button type="primary" link>修改</el-button>
+                                    </template>
                                 </el-list-item>
                                 <el-list-item>
-                                    el-list-item
+                                    <el-thing title="账号注销">
+                                        <template #description>
+                                            <span class="description">该账号将被注销，且不支持找回!</span>
+                                        </template>
+                                    </el-thing>
+                                    <template #suffix>
+                                        <el-button type="primary" link>注销</el-button>
+                                    </template>
                                 </el-list-item>
                             </el-list>
                         </el-tab-pane>
@@ -135,32 +166,37 @@ function onReset() {
 </template>
 
 <style lang="scss" scoped>
-.userinfo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .item-justify {
+.person {
+    .userinfo {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        font-size: 14px;
-        position: relative;
-        padding-bottom: 10px;
-        &+.item-justify {
-            margin-top: 10px;
+        .item-justify {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 14px;
+            position: relative;
+            padding-bottom: 10px;
+            &+.item-justify {
+                margin-top: 10px;
+            }
+            &>div:first-child::after {
+                content: "：";
+            }
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 1px;
+                background-color: var(--el-border-color);
+            }
         }
-        &>div:first-child::after {
-            content: "：";
-        }
-        &::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            height: 1px;
-            background-color: rgb(239, 239, 245);
-        }
+    }
+    .description {
+        color: #909399;
     }
 }
 </style>

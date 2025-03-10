@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Icon from "@/components/Icon";
+import Icon from "@/components/GlobalRegister/Icon";
 import LazyInput from "@/components/LazyInput";
 import type { PopoverProps } from "./";
 import IconList from "./IconList.vue";
 import { Search as ElSearchIcon, CircleClose } from "@element-plus/icons-vue";
-import { EleIconNames, LocalIconNames } from "@/components/Icon";
+import { EleIconNames, LocalIconNames } from "@/components/GlobalRegister/Icon";
 
 defineOptions({
     name: "IconSelect",

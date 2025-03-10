@@ -5,13 +5,25 @@ import router from "@/router";
 import { ayncStaticaRoutes } from "@/router/staticRoutes";
 import { parseRoute, getRedirectPath } from "@/utils/route";
 
-interface RouteState {
+interface UserState {
     routerList: RouteRecordRaw[];
+    userInfo?: {
+        username: string;
+        nickName: string;
+        sex: number;
+        avatar: string;
+    };
 }
 
-export const useRouteStore = defineStore("route", () => {
-    const state: RouteState = reactive({
+export const useUserStore = defineStore("user", () => {
+    const state: UserState = reactive({
         routerList: [],
+        userInfo: {
+            username: "admin",
+            nickName: "admin",
+            sex: 1,
+            avatar: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
+        },
     });
 
     async function initRoutes() {

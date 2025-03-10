@@ -2,7 +2,7 @@
 import MenuFoldOutlined from "@vicons/antd/MenuFoldOutlined";
 import MenuUnfoldOutlined from "@vicons/antd/MenuUnfoldOutlined";
 import { parseUnit } from "@/utils/unit";
-import Icon from "@/components/Icon";
+import Icon from "@/components/GlobalRegister/Icon";
 
 const {
     width = 220,

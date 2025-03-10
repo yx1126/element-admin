@@ -1,4 +1,4 @@
-import { SvgIcon } from "@/components/Icon";
+import { SvgIcon } from "@/components/GlobalRegister/Icon";
 
 export function renderIcon(icon?: string, props?: Record<string, any>) {
     if(!icon) return undefined;

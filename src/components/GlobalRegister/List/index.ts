@@ -12,6 +12,9 @@ export interface ElListContextType {
 export const ElListContext = Symbol() as InjectionKey<ElListContextType>;
 
 export {
+    /**
+     * @see https://www.naiveui.com/zh-CN/light/components/list
+     */
     List,
     ListItem,
 };
