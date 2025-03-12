@@ -1,0 +1,10 @@
+{
+    "button": {
+        "edit": "修改",
+        "submit": "确认",
+        "reset": "重置",
+        "cancel": "取消",
+        "save": "保存",
+        "confirm": "确认"
+    }
+}

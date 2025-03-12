@@ -1,9 +1,10 @@
 import { createI18n, type MessageContext } from "vue-i18n";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 import en from "element-plus/es/locale/lang/en";
-import type { Lang } from "#/stores";
-import type { SelectOption } from "#/element";
+import localZh from "./langs/zh.json";
+import localEn from "./langs/en.json";
 import { isStr } from "@/utils/validata";
+import type { Lang } from "#/stores";
 
 function lower(value: unknown) {
     if(isStr(value)) {
@@ -17,14 +18,18 @@ const i18n = createI18n({
     legacy: false,
     messages: {
         zh: {
+            edit: "修改",
             input: ({ named }: MessageContext) => `请输入${named("value")}`,
             select: ({ named }: MessageContext) => `请选择${named("value")}`,
+            ...localZh,
         },
         en: {
+            edit: "Edit",
             input: ({ named }: MessageContext) => {
                 return `Please enter your ${lower(named("value"))}`;
             },
             select: ({ named }: MessageContext) => `Please select ${lower(named("value"))}`,
+            ...localEn,
         },
     },
     modifiers: {
@@ -39,7 +44,7 @@ export const LangMap: Record<Lang, any> = {
     en: en,
 };
 
-export const langList: SelectOption[] = [
+export const langList = [
     { label: "简体中文", value: "zh-CN" },
     { label: "English", value: "en" },
 ];

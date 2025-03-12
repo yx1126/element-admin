@@ -1,35 +1,3 @@
-<template>
-    <div class="header h-[100%] flex justify-between" :class="{ 'is-inverted': inverted }" :style="headerStyle">
-        <div class="h-[100%] flex items-center gap-[5px]">
-            <Collapse :inverted width="50" height="50" />
-            <Breadcrumb />
-        </div>
-        <div class="h-[100%] flex items-center pr-[10px]">
-            <div class="header-item" @click="onToggle">
-                <Icon :icon="isFullScreen ? FullscreenExitOutlined : FullscreenOutlined" size="18" />
-            </div>
-            <el-dropdown class="h-[100%]" @command="onDropDown">
-                <div class="header-item">
-                    <el-avatar :size="34" :src="user.userInfo?.avatar" />
-                    <span>admin</span>
-                </div>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <el-dropdown-item command="userinfo" :icon="UserOutlined">{{ t('userCenter') }}</el-dropdown-item>
-                        <el-dropdown-item command="password" :icon="renderIcon('password')">{{ t('password') }}</el-dropdown-item>
-                        <el-dropdown-item command="github" :icon="renderIcon('github')" divided>Github</el-dropdown-item>
-                        <el-dropdown-item command="logout" :icon="LogoutOutlined" divided>{{ t('loutOut') }}</el-dropdown-item>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
-            <div class="header-item" @click="onShowSetting">
-                <Icon icon="ele-setting" size="18" />
-            </div>
-        </div>
-        <update-pwd ref="updatePwdRef" />
-    </div>
-</template>
-
 <script setup lang="ts">
 import Collapse from "../Collapse.vue";
 import { FullscreenOutlined, FullscreenExitOutlined, UserOutlined, LogoutOutlined } from "@vicons/antd";
@@ -37,6 +5,7 @@ import { renderIcon } from "@/utils/renderIcon";
 import UpdatePwd from "./UpdatePwd.vue";
 import { parseUnit } from "@/utils/unit";
 import Breadcrumb from "../Breadcrumb.vue";
+import { langList } from "@/locales";
 import type { CSSProperties } from "vue";
 
 const { height } = defineProps<{
@@ -45,6 +14,7 @@ const { height } = defineProps<{
 }>();
 
 const { t } = useI18n();
+const { setLang } = useLocales();
 const router = useRouter();
 const user = useUserStore();
 const { isFullScreen, onToggle } = useFullscreen();
@@ -84,6 +54,50 @@ function onDropDown(command: string) {
     }
 }
 </script>
+
+<template>
+    <div class="header h-[100%] flex justify-between" :class="{ 'is-inverted': inverted }" :style="headerStyle">
+        <div class="h-[100%] flex items-center gap-[5px]">
+            <Collapse :inverted width="50" height="50" />
+            <Breadcrumb :inverted />
+        </div>
+        <div class="h-[100%] flex items-center pr-[10px]">
+            <div class="header-item" @click="onToggle">
+                <Icon :icon="isFullScreen ? FullscreenExitOutlined : FullscreenOutlined" size="18" />
+            </div>
+            <el-dropdown class="h-[100%]" trigger="click" @command="setLang">
+                <div class="header-item">
+                    <Icon icon="language" />
+                </div>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <template v-for="item in langList" :key="item.value">
+                            <el-dropdown-item :command="item.value">{{ item.label }}</el-dropdown-item>
+                        </template>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <el-dropdown class="h-[100%]" @command="onDropDown">
+                <div class="header-item">
+                    <el-avatar :size="34" :src="user.userInfo?.avatar" />
+                    <span>admin</span>
+                </div>
+                <template #dropdown>
+                    <el-dropdown-menu>
+                        <el-dropdown-item command="userinfo" :icon="UserOutlined">{{ t('userCenter') }}</el-dropdown-item>
+                        <el-dropdown-item command="password" :icon="renderIcon('password')">{{ t('password') }}</el-dropdown-item>
+                        <el-dropdown-item command="github" :icon="renderIcon('github')" divided>Github</el-dropdown-item>
+                        <el-dropdown-item command="logout" :icon="LogoutOutlined" divided>{{ t('loutOut') }}</el-dropdown-item>
+                    </el-dropdown-menu>
+                </template>
+            </el-dropdown>
+            <div class="header-item" @click="onShowSetting">
+                <Icon icon="ele-setting" size="18" />
+            </div>
+        </div>
+        <update-pwd ref="updatePwdRef" />
+    </div>
+</template>
 
 <style lang="scss" scoped>
 .header {

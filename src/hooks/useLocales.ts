@@ -19,10 +19,7 @@ export function useLocales(options?: LocalesOptions) {
         get() {
             return set.lang;
         },
-        set(value) {
-            set.setState("lang", value);
-            setLang(value);
-        },
+        set: setLang,
     });
 
     onBeforeMount(() => {
@@ -32,6 +29,7 @@ export function useLocales(options?: LocalesOptions) {
     });
 
     function setLang(value: Lang) {
+        set.setState("lang", value);
         setHtmlLang(value);
         locale.value = value;
     }

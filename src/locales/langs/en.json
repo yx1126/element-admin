@@ -1,0 +1,10 @@
+{
+    "button": {
+        "edit": "Edit",
+        "submit": "Submit",
+        "reset": "Reset",
+        "cancel": "Cancel",
+        "save": "Save",
+        "confirm": "Confirm"
+    }
+}

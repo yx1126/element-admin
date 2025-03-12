@@ -7,6 +7,8 @@ defineOptions({
 
 const formRef = useTemplateRef("formRef");
 const message = useMessage();
+const { t } = useI18n();
+const { t: $t } = useI18n({ useScope: "global" });
 
 const visible = ref(false);
 
@@ -17,12 +19,12 @@ const form = ref({
 });
 
 const rules: FormRules = {
-    password: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
-    newPwd: [{ required: true, message: "请输入新密码", trigger: "blur" }],
+    password: [{ required: true, message: () => $t("input", { value: t("oldPwd") }), trigger: "blur" }],
+    newPwd: [{ required: true, message: () => $t("input", { value: t("newPwd") }), trigger: "blur" }],
     confirmPwd: [
-        { required: true, message: "请输入旧密码", trigger: "blur" },
+        { required: true, message: () => t("conifrm2"), trigger: "blur" },
         {
-            message: "两次密码输入不一致",
+            message: () => t("notSame"),
             trigger: "blur",
             validator: (_, value) => value === form.value.newPwd,
         },
@@ -58,27 +60,44 @@ defineExpose({
 <template>
     <el-dialog
         v-model="visible"
-        title="修改密码"
+        :title="t('title')"
         width="400"
         draggable
         append-to-body
         destroy-on-close
         @closed="onClosed"
     >
-        <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" label-suffix="：" autocomplete="off">
-            <el-form-item label="旧密码" prop="password">
-                <el-input v-model="form.password" name="pdw" type="password" placeholder="请输入旧密码" show-password clearable />
+        <el-form ref="formRef" :model="form" :rules="rules" label-position="top" label-suffix="：" autocomplete="off">
+            <el-form-item :label="t('oldPwd')" prop="password">
+                <el-input v-model="form.password" type="password" :placeholder="$t('input', { value: t('oldPwd') })" show-password clearable />
             </el-form-item>
-            <el-form-item label="新密码" prop="newPwd">
-                <el-input v-model="form.newPwd" name="pdw" type="password" placeholder="请输入新密码" show-password clearable />
+            <el-form-item :label="t('newPwd')" prop="newPwd">
+                <el-input v-model="form.newPwd" type="password" :placeholder="$t('input', { value: t('newPwd') })" show-password clearable />
             </el-form-item>
-            <el-form-item label="确认密码" prop="confirmPwd">
-                <el-input v-model="form.confirmPwd" name="pdw" type="password" placeholder="请再次输入新密码" show-password clearable />
+            <el-form-item :label="t('conifrm')" prop="confirmPwd">
+                <el-input v-model="form.confirmPwd" type="password" :placeholder="t('conifrm2')" show-password clearable />
             </el-form-item>
         </el-form>
         <template #footer>
-            <el-button @click="onCancel">取消</el-button>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
+            <el-button @click="onCancel">{{ $t("button.cancel") }}</el-button>
+            <el-button type="primary" @click="onSubmit">{{ $t("button.submit") }}</el-button>
         </template>
     </el-dialog>
 </template>
+
+<i18n lang="yaml">
+zh:
+  title: 修改密码
+  oldPwd: 旧密码
+  newPwd: 新密码
+  conifrm: 确认密码
+  conifrm2: 请再次输入新密码
+  notSame: 两次密码输入不一致
+en:
+  title: Change Password
+  oldPwd: Old Password
+  newPwd: New Password
+  conifrm: Confirm Password
+  conifrm2: Please enter your new password again
+  notSame: The two passwords you entered do not match
+</i18n>

@@ -5,22 +5,24 @@ defineOptions({
 </script>
 
 <template>
-    <div class="tags h-[100%]">
+    <div class="tags-wrapper h-[100%]" @click.right.stop>
         tags
     </div>
 </template>
 
 <style lang="scss" scoped>
 .tags {
-    width: 100%;
-    background-color: #fff;
-    @include when-dark {
-        background-color: var(--dark-color);
-    }
-    @include border(bottom, var(--border-light-color)) {
+    &-wrapper {
+        width: 100%;
+        background-color: #fff;
         @include when-dark {
-            background-color: var(--border-dark-color);
+            background-color: var(--dark-color);
         }
-    };
+        @include border(bottom, var(--border-light-color)) {
+            @include when-dark {
+                background-color: var(--border-dark-color);
+            }
+        };
+    }
 }
 </style>

@@ -51,7 +51,7 @@ function onEditPwd() {
                         <div class="avatar">
                             <el-avatar :size="120" :src="user.userInfo?.avatar" />
                         </div>
-                        <el-button class="mt-[20px]" type="primary" link>修改头像</el-button>
+                        <el-button class="mt-[20px]" type="primary" link>{{ t('picture') }}</el-button>
                         <div class="w-[90%] mt-[30px]">
                             <div class="item-justify">
                                 <div>{{ t('nickname') }}</div>
@@ -114,51 +114,51 @@ function onEditPwd() {
                                     <el-input v-model="form.description" type="textarea" :placeholder="$t('input', { value: t('personalProfile') })" clearable />
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" @click="onSubmit">{{ t('submit') }}</el-button>
-                                    <el-button @click="onReset">{{ t("reset") }}</el-button>
+                                    <el-button type="primary" @click="onSubmit">{{ $t('button.save') }}</el-button>
+                                    <el-button @click="onReset">{{ $t("button.reset") }}</el-button>
                                 </el-form-item>
                             </el-form>
                         </el-tab-pane>
                         <el-tab-pane :label="t('securitySettings')" name="safety" lazy>
                             <el-list class="list-no-padd">
                                 <el-list-item>
-                                    <el-thing title="账户密码">
+                                    <el-thing :title="t('pwd')">
                                         <template #description>
-                                            <span class="description">设置密码，帐号更安全</span>
+                                            <span class="description">{{ t('pwdDesc') }}</span>
                                         </template>
                                     </el-thing>
                                     <template #suffix>
-                                        <el-button type="primary" link @click="onEditPwd">修改</el-button>
+                                        <el-button type="primary" link @click="onEditPwd">{{ $t('button.edit') }}</el-button>
                                     </template>
                                 </el-list-item>
                                 <el-list-item>
-                                    <el-thing title="绑定手机">
+                                    <el-thing :title="t('bindPhone')">
                                         <template #description>
-                                            <span class="description">已绑定手机号：+86 177****3090</span>
+                                            <span class="description">{{ t('bindPhoneDesc') }}：+86 177****3090</span>
                                         </template>
                                     </el-thing>
                                     <template #suffix>
-                                        <el-button type="primary" link>修改</el-button>
+                                        <el-button type="primary" link>{{ $t('button.edit') }}</el-button>
                                     </template>
                                 </el-list-item>
                                 <el-list-item>
-                                    <el-thing title="绑定邮箱">
+                                    <el-thing :title="t('bindEmail')">
                                         <template #description>
-                                            <span class="description">已绑定邮箱：test****@163.com</span>
+                                            <span class="description">{{ t('bindEmailDesc') }}：test****@163.com</span>
                                         </template>
                                     </el-thing>
                                     <template #suffix>
-                                        <el-button type="primary" link>修改</el-button>
+                                        <el-button type="primary" link>{{ $t('button.edit') }}</el-button>
                                     </template>
                                 </el-list-item>
                                 <el-list-item>
-                                    <el-thing title="账号注销">
+                                    <el-thing :title="t('destroy')">
                                         <template #description>
-                                            <span class="description">该账号将被注销，且不支持找回!</span>
+                                            <span class="description">{{ t('destroyDesc') }}</span>
                                         </template>
                                     </el-thing>
                                     <template #suffix>
-                                        <el-button type="primary" link>注销</el-button>
+                                        <el-button type="primary" link>{{ t('comfirm') }}</el-button>
                                     </template>
                                 </el-list-item>
                             </el-list>
@@ -222,8 +222,16 @@ zh:
   sex: 性别
   email2: 邮箱
   personalProfile: 个人简介
-  submit: 保存
-  reset: 重置
+  picture: 修改头像
+  pwd: 账户密码
+  pwdDesc: 设置密码，帐号更安全
+  bindPhone: 绑定手机
+  bindPhoneDesc: 已绑定手机
+  bindEmail: 绑定邮箱
+  bindEmailDesc: 已绑定邮箱
+  destroy: 账号注销
+  destroyDesc: 该账号将被注销，且不支持找回！
+  comfirm: 注销
 en:
   userinfo: User information
   nickname: Nickname
@@ -239,6 +247,14 @@ en:
   sex: sex
   email2: email
   personalProfile: Personal Profile
-  submit: save
-  reset: reset
+  picture: Change profile picture
+  pwd: Account password
+  pwdDesc: Set password, account security!
+  bindPhone: Bind phone
+  bindPhoneDesc: Already bound mobile phone
+  bindEmail: Bind Email
+  bindEmailDesc: Already bound email
+  destroy: Account cancellation
+  destroyDesc: The account will be cancelled and cannot be retrieved！
+  comfirm: Comfirm
 </i18n>
