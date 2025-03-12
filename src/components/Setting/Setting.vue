@@ -12,14 +12,19 @@ defineOptions({
 });
 
 const set = useSetStore();
+const { lang } = useLocales();
 const { currentZIndex } = useZIndex();
-const { t, locale } = useI18n();
+const { t } = useI18n();
 const { theme } = useTheme();
 const mitt = useMitt("toggleSetting");
 
 const isShowDrawer = computed({
     get: () => set.isShowDrawer,
     set: v => set.setState("isShowDrawer", v),
+});
+
+const isInvertedDisabled = computed(() => {
+    return !(set.navMode === "inverted" && set.layoutMode !== "top");
 });
 
 const drawerStyles = computed(() => {
@@ -36,10 +41,6 @@ mitt.on(() => {
 
 function onDrawerClose() {
     isShowDrawer.value = false;
-}
-
-function onLangChange(value: string) {
-    locale.value = value;
 }
 </script>
 
@@ -100,7 +101,7 @@ function onLangChange(value: string) {
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("isKeepTags") }}</el-text>
-                    <el-switch v-model="set.isKeepTags" />
+                    <el-switch v-model="set.isKeepTags" :disabled="!set.isShowTabs" />
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("isCutMenu") }}</el-text>
@@ -112,7 +113,7 @@ function onLangChange(value: string) {
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("inverted") }}</el-text>
-                    <el-switch v-model="set.inverted" />
+                    <el-switch v-model="set.inverted" :disabled="isInvertedDisabled" />
                 </div>
                 <el-divider>{{ t("otherSet") }}</el-divider>
                 <div class="divider-content">
@@ -134,10 +135,9 @@ function onLangChange(value: string) {
                     <div class="divider-content-item mt-[10px]">
                         <el-text>{{ t("lang") }}</el-text>
                         <el-select
-                            v-model="set.lang"
+                            v-model="lang"
                             class="input"
                             placeholder="请选择"
-                            @change="onLangChange"
                         >
                             <el-option
                                 v-for="item, i in langList"
@@ -218,7 +218,7 @@ zh:
   confirmSet: 确认还原为默认设置吗？
   inverted: 反转背景色
   menuTrigger: 菜单 trigger
-enUS:
+en:
   title: Project configuration
   navTheme: System theme
   layoutMode: Navigation mode

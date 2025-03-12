@@ -6,6 +6,10 @@
     --dark-color: rgb(24, 24, 28);
     --item-hover-color: #{rgba($color: #000, $alpha: 0.05)};
     --item-hover-dark-color: #{rgba($color: #fff, $alpha: 0.1)};
+    --menu-hover-bg-color: rgba(255, 255, 255, 0.09);
+    --border-light-color: rgb(239, 239, 245);
+    --border-inverted-color: rgb(0, 20, 40);
+    --border-dark-color: rgba(255, 255, 255, 0.09);
 }
 
 *,
@@ -17,8 +21,7 @@
 }
 
 html {
-    --menu-hover-bg-color: rgba(255, 255, 255, 0.09);
-    --border-dark-color: rgba(255, 255, 255, 0.09);
+    --menu-bg-color: #fff;
     &.inverted {
         --menu-bg-color: #001428;
         --menu-text-color: #BBB;

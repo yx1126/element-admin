@@ -8,14 +8,15 @@
             "@/*": ["./src/*"],
             "#/*": ["./types/*"]
         },
-        "types": ["vite/client", "element-plus/global", "@intlify/unplugin-vue-i18n/messages"]
+        "types": ["element-plus/global", "@intlify/unplugin-vue-i18n/messages"]
     },
     "include": [
-        "types/*",
         "src/**/*.ts",
         "src/**/*.tsx",
         "src/**/*.d.ts",
-        "src/**/*.vue"
+        "src/**/*.vue",
+        "types/**/*.ts",
+        "types/**/*.d.ts"
     ],
     "exclude": ["src/**/__tests__/*"]
 }

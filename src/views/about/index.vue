@@ -35,7 +35,7 @@ const { t } = useI18n();
 zh:
   devTitle: 开发环境依赖
   prodTitle: 生产环境依赖
-enUS:
+en:
   devTitle: dependencies
   prodTitle: 生产环境依赖
 </i18n>

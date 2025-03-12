@@ -19,9 +19,7 @@ const LayoutMap: Record<LayoutMode, Component> = {
 
 <template>
     <component :is="LayoutMap[set.layoutMode]">
-        <el-scrollbar>
-            <Main />
-        </el-scrollbar>
+        <Main />
     </component>
 </template>
 

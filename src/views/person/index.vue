@@ -8,6 +8,8 @@ defineOptions({
 type TabsName = "base" | "safety";
 
 const user = useUserStore();
+const { t } = useI18n();
+const { t: $t } = useI18n({ useScope: "global" });
 const pwdMitt = useMitt("updatePwd");
 const formRef = useTemplateRef("formRef");
 
@@ -15,10 +17,10 @@ const tabsActive = ref<TabsName>("base");
 const form = ref(getForm());
 
 const rules: FormRules = {
-    username: { required: true, message: "请输入用户名！", trigger: "blur" },
-    nickName: { required: true, message: "请输入昵称！", trigger: "blur" },
-    sex: { required: true, message: "请选择性别！", trigger: "change" },
-    email: { required: true, message: "请输入邮箱！", trigger: "blur" },
+    username: { required: true, message: `${$t("input", { value: t("username2") })}！`, trigger: "blur" },
+    nickName: { required: true, message: `${$t("input", { value: t("nickname2") })}！`, trigger: "blur" },
+    sex: { required: true, message: `${$t("select", { value: t("sex") })}！`, trigger: "change" },
+    email: { required: true, message: `${$t("input", { value: t("email2") })}！`, trigger: "blur" },
 };
 
 function getForm() {
@@ -44,7 +46,7 @@ function onEditPwd() {
     <div class="person">
         <el-row :gutter="12">
             <el-col :span="7">
-                <el-card header="个人信息" shadow="never">
+                <el-card :header="t('userinfo')" shadow="never">
                     <div class="userinfo">
                         <div class="avatar">
                             <el-avatar :size="120" :src="user.userInfo?.avatar" />
@@ -52,27 +54,27 @@ function onEditPwd() {
                         <el-button class="mt-[20px]" type="primary" link>修改头像</el-button>
                         <div class="w-[90%] mt-[30px]">
                             <div class="item-justify">
-                                <div>用户昵称</div>
+                                <div>{{ t('nickname') }}</div>
                                 <div>{{ user.userInfo?.nickName }}</div>
                             </div>
                             <div class="item-justify">
-                                <div>用户账号</div>
+                                <div>{{ t('username') }}</div>
                                 <div>{{ user.userInfo?.username }}</div>
                             </div>
                             <div class="item-justify">
-                                <div>手机号码</div>
+                                <div>{{ t('phone') }}</div>
                                 <div>166****3090</div>
                             </div>
                             <div class="item-justify">
-                                <div>所属部门</div>
+                                <div>{{ t('department') }}</div>
                                 <div>技术部门</div>
                             </div>
                             <div class="item-justify">
-                                <div>邮箱地址</div>
+                                <div>{{ t('email') }}</div>
                                 <div>test1234@163.com</div>
                             </div>
                             <div class="item-justify">
-                                <div>创建时间</div>
+                                <div>{{ t('create') }}</div>
                                 <div>2022-08-12</div>
                             </div>
                         </div>
@@ -82,7 +84,7 @@ function onEditPwd() {
             <el-col :span="17">
                 <el-card shadow="never">
                     <el-tabs v-model="tabsActive">
-                        <el-tab-pane label="基本资料" name="base" lazy>
+                        <el-tab-pane :label="t('basicInfo')" name="base" lazy>
                             <el-form
                                 ref="formRef"
                                 class="w-[400px]"
@@ -92,32 +94,32 @@ function onEditPwd() {
                                 label-suffix="："
                                 require-asterisk-position="right"
                             >
-                                <el-form-item prop="username" label="用户名">
-                                    <el-input v-model="form.username" placeholder="请输入用户名" readonly />
+                                <el-form-item prop="username" :label="t('username2')">
+                                    <el-input v-model="form.username" :placeholder="$t('input', { value: t('username2') })" readonly />
                                 </el-form-item>
-                                <el-form-item prop="nickName" label="昵称">
-                                    <el-input v-model="form.nickName" placeholder="请输入用户名" clearable />
+                                <el-form-item prop="nickName" :label="t('nickname2')">
+                                    <el-input v-model="form.nickName" :placeholder="$t('input', { value: t('nickname2') })" clearable />
                                 </el-form-item>
-                                <el-form-item prop="sex" label="性别">
+                                <el-form-item prop="sex" :label="t('sex')">
                                     <el-radio-group v-model="form.sex">
                                         <el-radio label="男" :value="1" />
                                         <el-radio label="女" :value="2" />
                                         <el-radio label="未知" :value="0" />
                                     </el-radio-group>
                                 </el-form-item>
-                                <el-form-item prop="email" label="邮箱">
-                                    <el-input v-model="form.email" placeholder="请输入邮箱" clearable />
+                                <el-form-item prop="email" :label="t('email2')">
+                                    <el-input v-model="form.email" :placeholder="$t('input', { value: t('email2') })" clearable />
                                 </el-form-item>
-                                <el-form-item prop="description" label="个人简介">
-                                    <el-input v-model="form.description" type="textarea" placeholder="请输入个人简介" clearable />
+                                <el-form-item prop="description" :label="t('personalProfile')">
+                                    <el-input v-model="form.description" type="textarea" :placeholder="$t('input', { value: t('personalProfile') })" clearable />
                                 </el-form-item>
                                 <el-form-item>
-                                    <el-button type="primary" @click="onSubmit">保存</el-button>
-                                    <el-button @click="onReset">重置</el-button>
+                                    <el-button type="primary" @click="onSubmit">{{ t('submit') }}</el-button>
+                                    <el-button @click="onReset">{{ t("reset") }}</el-button>
                                 </el-form-item>
                             </el-form>
                         </el-tab-pane>
-                        <el-tab-pane label="安全设置" name="safety" lazy>
+                        <el-tab-pane :label="t('securitySettings')" name="safety" lazy>
                             <el-list class="list-no-padd">
                                 <el-list-item>
                                     <el-thing title="账户密码">
@@ -203,3 +205,40 @@ function onEditPwd() {
     }
 }
 </style>
+
+<i18n lang="yaml">
+zh:
+  userinfo: 个人信息
+  nickname: 用户昵称
+  username: 用户账号
+  phone: 手机号码
+  department: 所属部门
+  email: 邮箱地址
+  create: 邮箱地址
+  basicInfo: 基本资料
+  securitySettings: 安全设置
+  username2: 用户名
+  nickname2: 昵称
+  sex: 性别
+  email2: 邮箱
+  personalProfile: 个人简介
+  submit: 保存
+  reset: 重置
+en:
+  userinfo: User information
+  nickname: Nickname
+  username: Username
+  phone: Phone
+  department: Department
+  email: Email
+  create: CreateTime
+  basicInfo: BasicInfo
+  securitySettings: Security Settings
+  username2: username
+  nickname2: nickname
+  sex: sex
+  email2: email
+  personalProfile: Personal Profile
+  submit: save
+  reset: reset
+</i18n>

@@ -15,6 +15,7 @@ const {
     height?: Unit;
     collapsedWidth?: Unit;
     size?: Unit;
+    inverted?: boolean;
 }>();
 
 const set = useSetStore();
@@ -32,7 +33,7 @@ function onClick() {
 </script>
 
 <template>
-    <div class="collapse pointer box-center" :style="collapseStyle" @click="onClick">
+    <div class="collapse pointer box-center" :class="{ 'is-inverted': inverted }" :style="collapseStyle" @click="onClick">
         <Icon class="collapse-icon" :size="size">
             <component :is="set.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined" />
         </Icon>
@@ -42,5 +43,13 @@ function onClick() {
 <style lang="scss" scoped>
 .collapse {
     @include hover;
+    // 翻转背景色
+    @include when-inverted {
+        @include when(inverted) {
+            &:hover {
+                background-color: var(--menu-hover-bg-color);
+            }
+        }
+    }
 }
 </style>

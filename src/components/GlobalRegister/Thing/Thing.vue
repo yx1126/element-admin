@@ -1,10 +1,7 @@
+<script lang="tsx">
 import { useNamespace } from "element-plus";
 import type { CSSProperties, PropType, SlotsType } from "vue";
-import "./thing.scss";
 
-/**
- * @see https://www.naiveui.com/zh-CN/light/components/thing
- */
 export default defineComponent({
     name: "ElThing",
     props: {
@@ -35,18 +32,18 @@ export default defineComponent({
                     {slots.avatar && props.contentIndented ? (<div class={ns.b("avatar")}>{slots.avatar()}</div>) : null}
                     <div class={ns.b("main")}>
                         {!props.contentIndented
-                        && (slots.header
-                            || props.title
-                            || slots["header-extra"]
-                            || props.titleExtra
-                            || slots.avatar)
+                            && (slots.header
+                                || props.title
+                                || slots["header-extra"]
+                                || props.titleExtra
+                                || slots.avatar)
                             ? (
                                 <div class={ns.b("avatar-header-wrapper")}>
                                     {slots.avatar ? (<div class={ns.b("avatar")}>{slots.avatar()}</div>) : null}
                                     {slots.header
-                                    || props.title
-                                    || slots["header-extra"]
-                                    || props.titleExtra
+                                        || props.title
+                                        || slots["header-extra"]
+                                        || props.titleExtra
                                         ? (
                                             <div class={ns.b("header-wrapper")}>
                                                 <div class={ns.b("header")}>
@@ -86,9 +83,9 @@ export default defineComponent({
                             : (
                                 <>
                                     {slots.header
-                                    || props.title
-                                    || slots["header-extra"]
-                                    || props.titleExtra
+                                        || props.title
+                                        || slots["header-extra"]
+                                        || props.titleExtra
                                         ? (
                                             <div class={ns.b("header")}>
                                                 {slots.header || props.title
@@ -144,3 +141,41 @@ export default defineComponent({
         };
     },
 });
+</script>
+
+<style lang="scss" scoped>
+.el-thing {
+    display: flex;
+    &-avatar-header-wrapper {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    &-main {
+        flex-grow: 1;
+        &__content,
+        &__footer,
+        &__action {
+            &:not(:first-child) {
+                margin-top: 12px;
+            }
+        }
+    }
+    &-avatar {
+        margin-right: 12px;
+        margin-top: 2px;
+    }
+    &-header {
+        display: flex;
+        margin-bottom: 4px;
+        justify-content: space-between;
+        align-items: center;
+        &-wrapper {
+            flex: 1;
+        }
+        &__title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+    }
+}
+</style>

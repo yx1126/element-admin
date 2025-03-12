@@ -2,12 +2,6 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 import type { SetState } from "#/stores";
 import type { SelectOption } from "#/element";
 
-export interface RouterTransOptions {
-    label: string;
-    value: string;
-    mode?: "default" | "out-in" | "in-out";
-};
-
 const defaultSetting: SetState = {
     isShowDrawer: false, // 全局设置
     themeColor: "#409EFF", // 系统主题
@@ -36,6 +30,22 @@ export const routerTransList: SelectOption[] = [
 
 export const useSetStore = defineStore("setting", () => {
     const state: SetState = reactive(Object.assign({}, defaultSetting));
+
+    watch(() => state.isKeepHeader, value => {
+        if(!value) {
+            state.isKeepTags = value;
+        }
+    }, {
+        immediate: true,
+    });
+
+    watch(() => state.isKeepTags, value => {
+        if(value) {
+            state.isKeepHeader = value;
+        }
+    }, {
+        immediate: true,
+    });
 
     return {
         ...toRefs(state),

@@ -2,7 +2,7 @@
 import { LangMap } from "@/locales";
 import Setting from "@/components/Setting";
 
-const lang = useLocales();
+const { lang } = useLocales({ immediate: true });
 
 const local = computed(() => {
     return LangMap[lang.value];

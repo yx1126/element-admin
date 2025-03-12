@@ -1,9 +1,3 @@
-@mixin when-dark {
-    @at-root html.dark & {
-        @content;
-    }
-}
-
 @mixin when-light {
     @at-root html.light & {
         @content;
@@ -16,6 +10,12 @@
     }
 }
 
+@mixin when-dark {
+    @at-root html.dark & {
+        @content;
+    }
+}
+
 @mixin when($state) {
     @at-root {
         &.is-#{$state} {
@@ -24,7 +24,7 @@
     }
 }
 
-@mixin hover {
+@mixin hover() {
     transition: background-color var(--el-transition-duration);
     &:hover {
         background-color: var(--item-hover-color);
@@ -33,5 +33,46 @@
         &:hover {
             background-color: var(--item-hover-dark-color);
         }
+    }
+}
+
+@mixin border($type, $color) {
+    & {
+        position: relative;
+    }
+
+    &::after {
+        content: "";
+        position: absolute;
+        background-color: $color;
+
+        @if $type==top {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+
+        @else if $type==right {
+            top: 0;
+            right: 0;
+            width: 1px;
+            height: 100%;
+        }
+
+        @else if $type==bottom {
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+        }
+
+        @else if $type==left {
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 100%;
+        }
+        @content;
     }
 }

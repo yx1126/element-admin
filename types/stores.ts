@@ -1,3 +1,5 @@
+import type { RouteMeta, RouteRecordRaw } from "vue-router";
+
 export type NavTheme = "light" | "inverted" | "dark";
 
 export type LayoutMode = "aside" | "top" | "mixin" | "asideMixin";
@@ -23,4 +25,28 @@ export interface SetState {
     collapsed: boolean;
     asideMixinCollapsed: boolean;
     inverted: boolean;
+}
+
+export interface TagItem {
+    title: string;
+    name: string;
+    path: string;
+    matchedName?: string[];
+    query: Record<string, string>;
+    meta: RouteMeta;
+}
+
+export interface TagsState {
+    keepTags: TagItem[];
+    activeTags: TagItem[];
+}
+
+export interface UserState {
+    routerList: RouteRecordRaw[];
+    userInfo?: {
+        username: string;
+        nickName: string;
+        sex: number;
+        avatar: string;
+    };
 }

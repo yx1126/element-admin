@@ -1,19 +1,10 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
-import { getMenus } from "@/layout/menu";
-import type { RouteRecordRaw } from "vue-router";
 import router from "@/router";
+import { getMenus } from "@/layout/menu";
 import { ayncStaticaRoutes } from "@/router/staticRoutes";
 import { parseRoute, getRedirectPath } from "@/utils/route";
-
-interface UserState {
-    routerList: RouteRecordRaw[];
-    userInfo?: {
-        username: string;
-        nickName: string;
-        sex: number;
-        avatar: string;
-    };
-}
+import type { RouteRecordRaw } from "vue-router";
+import type { UserState } from "#/stores";
 
 export const useUserStore = defineStore("user", () => {
     const state: UserState = reactive({
@@ -44,5 +35,5 @@ export const useUserStore = defineStore("user", () => {
 });
 
 if(import.meta.hot) {
-    import.meta.hot.accept(acceptHMRUpdate(useSetStore, import.meta.hot));
+    import.meta.hot.accept(acceptHMRUpdate(useUserStore, import.meta.hot));
 }

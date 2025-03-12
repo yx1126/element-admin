@@ -111,7 +111,7 @@ declare module "pinia" {
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface PiniaCustomProperties<Id extends string = string, S extends StateTree = StateTree> {
-        setState: <K extends ObjKeys<S>, V = S[K] extends { value: infer V2 } ? V2 : S[K] >(key: K, value: V) => void;
+        setState: <K extends ObjKeys<S>, V extends S[K] extends { value: infer V2 } ? V2 : S[K]>(key: K, value: V) => void;
         reset?: () => Partial<OmitRef<S>>;
     }
 }

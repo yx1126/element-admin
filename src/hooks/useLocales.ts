@@ -1,28 +1,43 @@
 import type { Lang } from "#/stores";
 
-function setLang(value: Lang) {
+function setHtmlLang(value: Lang) {
     document.documentElement.setAttribute("lang", value);
 }
 
-export function useLocales() {
+interface LocalesOptions {
+    immediate?: boolean;
+}
+
+export function useLocales(options?: LocalesOptions) {
     const set = useSetStore();
+
     const { locale } = useI18n({
         useScope: "global",
     });
 
-    onBeforeMount(() => {
-        setLang(set.lang);
-        locale.value = set.lang;
-    });
-
-    return computed<Lang>({
+    const lang = computed<Lang>({
         get() {
             return set.lang;
         },
         set(value) {
             set.setState("lang", value);
-            setLang(set.lang);
-            locale.value = set.lang;
+            setLang(value);
         },
     });
+
+    onBeforeMount(() => {
+        if(options?.immediate) {
+            setLang(lang.value);
+        }
+    });
+
+    function setLang(value: Lang) {
+        setHtmlLang(value);
+        locale.value = value;
+    }
+
+    return {
+        lang,
+        setLang,
+    };
 }

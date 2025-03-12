@@ -15,7 +15,6 @@ const modelValue = defineModel<string>();
 
 const {
     clearable,
-    placeholder = "请选择图标",
     placement = "prefix",
     popoverProps,
 } = defineProps<{
@@ -34,6 +33,7 @@ const { disabled: formDisabled, validate } = useElForm();
 const popoverRef = useTemplateRef("popoverRef");
 const eleIconRef = useTemplateRef("eleIconRef");
 const localIconRef = useTemplateRef("localIconRef");
+const { t } = useI18n();
 
 const hovering = ref(false);
 const searchKey = ref("");
@@ -118,7 +118,7 @@ function getIconType(): IconType {
                 v-model="modelValue"
                 class="icon-select-input"
                 readonly
-                :placeholder
+                :placeholder="placeholder || t('placeholder')"
                 v-bind="$attrs"
                 @mouseenter="onMouseenter"
                 @mouseleave="onMouseleave"
@@ -165,3 +165,10 @@ function getIconType(): IconType {
     width: 100%;
 }
 </style>
+
+<i18n lang="yaml">
+zh:
+  placeholder: 请选择图标
+en:
+  placeholder: Please select icon
+</i18n>

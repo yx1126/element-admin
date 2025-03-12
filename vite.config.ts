@@ -12,6 +12,9 @@ function resolve(path: string) {
     return fileURLToPath(new URL(path, import.meta.url));
 }
 
+const IMPORT_FNS: Record<string, string[]> = {
+    vue: ["renderSlot", "renderList", "mergeProps", "createVNode", "render"],
+};
 // https://vitejs.dev/config/
 export default defineConfig({
     resolve: {
@@ -30,6 +33,9 @@ export default defineConfig({
                 "vue",
                 "vue-router",
                 "vue-i18n",
+                ...Object.keys(IMPORT_FNS).map(key => ({
+                    [key]: IMPORT_FNS[key],
+                })),
             ],
         }),
         VueI18nPlugin({}),
@@ -42,7 +48,7 @@ export default defineConfig({
         // VueDevTools(),
     ],
     optimizeDeps: {
-
+        include: ["lodash-es", "mitt", "screenfull"],
     },
     server: {
         host: "0.0.0.0",
