@@ -1,6 +1,8 @@
 @use "element-plus";
 @use "atom";
 @use "transition";
+@use "sass:math";
+@use "sass:color";
 
 :root {
     --dark-color: rgb(24, 24, 28);

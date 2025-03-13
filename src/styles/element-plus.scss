@@ -1,3 +1,22 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'success': (
+      'base': #18a058,
+    ),
+    'warning': (
+      'base': #f0a020,
+    ),
+    'danger': (
+      'base': #d03050,
+    ),
+    'error': (
+      'base': #f56c6c,
+    ),
+    'info': (
+      'base': #909399,
+    ),
+  )
+);
 @use "element-plus/theme-chalk/src/index.scss" as *;
 @use "element-plus/theme-chalk/src/dark/css-vars" as *;
 @use "./global/mixins" as m;
@@ -22,4 +41,15 @@
 
 .el-dropdown, .el-dropdown * {
     outline: none;
+}
+.el-drawer {
+    &__header {
+        margin: 0;
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--el-border-color);
+    }
+    &__footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--el-border-color);
+    }
 }

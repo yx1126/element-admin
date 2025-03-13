@@ -6,6 +6,8 @@ export type LayoutMode = "aside" | "top" | "mixin" | "asideMixin";
 
 export type RouterTrans = "fade" | "scale" | "scale-slide" | "null";
 
+export type SetPlacement = "default" | "header" | "drawer";
+
 export type Lang = "zh" | "en";
 
 export interface SetState {
@@ -25,6 +27,7 @@ export interface SetState {
     collapsed: boolean;
     asideMixinCollapsed: boolean;
     inverted: boolean;
+    setPlacement: SetPlacement;
 }
 
 export interface TagItem {

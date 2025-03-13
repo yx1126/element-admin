@@ -5,7 +5,7 @@ import { renderIcon } from "@/utils/renderIcon";
 import UpdatePwd from "./UpdatePwd.vue";
 import { parseUnit } from "@/utils/unit";
 import Breadcrumb from "../Breadcrumb.vue";
-import { langList } from "@/locales";
+import LangSelect from "@/components/LangSelect";
 import type { CSSProperties } from "vue";
 
 const { height } = defineProps<{
@@ -14,9 +14,9 @@ const { height } = defineProps<{
 }>();
 
 const { t } = useI18n();
-const { setLang } = useLocales();
 const router = useRouter();
 const user = useUserStore();
+const set = useSetStore();
 const { isFullScreen, onToggle } = useFullscreen();
 const [setMitt, pwdMitt] = useMitt("toggleSetting", "updatePwd");
 const updatePwdRef = useTemplateRef("updatePwdRef");
@@ -65,22 +65,15 @@ function onDropDown(command: string) {
             <div class="header-item" @click="onToggle">
                 <Icon :icon="isFullScreen ? FullscreenExitOutlined : FullscreenOutlined" size="18" />
             </div>
-            <el-dropdown class="h-[100%]" trigger="click" @command="setLang">
+            <lang-select class="h-[100%]" type="dropdown">
                 <div class="header-item">
                     <Icon icon="language" />
                 </div>
-                <template #dropdown>
-                    <el-dropdown-menu>
-                        <template v-for="item in langList" :key="item.value">
-                            <el-dropdown-item :command="item.value">{{ item.label }}</el-dropdown-item>
-                        </template>
-                    </el-dropdown-menu>
-                </template>
-            </el-dropdown>
+            </lang-select>
             <el-dropdown class="h-[100%]" @command="onDropDown">
                 <div class="header-item">
                     <el-avatar :size="34" :src="user.userInfo?.avatar" />
-                    <span>admin</span>
+                    <span>{{ user.userInfo?.nickName }}</span>
                 </div>
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -91,7 +84,7 @@ function onDropDown(command: string) {
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
-            <div class="header-item" @click="onShowSetting">
+            <div v-if="['default', 'header'].includes(set.setPlacement)" class="header-item" @click="onShowSetting">
                 <Icon icon="ele-setting" size="18" />
             </div>
         </div>

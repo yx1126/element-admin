@@ -19,10 +19,10 @@ const form = ref({
 });
 
 const rules: FormRules = {
-    password: [{ required: true, message: () => $t("input", { value: t("oldPwd") }), trigger: "blur" }],
-    newPwd: [{ required: true, message: () => $t("input", { value: t("newPwd") }), trigger: "blur" }],
+    password: [Required($t("input", { value: t("oldPwd") }))],
+    newPwd: [Required($t("input", { value: t("newPwd") }))],
     confirmPwd: [
-        { required: true, message: () => t("conifrm2"), trigger: "blur" },
+        Required(t("conifrm2")),
         {
             message: () => t("notSame"),
             trigger: "blur",

@@ -1,3 +1,5 @@
+import {} from "@/stores/modules/setting";
+
 export function useTheme() {
     const set = useSetStore();
 
@@ -6,6 +8,13 @@ export function useTheme() {
     const theme = computed({
         get: () => set.navMode,
         set: v => set.setState("navMode", v),
+    });
+
+    const themeColor = computed({
+        get: () => set.themeColor,
+        set: value => {
+            set.setState("themeColor", value || "#409EFF");
+        },
     });
 
     watch(() => set.navMode, (value, oldValue) => {
@@ -19,5 +28,6 @@ export function useTheme() {
 
     return {
         theme,
+        themeColor,
     };
 }

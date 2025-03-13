@@ -1,8 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import type { TagsState, TagItem } from "#/stores";
 
-export type TagsType = keyof TagsState;
-
 const defaultTags: TagItem[] = [
     { title: "主控台", name: "Console", path: "/dashboard/console", query: {}, meta: {} },
 ];

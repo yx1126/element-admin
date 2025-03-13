@@ -1,4 +1,6 @@
 {
+    "input": "请输入{value}",
+    "select": "请选择{value}",
     "button": {
         "edit": "修改",
         "submit": "确认",

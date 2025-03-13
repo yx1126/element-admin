@@ -1,4 +1,4 @@
-import { routerTransList } from "@/stores/modules/setting";
+import { routerTransList } from "@/stores";
 import { KeepAlive, Transition } from "vue";
 import type { RouteLocationNormalizedLoaded } from "vue-router";
 

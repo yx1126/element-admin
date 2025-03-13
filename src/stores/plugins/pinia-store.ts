@@ -63,9 +63,9 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
         if(!persistedstate?.enabled) return;
 
         if(isFn(persistedstate.reset)) {
-            const s = persistedstate.reset();
             context.store.$reset = function() {
-                context.store.$patch(s);
+                const s = persistedstate.reset?.();
+                context.store.$patch({ ...s });
             };
         }
         context.store.setState = function(key, value) {
@@ -112,6 +112,5 @@ declare module "pinia" {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface PiniaCustomProperties<Id extends string = string, S extends StateTree = StateTree> {
         setState: <K extends ObjKeys<S>, V extends S[K] extends { value: infer V2 } ? V2 : S[K]>(key: K, value: V) => void;
-        reset?: () => Partial<OmitRef<S>>;
     }
 }

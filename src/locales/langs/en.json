@@ -1,4 +1,6 @@
 {
+    "input": "Please enter your {value}",
+    "select": "Please select {value}",
     "button": {
         "edit": "Edit",
         "submit": "Submit",

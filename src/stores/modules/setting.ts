@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
+import { createTheme } from "@/utils/color";
 import type { SetState } from "#/stores";
-import type { SelectOption } from "#/element";
 
 const defaultSetting: SetState = {
     isShowDrawer: false, // 全局设置
@@ -19,14 +19,8 @@ const defaultSetting: SetState = {
     collapsed: false, // 菜单折叠
     inverted: false, // 反转颜色
     asideMixinCollapsed: false, // asideMixin 布局 子菜单折叠
+    setPlacement: "default", // 设置位置
 };
-
-export const routerTransList: SelectOption[] = [
-    { label: "fade", value: "fade", mode: "out-in" },
-    { label: "scale", value: "scale", mode: "out-in" },
-    { label: "fade-slide", value: "fade-slide", mode: "out-in" },
-    { label: "scale-slide", value: "scale-slide", mode: "out-in" },
-];
 
 export const useSetStore = defineStore("setting", () => {
     const state: SetState = reactive(Object.assign({}, defaultSetting));
@@ -42,6 +36,16 @@ export const useSetStore = defineStore("setting", () => {
     watch(() => state.isKeepTags, value => {
         if(value) {
             state.isKeepHeader = value;
+        }
+    }, {
+        immediate: true,
+    });
+
+    watch(() => state.themeColor, value => {
+        const root = document.documentElement;
+        const colorMap = createTheme(value);
+        for(const key in colorMap) {
+            root.style.setProperty(key, colorMap[key]);
         }
     }, {
         immediate: true,

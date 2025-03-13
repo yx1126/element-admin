@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { SettingOutlined, CloseOutlined } from "@vicons/antd";
-import { routerTransList } from "@/stores/modules/setting";
+import { routerTransList, setPlacementLiist } from "@/stores";
 import { useZIndex } from "element-plus";
 import Icon from "@/components/GlobalRegister/Icon";
 import NavMode from "./NavMode.vue";
 import { navTheme, layoutMode } from "@/stores/helper";
-import { langList } from "@/locales";
+import LangSelect from "../LangSelect";
 
 defineOptions({
     name: "Setting",
@@ -15,8 +15,11 @@ const set = useSetStore();
 const { lang } = useLocales();
 const { currentZIndex } = useZIndex();
 const { t } = useI18n();
-const { theme } = useTheme();
+const { theme, themeColor } = useTheme();
 const mitt = useMitt("toggleSetting");
+
+// 预设主题色
+const predefine = ["#409EFF", "#18a058", "#67C23A", "#E6A23C", "#F56C6C", "#909399"];
 
 const isShowDrawer = computed({
     get: () => set.isShowDrawer,
@@ -30,7 +33,7 @@ const isInvertedDisabled = computed(() => {
 const drawerStyles = computed(() => {
     return {
         "--drawer-set-color": set.themeColor,
-        "z-index": currentZIndex.value + 1,
+        "z-index": currentZIndex.value,
         right: isShowDrawer.value ? "280px" : "0",
     };
 });
@@ -42,10 +45,16 @@ mitt.on(() => {
 function onDrawerClose() {
     isShowDrawer.value = false;
 }
+
+function onReset() {
+    set.$reset();
+    lang.value = set.lang;
+}
 </script>
 
 <template>
     <div
+        v-if="['default', 'drawer'].includes(set.setPlacement)"
         v-drag="{ axis: 'y', eventType: 'right', moveOver: false }"
         class="drawer-set"
         :style="drawerStyles"
@@ -58,14 +67,19 @@ function onDrawerClose() {
     </div>
     <el-drawer
         v-model="isShowDrawer"
+        :title="t('title')"
         modal-class="drawer-wrapper"
         :show-close="false"
         append-to-body
         destroy-on-close
         @close="onDrawerClose"
     >
-        <template #header>
-            <span>{{ t("title") }}</span>
+        <template #footer>
+            <el-popconfirm width="200" :title="t('confirmSet')" :hide-after="0" @confirm="onReset">
+                <template #reference>
+                    <el-button>{{ t('reset') }}</el-button>
+                </template>
+            </el-popconfirm>
         </template>
         <el-scrollbar>
             <div class="drawer-set-container">
@@ -74,6 +88,10 @@ function onDrawerClose() {
                     <template v-for="n in navTheme" :key="n">
                         <nav-mode :mode="n" :chose="theme === n" :color="set.themeColor" @click="theme = n" />
                     </template>
+                </div>
+                <el-divider>{{ t("sysTheme") }}</el-divider>
+                <div class="flex justify-center">
+                    <el-color-picker v-model="themeColor" class="color-picker" :predefine />
                 </div>
                 <el-divider>{{ t("layoutMode") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
@@ -119,11 +137,7 @@ function onDrawerClose() {
                 <div class="divider-content">
                     <div class="divider-content-item">
                         <el-text>{{ t("routerTrans") }}</el-text>
-                        <el-select
-                            v-model="set.routerTrans"
-                            class="input"
-                            placeholder="请选择"
-                        >
+                        <el-select v-model="set.routerTrans" class="input">
                             <el-option
                                 v-for="item, i in routerTransList"
                                 :key="i"
@@ -134,16 +148,16 @@ function onDrawerClose() {
                     </div>
                     <div class="divider-content-item mt-[10px]">
                         <el-text>{{ t("lang") }}</el-text>
-                        <el-select
-                            v-model="lang"
-                            class="input"
-                            placeholder="请选择"
-                        >
+                        <lang-select class="input" />
+                    </div>
+                    <div class="divider-content-item mt-[10px]">
+                        <el-text>{{ t("setting") }}</el-text>
+                        <el-select v-model="set.setPlacement" class="input">
                             <el-option
-                                v-for="item, i in langList"
-                                :key="i"
-                                :value="item.value"
-                                :label="item.label"
+                                v-for="item in setPlacementLiist"
+                                :key="item"
+                                :value="item"
+                                :label="item"
                             />
                         </el-select>
                     </div>
@@ -183,6 +197,9 @@ function onDrawerClose() {
         }
     }
 }
+:deep(.color-picker .el-color-picker__trigger) {
+    width: 120px;
+}
 </style>
 
 <style lang="scss">
@@ -199,7 +216,8 @@ function onDrawerClose() {
 <i18n lang="yaml">
 zh:
   title: 项目配置
-  navTheme: 系统主题
+  navTheme: 主题
+  sysTheme: 系统主题
   layoutMode: 导航模式
   pageDisplay: 界面显示
   isShowLogo: 显示 Logo
@@ -217,10 +235,11 @@ zh:
   lang: 语言切换
   confirmSet: 确认还原为默认设置吗？
   inverted: 反转背景色
-  menuTrigger: 菜单 trigger
+  setting: 设置位置
 en:
   title: Project configuration
-  navTheme: System theme
+  navTheme: Theme
+  sysTheme: System theme
   layoutMode: Navigation mode
   pageDisplay: Page Display
   isShowLogo: Show Logo
@@ -234,9 +253,9 @@ en:
   otherSet: Other Settings
   routerTrans: Routing animation
   themeColor: Component theme
-  reset: reset
+  reset: Reset
   lang: Language switching
   confirmSet: Are you sure to restore the default Settings?
   inverted: Reverse background color
-  menuTrigger: menu trigger
+  setting: Set position
 </i18n>

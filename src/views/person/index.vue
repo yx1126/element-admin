@@ -17,10 +17,10 @@ const tabsActive = ref<TabsName>("base");
 const form = ref(getForm());
 
 const rules: FormRules = {
-    username: { required: true, message: `${$t("input", { value: t("username2") })}！`, trigger: "blur" },
-    nickName: { required: true, message: `${$t("input", { value: t("nickname2") })}！`, trigger: "blur" },
-    sex: { required: true, message: `${$t("select", { value: t("sex") })}！`, trigger: "change" },
-    email: { required: true, message: `${$t("input", { value: t("email2") })}！`, trigger: "blur" },
+    username: { required: true, message: () => `${$t("input", { value: t("username2") })}！`, trigger: "blur" },
+    nickName: { required: true, message: () => `${$t("input", { value: t("nickname2") })}！`, trigger: "blur" },
+    sex: { required: true, message: () => `${$t("select", { value: t("sex") })}！`, trigger: "change" },
+    email: { required: true, message: () => `${$t("input", { value: t("email2") })}！`, trigger: "blur" },
 };
 
 function getForm() {
