@@ -22,4 +22,10 @@ export default defineEslint({
     rules: {
         "@stylistic/eol-last": "off",
     },
+    flatESLintConfig: [{
+        files: ["**/*.vue"],
+        rules: {
+            "@typescript-eslint/no-unsafe-unary-minus": "off",
+        },
+    }],
 });

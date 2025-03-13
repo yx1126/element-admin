@@ -12,7 +12,7 @@ export default defineComponent({
             return routes.map((route, index) => {
                 const menuItem = (
                     <>
-                        {route?.meta?.icon ? <Icon icon={route.meta.icon} /> : null}
+                        {route?.meta?.icon ? <Icon icon={route.meta.icon} size="16" /> : null}
                         <span>{route?.meta?.title}</span>
                     </>
                 );

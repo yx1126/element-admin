@@ -11,21 +11,24 @@
 import { isStr } from "@/utils/validata";
 import SvgIcon from "./SvgIcon.vue";
 import type { CSSProperties, Component } from "vue";
+import { parseUnit } from "@/utils/unit";
 
 defineOptions({
     name: "Icon",
 });
 
-const { rotate = 0, cursor = false } = defineProps<{
+const { rotate = 0, cursor = false, size } = defineProps<{
     icon?: string | Component;
     rotate?: string | number;
     cursor?: boolean | CSSProperties["cursor"];
+    size?: number | string;
 }>();
 
 const style = computed<CSSProperties>(() => {
     return {
         transform: `rotate(${rotate}deg)`,
         cursor: cursor ? isStr(cursor) ? cursor : "pointer" : undefined,
+        fontSize: parseUnit(size),
     };
 });
 </script>

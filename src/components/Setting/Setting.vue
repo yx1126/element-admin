@@ -123,7 +123,7 @@ function onReset() {
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("isCutMenu") }}</el-text>
-                    <el-switch v-model="set.isCutMenu" />
+                    <el-switch v-model="set.isCutMenu" :disabled="set.layoutMode !== 'mixin'" />
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("uniqueMenuOpened") }}</el-text>

@@ -31,11 +31,12 @@ export interface SetState {
 }
 
 export interface TagItem {
+    closable?: boolean;
     title: string;
     name: string;
     path: string;
     matchedName?: string[];
-    query: Record<string, string>;
+    query: Record<string, any>;
     meta: RouteMeta;
 }
 

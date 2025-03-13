@@ -8,7 +8,8 @@
     --dark-color: rgb(24, 24, 28);
     --item-hover-color: #{rgba($color: #000, $alpha: 0.05)};
     --item-hover-dark-color: #{rgba($color: #fff, $alpha: 0.1)};
-    --menu-hover-bg-color: rgba(255, 255, 255, 0.09);
+    --menu-hover-bg-inverted-color: rgba(255, 255, 255, 0.09);
+    --menu-hover-bg-light-color: rgb(243, 243, 245);
     --border-light-color: rgb(239, 239, 245);
     --border-inverted-color: rgb(0, 20, 40);
     --border-dark-color: rgba(255, 255, 255, 0.09);
@@ -34,7 +35,7 @@ html {
 }
 // 解决全屏部分元素背景变黑
 ::backdrop {
-    background-color: transparent;
+    background-color: #fff;
 }
 
 html,

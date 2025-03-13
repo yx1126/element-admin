@@ -21,10 +21,14 @@ function onCommand(path: string) {
 </script>
 
 <template>
-    <el-breadcrumb v-if="set.isShowBreadcrumb && set.layoutMode !== 'top'" class="breadcrumb" :class="{ 'is-inverted': inverted }">
+    <el-breadcrumb
+        v-if="set.isShowBreadcrumb && set.layoutMode !== 'top'"
+        class="breadcrumb"
+        :class="{ 'is-inverted': inverted }"
+    >
         <template v-for="b in breadcrumbList" :key="b.path">
             <el-breadcrumb-item class="breadcrumb-item">
-                <el-dropdown v-if="b.children?.length" @command="onCommand">
+                <el-dropdown v-if="b.children?.length" :persistent="false" @command="onCommand">
                     <span class="title">{{ b.meta?.title }}</span>
                     <template #dropdown>
                         <el-dropdown-menu>

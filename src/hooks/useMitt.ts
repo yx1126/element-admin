@@ -1,9 +1,10 @@
-import mitt from "mitt";
+import mitt, { type Emitter } from "mitt";
 
 type EventType = {
     "*": any;
     toggleSetting: [];
     updatePwd: [];
+    mainFull: [];
 };
 
 const emitter = mitt<EventType>();
@@ -26,10 +27,6 @@ type MittBacks<K extends (keyof EventType)[]> = K extends [infer Key, ...infer O
             : never
         : never
     : never;
-
-export function useMitter() {
-    return emitter;
-}
 
 function create<T extends keyof EventType>(key: T): MittBack<T> {
     function on(fn: EventFunc<T>) {
@@ -56,9 +53,13 @@ function create<T extends keyof EventType>(key: T): MittBack<T> {
     };
 }
 
+export function useMitt(): Emitter<EventType>;
 export function useMitt<T extends keyof EventType>(key: T): MittBack<T>;
 export function useMitt<T extends (keyof EventType)[]>(...keys: T): MittBacks<T>;
 export function useMitt<T extends keyof EventType>(...keys: T[]) {
+    if(keys.length === 0) {
+        return emitter;
+    }
     if(keys.length === 1) {
         return create(keys[0]);
     }

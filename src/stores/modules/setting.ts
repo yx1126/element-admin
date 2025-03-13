@@ -41,9 +41,9 @@ export const useSetStore = defineStore("setting", () => {
         immediate: true,
     });
 
-    watch(() => state.themeColor, value => {
+    watch(() => [state.navMode, state.themeColor], ([mode, color]) => {
         const root = document.documentElement;
-        const colorMap = createTheme(value);
+        const colorMap = createTheme(color, mode === "dark");
         for(const key in colorMap) {
             root.style.setProperty(key, colorMap[key]);
         }

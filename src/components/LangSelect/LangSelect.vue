@@ -4,18 +4,17 @@ import type { SlotsType, VNode } from "vue";
 
 export default defineComponent({
     name: "LangSelect",
-    inheritAttrs: false,
     props: {
         type: { type: String as PropType<"select" | "dropdown">, default: "select" },
     },
     slots: Object as SlotsType<{ default?: () => VNode[] }>,
-    setup(props, { attrs, slots }) {
+    setup(props, { slots }) {
         const { lang, setLang } = useLocales();
         return () => {
             const { type } = props;
             if(type === "dropdown") {
                 return (
-                    <el-dropdown {...attrs} trigger="click" onCommand={setLang}>
+                    <el-dropdown trigger="click" persistent={false} onCommand={setLang}>
                         {{
                             default: () => renderSlot(slots, "default"),
                             dropdown: () => {
@@ -35,7 +34,7 @@ export default defineComponent({
             }
             if(type === "select") {
                 return (
-                    <el-select {...attrs} modelValue={lang.value} onChange={setLang}>
+                    <el-select modelValue={lang.value} onChange={setLang}>
                         {
                             langList.map(item => {
                                 return (<el-option key={item.value} value={item.value} label={item.label} />);

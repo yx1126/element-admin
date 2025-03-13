@@ -70,7 +70,7 @@ function onDropDown(command: string) {
                     <Icon icon="language" />
                 </div>
             </lang-select>
-            <el-dropdown class="h-[100%]" @command="onDropDown">
+            <el-dropdown class="h-[100%]" :persistent="false" @command="onDropDown">
                 <div class="header-item">
                     <el-avatar :size="34" :src="user.userInfo?.avatar" />
                     <span>{{ user.userInfo?.nickName }}</span>

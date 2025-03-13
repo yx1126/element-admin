@@ -112,7 +112,13 @@ function getIconType(): IconType {
 </script>
 
 <template>
-    <el-popover ref="popoverRef" v-bind="popverAttrs" @before-enter="onBeforeEnter" @after-leave="onAfterLeave">
+    <el-popover
+        ref="popoverRef"
+        v-bind="popverAttrs"
+        :persistent="false"
+        @before-enter="onBeforeEnter"
+        @after-leave="onAfterLeave"
+    >
         <template #reference>
             <el-input
                 v-model="modelValue"
