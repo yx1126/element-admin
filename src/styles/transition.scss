@@ -79,3 +79,29 @@
         }
     }
 }
+
+// breadcrumb
+.list-breadcrumb {
+    @at-root {
+        &-move,
+        &-enter-active,
+        &-leave-active {
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        &-enter-from {
+            opacity: 0;
+            transform: translateY(-120%);
+        }
+        &-leave-to {
+            opacity: 0;
+            transform: translateY(120%);
+        }
+        &-leave-active {
+            position: absolute;
+            .el-breadcrumb__separator {
+                display: none;
+            }
+        }
+    }
+}

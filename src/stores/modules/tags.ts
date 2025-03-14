@@ -2,16 +2,18 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 import type { TagsState, TagItem } from "#/stores";
 
 const defaultTags: TagItem[] = [
-    { title: "主控台", name: "Console", closable: false, path: "/dashboard/console", query: {}, meta: {} },
+    { title: "主控台", name: "Console", closable: false, path: "/dashboard/console", query: {}, meta: {}, type: "keepTags" },
 ];
 
-type TagsType = keyof TagsState;
+type TagsType = TagItem["type"];
 
 export const useTagStore = defineStore("tags", () => {
     const state: TagsState = reactive({
         keepTags: [...defaultTags],
         activeTags: [],
     });
+
+    const tagList = computed(() => [...state.keepTags, ...state.activeTags]);
 
     function insert(type: TagsType, value: TagItem) {
         if(!value.path || !value.title || !value.name || value.path.startsWith("/dashboard/console")) return;
@@ -61,7 +63,7 @@ export const useTagStore = defineStore("tags", () => {
     function removeOther(path: string) {
         baseRemove("activeTags", path, "other");
     }
-    // 移除 其他
+    // 移除 全部
     function removeAll(path: string) {
         baseRemove("activeTags", path, "all");
     }
@@ -70,18 +72,19 @@ export const useTagStore = defineStore("tags", () => {
         const tag = state.activeTags.find(t => t.path === path);
         if(!tag) return;
         remove(path);
-        insert("keepTags", tag);
+        insert("keepTags", { ...tag, type: "keepTags", closable: false });
     }
     // 解除固定
     function removeFixed(path: string) {
         const tag = state.keepTags.find(t => t.path === path);
         if(!tag) return;
         remove(path);
-        insert("activeTags", tag);
+        insert("activeTags", { ...tag, type: "activeTags", closable: true });
     }
 
     return {
         ...toRefs(state),
+        tagList,
         insert,
         remove,
         removeLeft,

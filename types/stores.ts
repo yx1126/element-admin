@@ -38,6 +38,7 @@ export interface TagItem {
     matchedName?: string[];
     query: Record<string, any>;
     meta: RouteMeta;
+    type: "keepTags" | "activeTags";
 }
 
 export interface TagsState {
