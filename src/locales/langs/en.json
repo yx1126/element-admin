@@ -1,12 +1,14 @@
 {
     "input": "Please enter your {value}",
     "select": "Please select {value}",
+    "tip": "Tip",
     "button": {
         "edit": "Edit",
         "submit": "Submit",
         "reset": "Reset",
         "cancel": "Cancel",
         "save": "Save",
-        "confirm": "Confirm"
+        "confirm": "Confirm",
+        "back": "Back"
     }
 }

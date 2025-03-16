@@ -14,10 +14,6 @@ import type { AppContext, VNode } from "vue";
 
 const assign = Object.assign;
 
-const defaultMessage: MessageOptions = {
-    duration: 1500,
-};
-
 const defaultMessageBox: ElMessageBoxOptions = {};
 
 const defaultNotify: Partial<NotificationOptions> = {};
@@ -56,12 +52,11 @@ function transformType(type: MessageType): messageType {
 }
 
 export function useMessage(options?: MessageOptions, appContext?: Nullable<AppContext>): MessageReturn {
-    const defOptions = Object.assign(defaultMessage, options);
+    const defOptions = options;
     const ctx = appContext;
     const result: any = {};
     msgType.forEach(key => {
         result[key] = (message: string | VNode | (() => VNode), options?: Options, appContext?: Nullable<AppContext>) => {
-            // @ts-ignore
             return ElMessage[transformType(key)]({
                 ...defOptions,
                 ...options,
@@ -86,10 +81,8 @@ export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullab
             }
             const opt = Object.assign(defOptions, options);
             if(["alert", "confirm", "prompt"].includes(key)) {
-                // @ts-ignore
                 return (ElMessageBox as any)[key](message, title, opt, appContext ?? ctx);
             }
-            // @ts-ignore
             return ElMessageBox.alert(message, title, {
                 ...opt,
                 type: transformType(key as MessageType),
@@ -111,7 +104,6 @@ export function useNotification(options?: NotifyOptions, appContext?: Nullable<A
                 options = {};
             }
             if(key === "alert") {
-                // @ts-ignore
                 return (ElNotification as Function)({
                     ...assign({}, options, opt),
                     title,
@@ -119,7 +111,6 @@ export function useNotification(options?: NotifyOptions, appContext?: Nullable<A
                 }, appContext ?? ctx);
             }
             const type = transformType(key);
-            // @ts-ignore
             return (ElNotification[type] as Function)({
                 title: title || type.substring(0, 1).toUpperCase() + type.substring(1),
                 ...assign({}, options, opt),

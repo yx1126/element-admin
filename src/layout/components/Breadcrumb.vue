@@ -7,7 +7,6 @@ defineProps<{
     inverted?: boolean;
 }>();
 
-const set = useSetStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -21,15 +20,11 @@ function onCommand(path: string) {
 </script>
 
 <template>
-    <el-breadcrumb
-        v-if="set.isShowBreadcrumb && set.layoutMode !== 'top'"
-        class="breadcrumb"
-        :class="{ 'is-inverted': inverted }"
-    >
+    <el-breadcrumb class="breadcrumb" :class="{ 'is-inverted': inverted }">
         <TransitionGroup name="list-breadcrumb">
             <template v-for="b in breadcrumbList" :key="b.path">
                 <el-breadcrumb-item class="breadcrumb-item">
-                    <el-dropdown v-if="b.children?.length" :persistent="false" @command="onCommand">
+                    <el-dropdown v-if="b.children?.length" :persistent="false" trigger="click" @command="onCommand">
                         <span class="title">{{ b.meta?.title }}</span>
                         <template #dropdown>
                             <el-dropdown-menu>

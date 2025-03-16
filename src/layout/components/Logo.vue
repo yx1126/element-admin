@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { isStr } from "@/utils/validata";
+import { parseUnit } from "@/utils/unit";
 
 const {
     width = 200,
     height = 50,
-    collapsedWidth = 48,
+    collapsedWidth = 64,
     text = "ElementAdmin",
     indent = 18,
     collapsed,
@@ -19,12 +19,11 @@ const {
     indent?: number;
 }>();
 
-const set = useSetStore();
-
 const logoStyle = computed(() => {
+    const w = collapsed ? collapsedWidth + "px" : parseUnit(width);
     return {
-        "--logo-width": collapsed ? collapsedWidth + "px" : isStr(width) ? width : width + "px",
-        "--logo-min-width": isStr(minWidth) ? minWidth : minWidth + "px",
+        "--logo-width": w,
+        "--logo-min-width": parseUnit(minWidth),
         "--logo-height": height + "px",
         "--logo-padding": collapsed ? `0 ${(collapsedWidth - 32) / 2}px` : `0 18px 0 ${indent}px`,
         "--logo-icon-margin-right": collapsed ? 0 : "8px",
@@ -35,8 +34,8 @@ const logoStyle = computed(() => {
 </script>
 
 <template>
-    <div v-if="set.isShowLogo" class="logo" :style="logoStyle">
-        <div class="logo-icon">
+    <div class="logo" :style="logoStyle">
+        <div class="logo-icon" :title="text">
             <slot name="icon">
                 <Icon :size="32" icon="vue" />
             </slot>
@@ -55,7 +54,7 @@ const logoStyle = computed(() => {
     display: flex;
     align-items: center;
     padding: var(--logo-padding);
-    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), color var(--el-transition-duration);
     position: relative;
     &-icon {
         margin-right: var(--logo-icon-margin-right);

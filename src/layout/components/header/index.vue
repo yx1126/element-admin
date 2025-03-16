@@ -1,16 +1,19 @@
 <script setup lang="ts">
-import Collapse from "../Collapse.vue";
 import { FullscreenOutlined, FullscreenExitOutlined, UserOutlined, LogoutOutlined } from "@vicons/antd";
 import { renderIcon } from "@/utils/renderIcon";
 import UpdatePwd from "./UpdatePwd.vue";
 import { parseUnit } from "@/utils/unit";
-import Breadcrumb from "../Breadcrumb.vue";
 import LangSelect from "@/components/LangSelect";
-import type { CSSProperties } from "vue";
+import type { VNode } from "vue";
+import type { NavTheme } from "#/stores";
 
 const { height } = defineProps<{
     height?: number | string;
-    inverted?: boolean;
+    theme?: NavTheme;
+}>();
+
+defineSlots<{
+    default: () => VNode[];
 }>();
 
 const { t } = useI18n();
@@ -21,19 +24,13 @@ const { isFullScreen, onToggle } = useFullscreen();
 const [setMitt, pwdMitt] = useMitt("toggleSetting", "updatePwd");
 const updatePwdRef = useTemplateRef("updatePwdRef");
 
-const headerStyle = computed<CSSProperties>(() => {
-    return {
-        height: parseUnit(height),
-    };
+pwdMitt.on(() => {
+    updatePwdRef.value?.open();
 });
 
 function onShowSetting() {
     setMitt.emit();
 }
-
-pwdMitt.on(() => {
-    updatePwdRef.value?.open();
-});
 
 function onDropDown(command: string) {
     if(command === "userinfo") {
@@ -56,10 +53,17 @@ function onDropDown(command: string) {
 </script>
 
 <template>
-    <div class="header h-[100%] flex justify-between" :class="{ 'is-inverted': inverted }" :style="headerStyle">
-        <div class="h-[100%] flex items-center gap-[5px]">
-            <Collapse :inverted width="50" height="50" />
-            <Breadcrumb :inverted />
+    <div
+        class="header h-[100%] flex justify-between"
+        :class="{
+            [`is-${theme}`]: !!theme,
+        }"
+        :style="{
+            height: parseUnit(height),
+        }"
+    >
+        <div class="h-[100%] flex items-center gap-[5px] flex-1 min-w-0">
+            <slot />
         </div>
         <div class="h-[100%] flex items-center pr-[10px]">
             <div class="header-item" @click="onToggle">
@@ -96,26 +100,21 @@ function onDropDown(command: string) {
 .header {
     position: relative;
     transition: background-color var(--el-transition-duration);
-    @include border(bottom, var(--border-light-color)) {
-        @include when-dark {
-            background-color: var(--border-dark-color);
-        }
-    };
-    @include when-dark {
-        background-color: var(--dark-color);
-    }
-    // 反转背景色
-    @include when-inverted {
-        @include when(inverted) {
-            background-color: var(--menu-bg-color);
+    @include border(bottom, var(--border-light-color));
+    @include when(inverted) {
+        background-color: var(--menu-bg-color);
+        color: #fff;
+        @include border(bottom, var(--border-inverted-color));
+        .header-item {
             color: #fff;
-            .header-item {
-                color: #fff;
-                &:hover {
-                    background-color: var(--menu-hover-bg-color);
-                }
+            &:hover {
+                background-color: var(--menu-hover-bg-inverted-color);
             }
         }
+    }
+    @include when(dark) {
+        background-color: var(--dark-bg-color);
+        @include border(bottom, var(--border-dark-color));
     }
     &-item {
         height: 100%;

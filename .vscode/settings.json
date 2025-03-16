@@ -49,13 +49,16 @@
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "[css]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "[sass]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "[scss]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "i18n-ally.localesPaths": ["src/locales/langs"],
     "i18n-ally.keystyle": "nested",
@@ -73,5 +76,12 @@
     ],
     "vue.server.hybridMode": true,
     "vue.complete.defineAssignment": true,
-    "vue.splitEditors.icon": true
+    "vue.splitEditors.icon": true,
+    "prettier.enable": true,
+    "search.exclude": {
+        "**/node_modules": true,
+        "**/bower_components": true,
+        "**/*.code-search": true,
+        "**/*.svg": true
+    }
 }

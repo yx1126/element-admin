@@ -6,6 +6,7 @@ import Icon from "@/components/GlobalRegister/Icon";
 import NavMode from "./NavMode.vue";
 import { navTheme, layoutMode } from "@/stores/helper";
 import LangSelect from "../LangSelect";
+import { LayoutConfig } from "@/config";
 
 defineOptions({
     name: "Setting",
@@ -17,9 +18,6 @@ const { currentZIndex } = useZIndex();
 const { t } = useI18n();
 const { theme, themeColor } = useTheme();
 const mitt = useMitt("toggleSetting");
-
-// 预设主题色
-const predefine = ["#409EFF", "#18a058", "#67C23A", "#E6A23C", "#F56C6C", "#909399"];
 
 const isShowDrawer = computed({
     get: () => set.isShowDrawer,
@@ -68,6 +66,7 @@ function onReset() {
     <el-drawer
         v-model="isShowDrawer"
         :title="t('title')"
+        :lock-scroll="false"
         modal-class="drawer-wrapper"
         :show-close="false"
         append-to-body
@@ -91,7 +90,7 @@ function onReset() {
                 </div>
                 <el-divider>{{ t("sysTheme") }}</el-divider>
                 <div class="flex justify-center">
-                    <el-color-picker v-model="themeColor" class="color-picker" :predefine />
+                    <el-color-picker v-model="themeColor" class="color-picker" :predefine="LayoutConfig.themes" />
                 </div>
                 <el-divider>{{ t("layoutMode") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
@@ -115,7 +114,7 @@ function onReset() {
                 <el-divider>{{ t("pageFunction") }}</el-divider>
                 <div class="divider-content-item">
                     <el-text>{{ t("isKeepHeader") }}</el-text>
-                    <el-switch v-model="set.isKeepHeader" />
+                    <el-switch v-model="set.isKeepHeader" :disabled="['mixin', 'asideMixin'].includes(set.layoutMode)" />
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("isKeepTags") }}</el-text>

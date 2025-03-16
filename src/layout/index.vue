@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { LayoutMode } from "#/stores";
-import type { Component } from "vue";
+import type { AsyncComponentLoader, Component } from "vue";
 import Main from "./components/Main.vue";
 
 defineOptions({
@@ -10,11 +10,19 @@ defineOptions({
 const set = useSetStore();
 
 const LayoutMap: Record<LayoutMode, Component> = {
-    aside: defineAsyncComponent(() => import("./mian/AsideLayout.vue")),
-    top: defineAsyncComponent(() => import("./mian/TopLayout.vue")),
-    mixin: defineAsyncComponent(() => import("./mian/MixinLayout.vue")),
-    asideMixin: defineAsyncComponent(() => import("./mian/AsideMixinLayout.vue")),
+    aside: loadComponent(() => import("./mian/AsideLayout.vue")),
+    top: loadComponent(() => import("./mian/TopLayout.vue")),
+    mixin: loadComponent(() => import("./mian/MixinLayout.vue")),
+    asideMixin: loadComponent(() => import("./mian/AsideMixinLayout.vue")),
 };
+
+function loadComponent<T extends Component>(loader: AsyncComponentLoader<T>): ReturnType<typeof defineAsyncComponent> {
+    return defineAsyncComponent({
+        loader,
+        delay: 0,
+        loadingComponent: h("load-icon"),
+    });
+}
 </script>
 
 <template>
@@ -26,8 +34,9 @@ const LayoutMap: Record<LayoutMode, Component> = {
 <style lang="scss">
 .el-header,
 .el-main {
-    padding: 0;
+    padding: 0 !important;
 }
+
 .el-main {
     background-color: #f5f7f9;
     @include when-dark {

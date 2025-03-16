@@ -1,6 +1,18 @@
 import { Icon } from "@/components/GlobalRegister/Icon";
 import type { RouteRecordRaw } from "vue-router";
 
+export function useIsHideAside() {
+    const set = useSetStore();
+    const route = useRoute();
+    const isHidden = computed(() => {
+        return (set.isCutMenu && route.matched[1]?.children?.length <= 0);
+    });
+
+    return {
+        isHidden,
+    };
+}
+
 export default defineComponent({
     name: "MenuItem",
     props: {
@@ -10,10 +22,11 @@ export default defineComponent({
         return () => {
             const { routes } = props;
             return routes.map((route, index) => {
+                const title = route?.meta?.title;
                 const menuItem = (
                     <>
                         {route?.meta?.icon ? <Icon icon={route.meta.icon} size="16" /> : null}
-                        <span>{route?.meta?.title}</span>
+                        <span title={title}>{title}</span>
                     </>
                 );
                 if(route.children && route.children?.length > 0) {

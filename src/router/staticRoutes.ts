@@ -28,6 +28,10 @@ export const staticRoutes: RouteRecordRaw[] = [
             },
             children: [],
         }, {
+            path: "/redirect/:path*",
+            name: "Redirect",
+            component: () => import("@/views/redirect/index.vue"),
+        }, {
             path: "/:pathMatch(.*)",
             name: "NotFound",
             component: () => import("@/views/error/404.vue"),

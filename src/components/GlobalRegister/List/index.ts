@@ -1,6 +1,4 @@
 import { withInstall } from "@/utils/withInstall";
-import List from "./List.vue";
-import ListItem from "./ListItem.vue";
 
 export interface ElListContextType {
     bordered?: boolean;
@@ -11,12 +9,11 @@ export interface ElListContextType {
 
 export const ElListContext = Symbol() as InjectionKey<ElListContextType>;
 
-export {
-    /**
-     * @see https://www.naiveui.com/zh-CN/light/components/list
-     */
-    List,
-    ListItem,
-};
+/**
+ * @see https://www.naiveui.com/zh-CN/light/components/list
+ */
 
-export default withInstall([List, ListItem]);
+export default withInstall(app => {
+    app.component("ElList", defineAsyncComponent(() => import("./List.vue")));
+    app.component("ElListItem", defineAsyncComponent(() => import("./ListItem.vue")));
+});

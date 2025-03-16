@@ -15,10 +15,15 @@ const tagsRef = useTemplateRef("tagsRef");
 const dropdownRef = useTemplateRef("dropdownRef");
 const tags = useTagStore();
 const route = useRoute();
+const msgBox = useMessageBox();
+const { t } = useI18n();
+const { t: $t } = useI18n({ useScope: "global" });
+useWindowResize(moveToCurrentTag, { lazy: 200 });
 
 const currentIndex = computed(() => tags.tagList.findIndex(v => v.path === route.fullPath));
 
 watch(() => route.fullPath, fullPath => {
+    if(route.fullPath.startsWith("/redirect")) return;
     tags.insert("activeTags", {
         closable: true,
         title: route.meta.title || route.fullPath,
@@ -29,6 +34,7 @@ watch(() => route.fullPath, fullPath => {
         matchedName: route.matched.map(item => (item.name as string)),
         type: "activeTags",
     });
+    moveToCurrentTag();
 }, {
     immediate: true,
 });
@@ -81,31 +87,18 @@ function onSelect(type: string, index: number) {
         tags.removeRight(tag.path);
         break;
     case "other":
-
-        if(tag.type === "activeTags") {
-            if(current.path !== tag.path) {
-                router.push(tag.path);
-            }
+        if(tag.type === "keepTags") {
+            tags.removeAll(tag.path);
+        } else {
             tags.removeOther(tag.path);
-            break;
         }
-        if(current.type === "activeTags") {
+        if(current.path !== tag.path) {
             router.push(tag.path);
         }
-        tags.removeAll(tag.path);
         break;
     case "all":
-        if(current.type === "keepTags") {
-            if(tag.path !== current.path) {
-                router.push(tags.keepTags.at(-1)!.path);
-                tags.removeAll(tag.path);
-                break;
-            }
-            tags.removeAll(tag.path);
-            break;
-        }
-        router.push(tags.keepTags.at(-1)!.path);
         tags.removeAll(tag.path);
+        router.push(tag.type === "activeTags" ? tags.keepTags.at(-1)!.path : tag.path);
         break;
     case "removeFixed":
         tags.removeFixed(tag.path);
@@ -114,9 +107,35 @@ function onSelect(type: string, index: number) {
         tags.keepFixed(tag.path);
         break;
     case "clear":
+        msgBox.confirm(t("confirm"), $t("tip"), {
+            type: "warning",
+        }).then(() => {
+            tags.$reset();
+            router.push("/");
+        });
         break;
     default:
         break;
+    }
+}
+
+function onRedirect() {
+    router.replace(`/redirect${route.fullPath}`);
+}
+
+async function moveToCurrentTag() {
+    await nextTick();
+    const tagsItemNode = tagsRef.value?.querySelector(".tag-item.is-active") as HTMLSpanElement;
+    if(!tagsItemNode) return;
+    // 超出 左边 视野
+    const overLeft = tagsItemNode.offsetLeft < tagsRef.value!.scrollLeft;
+    // 超出 右边 视野
+    const overRight = tagsItemNode.offsetLeft + tagsItemNode.clientWidth > tagsRef.value!.scrollLeft + tagsRef.value!.clientWidth;
+    if(overLeft || overRight) {
+        tagsRef.value!.scrollTo({
+            left: overLeft ? tagsItemNode.offsetLeft - 100 : tagsItemNode.offsetLeft - tagsRef.value!.clientWidth + tagsItemNode.clientWidth + 100,
+            behavior: "smooth",
+        });
     }
 }
 </script>
@@ -127,6 +146,7 @@ function onSelect(type: string, index: number) {
             <template v-for="tag, i in tags.tagList" :key="tag.path">
                 <el-tag
                     class="tag-item"
+                    :class="{ 'is-active': route.fullPath === tag.path }"
                     :type="route.fullPath === tag.path ? 'primary' : 'info'"
                     :closable="tag.closable ?? true"
                     @click="onClick(tag)"
@@ -139,7 +159,7 @@ function onSelect(type: string, index: number) {
             </template>
         </div>
         <div class="tag-actions">
-            <Icon class="tag-actions-icon" size="18">
+            <Icon class="tag-actions-icon" size="18" @click.stop="onRedirect">
                 <reload-outlined />
             </Icon>
             <el-divider direction="vertical" />
@@ -159,7 +179,7 @@ function onSelect(type: string, index: number) {
         display: flex;
         align-items: center;
         @include when-dark {
-            background-color: var(--dark-color);
+            background-color: var(--dark-bg-color);
         }
         @include border(bottom, var(--border-light-color)) {
             @include when-dark {
@@ -181,7 +201,7 @@ function onSelect(type: string, index: number) {
         --el-tag-font-size: 14px;
         --el-tag-border-radius: 2px;
         cursor: pointer;
-        height: 28px;
+        height: calc(100% - 7px);
         &.el-tag--info {
             color: #000;
             background-color: rgb(250, 250, 252);
@@ -196,7 +216,7 @@ function onSelect(type: string, index: number) {
     &-actions {
         display: flex;
         align-items: center;
-        height: 80%;
+        height: calc(100% - 7px);
         box-shadow: -5px 1px 5px #d6d3d3;
         position: relative;
         top: -1px;
@@ -213,3 +233,10 @@ function onSelect(type: string, index: number) {
     }
 }
 </style>
+
+<i18n lang="yaml">
+zh:
+  confirm: 确认清空所有标签吗？
+en:
+  confirm: Are you sure to clear all Tags?
+</i18n>

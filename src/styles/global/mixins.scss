@@ -27,11 +27,11 @@
 @mixin hover() {
     transition: background-color var(--el-transition-duration);
     &:hover {
-        background-color: var(--item-hover-color);
+        background-color: var(--item-hover-bg-color);
     }
     @include when-dark {
         &:hover {
-            background-color: var(--item-hover-dark-color);
+            background-color: var(--item-hover-bg-dark-color);
         }
     }
 }
@@ -45,29 +45,24 @@
         content: "";
         position: absolute;
         background-color: $color;
+        transition: background-color var(--el-transition-duration);
 
         @if $type==top {
             top: 0;
             left: 0;
             width: 100%;
             height: 1px;
-        }
-
-        @else if $type==right {
+        } @else if $type==right {
             top: 0;
             right: 0;
             width: 1px;
             height: 100%;
-        }
-
-        @else if $type==bottom {
+        } @else if $type==bottom {
             bottom: 0;
             left: 0;
             width: 100%;
             height: 1px;
-        }
-
-        @else if $type==left {
+        } @else if $type==left {
             top: 0;
             left: 0;
             width: 1px;
@@ -79,8 +74,8 @@
 
 @mixin hidden-scroll {
     &::-webkit-scrollbar {
-        display: none;          /* Chrome Safari */
+        display: none; /* Chrome Safari */
     }
-    scrollbar-width: none;      /* firefox */
-    -ms-overflow-style: none;   /* IE 10+ */
+    scrollbar-width: none; /* firefox */
+    -ms-overflow-style: none; /* IE 10+ */
 }

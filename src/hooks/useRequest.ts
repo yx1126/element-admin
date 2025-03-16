@@ -1,5 +1,5 @@
 import type { Result } from "#/axios";
-import { isArray, isFn as isFn, isObject } from "@/utils/validata";
+import { isArray, isFn, isObject } from "@/utils/validata";
 import type { Ref } from "vue";
 
 type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
@@ -50,8 +50,10 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
         throw new Error("[useRequest/options]: The default field cannot be empty");
     }
 
+    const message = useMessage();
+
     const loading = ref(false);
-    const data = ref(defOptions.default) as Ref;
+    const data = ref(defOptions.default);
 
     async function query(...query: any) {
         try {
@@ -67,8 +69,7 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
                 data.value = reqData;
             }
         } catch (err: any) {
-            // @ts-ignore
-            ElMessage.error(err?.msg || err?.data?.msg || "查询失败");
+            message.error(err?.msg || err?.data?.msg || "查询失败");
         } finally {
             loading.value = false;
         }

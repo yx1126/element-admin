@@ -1,3 +1,10 @@
+<script setup lang="ts">
+defineOptions({
+    name: "404",
+});
+const { t } = useI18n();
+</script>
+
 <template>
     <el-card shadow="never">
         <div class="four-zero-four">
@@ -9,12 +16,10 @@
                     <img class="pic-404__child right" src="@/assets/image/404_cloud.png" alt="404">
                 </div>
                 <div class="bullshit">
-                    <div class="bullshit__oops">404错误!</div>
-                    <div class="bullshit__headline">找不到网页！</div>
-                    <div class="bullshit__info">
-                        对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。
-                    </div>
-                    <router-link to="/" class="bullshit__return-home">返回首页</router-link>
+                    <div class="bullshit__oops">OOPS!</div>
+                    <div class="bullshit__headline">{{ t("headline") }}</div>
+                    <div class="bullshit__info">{{ t("desc") }}</div>
+                    <router-link to="/" class="bullshit__return-home">{{ t("back") }}</router-link>
                 </div>
             </div>
         </div>
@@ -216,3 +221,14 @@
     }
 }
 </style>
+
+<i18n lang="yaml">
+zh:
+  headline: 找不到网页！
+  desc: 对不起，您正在寻找的页面不存在。尝试检查URL的错误，然后按浏览器上的刷新按钮或尝试在我们的应用程序中找到其他内容。
+  back: 返回首页
+en:
+  headline: Page not found!
+  desc: Sorry, the page you are looking for does not exist. Try checking the URL for errors and pressing the refresh button on your browser or try to find something else in our app.
+  back: Back to Home
+</i18n>

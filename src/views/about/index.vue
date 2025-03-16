@@ -36,6 +36,6 @@ zh:
   devTitle: 开发环境依赖
   prodTitle: 生产环境依赖
 en:
-  devTitle: dependencies
-  prodTitle: 生产环境依赖
+  devTitle: devDependencies
+  prodTitle: dependencies
 </i18n>

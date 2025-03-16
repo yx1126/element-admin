@@ -57,7 +57,9 @@ const dropDownOptions = computed(() => {
         result.push({ divided: true, key: "d0" });
     }
     if(activeIndex !== -1) {
-        result.push({ label: t("other"), key: "other", icon: ColumnWidthOutlined });
+        if(tags.activeTags.length > 1) {
+            result.push({ label: t("other"), key: "other", icon: ColumnWidthOutlined });
+        }
         result.push({ label: t("all"), key: "all", icon: MinusOutlined });
     }
     const isFrontpage = tag.path === "/dashboard/console";
@@ -69,7 +71,7 @@ const dropDownOptions = computed(() => {
     } else if(tag.type === "activeTags") {
         result.push({ label: t("keep"), key: "keepFixed", icon: PushpinFilled });
     }
-    if(operateType.value === "icon") {
+    if(operateType.value === "icon" && tags.tagList.length > 1) {
         result.length && result.push({ divided: true, key: "d2" });
         result.push({ label: t("clear"), key: "clear", icon: CloseCircleOutlined });
     }
@@ -170,7 +172,7 @@ zh:
   keep: 保持固定
   clear: 一键清除
 en:
-  current: Close Current
+  current: Close
   left: Close Left
   right: Close Right
   other: Close Right

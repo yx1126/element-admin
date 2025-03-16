@@ -5,14 +5,20 @@
 @use "sass:color";
 
 :root {
-    --dark-color: rgb(24, 24, 28);
-    --item-hover-color: #{rgba($color: #000, $alpha: 0.05)};
-    --item-hover-dark-color: #{rgba($color: #fff, $alpha: 0.1)};
-    --menu-hover-bg-inverted-color: rgba(255, 255, 255, 0.09);
+    // 暗黑色
+    --dark-bg-color: rgb(24, 24, 28);
+    //鼠标移入背景色
+    --item-hover-bg-color: #{rgba($color: #000, $alpha: 0.05)};
+    --item-hover-bg-dark-color: #{rgba($color: #fff, $alpha: 0.1)};
+    // 菜单item移入背景色
     --menu-hover-bg-light-color: rgb(243, 243, 245);
+    --menu-hover-bg-inverted-color: rgba(255, 255, 255, 0.09);
+    // 边框颜色
     --border-light-color: rgb(239, 239, 245);
     --border-inverted-color: rgb(0, 20, 40);
     --border-dark-color: rgba(255, 255, 255, 0.09);
+    // 动画
+    --el-cubic-bezier: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 *,
@@ -24,15 +30,19 @@
 }
 
 html {
+    // 菜单背景色
     --menu-bg-color: #fff;
     &.inverted {
         --menu-bg-color: #001428;
-        --menu-text-color: #BBB;
+        // 菜单文字颜色
+        --menu-text-color: #bbb;
     }
     &.dark {
-        --menu-bg-color: var(--dark-color);
+        --menu-bg-color: var(--dark-bg-color);
+        --menu-text-color: #fff;
     }
 }
+
 // 解决全屏部分元素背景变黑
 ::backdrop {
     background-color: #fff;

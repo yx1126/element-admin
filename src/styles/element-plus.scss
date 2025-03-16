@@ -1,24 +1,28 @@
-@forward 'element-plus/theme-chalk/src/common/var.scss' with (
-  $colors: (
-    'success': (
-      'base': #18a058,
-    ),
-    'warning': (
-      'base': #f0a020,
-    ),
-    'danger': (
-      'base': #d03050,
-    ),
-    'error': (
-      'base': #f56c6c,
-    ),
-    'info': (
-      'base': #909399,
-    ),
-  )
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+    $colors: (
+        "success": (
+            "base": #18a058,
+        ),
+        "warning": (
+            "base": #f0a020,
+        ),
+        "danger": (
+            "base": #d03050,
+        ),
+        "error": (
+            "base": #f56c6c,
+        ),
+        "info": (
+            "base": #909399,
+        ),
+    )
 );
 @use "element-plus/theme-chalk/src/index.scss" as *;
 @use "element-plus/theme-chalk/src/dark/css-vars" as *;
+
+.el-button {
+    --el-border-radius-base: 3px;
+}
 
 .el-divider {
     &__text {
@@ -27,11 +31,12 @@
     }
 }
 
-.el-sub-menu.is-active>.el-sub-menu__title {
+.el-sub-menu.is-active > .el-sub-menu__title {
     color: var(--el-menu-active-color);
 }
 
-.el-dropdown, .el-dropdown * {
+.el-dropdown,
+.el-dropdown * {
     outline: none;
 }
 

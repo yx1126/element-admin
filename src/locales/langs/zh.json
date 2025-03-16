@@ -1,12 +1,14 @@
 {
     "input": "请输入{value}",
     "select": "请选择{value}",
+    "tip": "提示",
     "button": {
         "edit": "修改",
         "submit": "确认",
         "reset": "重置",
         "cancel": "取消",
         "save": "保存",
-        "confirm": "确认"
+        "confirm": "确认",
+        "back": "返回"
     }
 }

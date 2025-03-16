@@ -18,6 +18,14 @@ export default defineEslint({
                 allowNoLang: true,
             },
         },
+        rules: {
+            "vue/block-order": [
+                "error",
+                {
+                    order: ["script", "template", "style", "i18n"],
+                },
+            ],
+        },
     },
     rules: {
         "@stylistic/eol-last": "off",

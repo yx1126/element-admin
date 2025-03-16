@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { LangMap } from "@/locales";
 import Setting from "@/components/Setting";
+import { buttonConfig, messageConfig } from "./config";
 
 const { lang } = useLocales({ immediate: true });
 
@@ -10,7 +11,7 @@ const local = computed(() => {
 </script>
 
 <template>
-    <el-config-provider :locale="local">
+    <el-config-provider :locale="local" :button="buttonConfig" :message="messageConfig">
         <router-view />
         <el-watermark class="h-[100%] watermark" content="ElementAdmin" />
         <Setting />

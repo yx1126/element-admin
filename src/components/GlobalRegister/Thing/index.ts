@@ -1,4 +1,5 @@
 import { withInstall } from "@/utils/withInstall";
-import Thing from "./Thing.vue";
 
-export default withInstall(Thing);
+export default withInstall(app => {
+    app.component("ElThing", defineAsyncComponent(() => import("./Thing.vue")));
+});

@@ -15,12 +15,10 @@ export function useFullscreen<Element>(el?: MaybeRef<Noable<Element | string>>, 
         return element as HTMLElement || document.body;
     });
 
-    onBeforeMount(() => {
-        Screenfull.on("change", onFullScreenChange);
-        Screenfull.on("error", onError);
-    });
+    Screenfull.on("change", onFullScreenChange);
+    Screenfull.on("error", onError);
 
-    onBeforeUnmount(() => {
+    onScopeDispose(() => {
         Screenfull.off("change", onFullScreenChange);
         Screenfull.off("error", onError);
     });
