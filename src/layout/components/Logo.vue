@@ -1,31 +1,39 @@
 <script setup lang="ts">
-import { parseUnit } from "@/utils/unit";
+import { parseNum, parseUnit } from "@/utils/unit";
+import type { VNode } from "vue";
 
 const {
     width = 200,
     height = 50,
     collapsedWidth = 64,
-    text = "ElementAdmin",
+    text = import.meta.env.VITE_APP_TITLE,
     indent = 18,
     collapsed,
     minWidth,
+    showText = true,
 } = defineProps<{
     collapsed?: boolean;
-    width?: number | string;
-    minWidth?: number | string;
-    height?: number;
-    collapsedWidth?: number;
+    width?: Unit;
+    minWidth?: Unit;
+    height?: Unit;
+    collapsedWidth?: Unit;
     text?: string;
     indent?: number;
+    showText?: boolean;
+}>();
+
+const slots = defineSlots<{
+    default?: () => VNode[];
+    icon?: () => VNode[];
 }>();
 
 const logoStyle = computed(() => {
-    const w = collapsed ? collapsedWidth + "px" : parseUnit(width);
+    const cw = parseNum(collapsedWidth);
     return {
-        "--logo-width": w,
+        "--logo-width": parseUnit(collapsed ? collapsedWidth : width),
         "--logo-min-width": parseUnit(minWidth),
-        "--logo-height": height + "px",
-        "--logo-padding": collapsed ? `0 ${(collapsedWidth - 32) / 2}px` : `0 18px 0 ${indent}px`,
+        "--logo-height": parseUnit(height),
+        "--logo-padding": collapsed ? `0 ${(cw - 32) / 2}px` : `0 18px 0 ${indent}px`,
         "--logo-icon-margin-right": collapsed ? 0 : "8px",
         "--logo-text-width": collapsed ? 0 : "auto",
         "--logo-opacity": collapsed ? 0 : 1,
@@ -40,7 +48,7 @@ const logoStyle = computed(() => {
                 <Icon :size="32" icon="vue" />
             </slot>
         </div>
-        <div class="logo-text">
+        <div v-if="showText && (slots.default || text)" class="logo-text">
             <slot>{{ text }}</slot>
         </div>
     </div>

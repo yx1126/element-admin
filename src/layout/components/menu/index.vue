@@ -3,23 +3,32 @@ import MenuItem from "./MenuItem";
 import { isLink } from "@/utils/validata";
 import { LayoutConfig } from "@/config";
 import { parseUnit } from "@/utils/unit";
+import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
+import type { RouteRecordRaw } from "vue-router";
 
-const { width, theme, type } = defineProps<{
+const { width, theme, type, options } = defineProps<{
+    collapse?: boolean;
     width?: Unit;
     mode?: "horizontal" | "vertical";
     theme?: NavTheme;
     type?: "default" | "root" | "children";
+    options?: RouteRecordRaw[];
+}>();
+
+const emit = defineEmits<{
+    menuItemHover: [RouteRecordRaw, number, MouseEvent];
 }>();
 
 const router = useRouter();
 const route = useRoute();
-const routeStore = useUserStore();
+const user = useUserStore();
 const set = useSetStore();
 
 const routerList = computed(() => {
+    if(options) return options;
     if(type === "root") {
-        return routeStore.routerList.map(v => {
+        return user.routerList.map(v => {
             return {
                 ...v,
                 path: v.children?.at(0)?.path || v.path,
@@ -28,16 +37,10 @@ const routerList = computed(() => {
         });
     }
     if(type === "children") {
-        const parent = routeStore.routerList.find(v => v.path === route.matched[1]?.path);
-        return (parent?.children || []).map(v => ({
-            ...v,
-            meta: {
-                ...v.meta,
-                icon: v.meta?.icon || parent?.meta?.icon,
-            },
-        }));
+        const parent = user.routerList.find(v => v.path === route.matched[1]?.path);
+        return parseIcon(parent?.children, parent);
     }
-    return routeStore.routerList;
+    return user.routerList;
 });
 const defaultActive = computed(() => {
     if(type === "root") {
@@ -46,9 +49,6 @@ const defaultActive = computed(() => {
     return route.fullPath;
 });
 const themeType = computed(() => theme ?? set.navMode);
-const isCollapse = computed(() => {
-    return set.layoutMode === "top" || type === "root" ? false : set.collapsed;
-});
 
 function onMenuSelect(index: string) {
     if(isLink(index)) {
@@ -56,6 +56,10 @@ function onMenuSelect(index: string) {
         return;
     }
     router.push(index);
+}
+
+function onMouseenter(item: RouteRecordRaw, i: number, e: MouseEvent) {
+    emit("menuItemHover", item, i, e);
 }
 </script>
 
@@ -76,14 +80,14 @@ function onMenuSelect(index: string) {
             '--menu-height': `${LayoutConfig.headerHeight}px`,
         }"
         :mode
-        :collapse="isCollapse"
+        :collapse
         :default-active="defaultActive"
         :unique-opened="set.uniqueMenuOpened"
         :show-timeout="100"
         :popper-class="'el-menu-aside' + (themeType ? ` is-${themeType}`: '')"
         @select="onMenuSelect"
     >
-        <template v-for="menu in routerList">
+        <template v-for="menu, i in routerList">
             <el-sub-menu v-if="menu.children && menu.children?.length > 0" :key="menu.path" :index="menu.path">
                 <template #title>
                     <Icon v-if="menu.meta?.icon" :icon="menu.meta.icon" size="16" />
@@ -91,7 +95,7 @@ function onMenuSelect(index: string) {
                 </template>
                 <menu-item :routes="menu.children" />
             </el-sub-menu>
-            <el-menu-item v-else :key="menu.path + 'menu'" :index="menu.path">
+            <el-menu-item v-else :key="menu.path + 'menu'" :index="menu.path" @mouseenter="onMouseenter(menu, i, $event)">
                 <Icon v-if="menu.meta?.icon" :icon="menu.meta.icon" size="16" />
                 <span :title="menu.meta?.title">{{ menu.meta?.title }}</span>
             </el-menu-item>

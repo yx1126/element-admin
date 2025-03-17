@@ -28,6 +28,7 @@ export interface SetState {
     asideMixinCollapsed: boolean;
     inverted: boolean;
     setPlacement: SetPlacement;
+    isMenuFixed: boolean;
 }
 
 export interface TagItem {

@@ -41,6 +41,7 @@ const dropDownOptions = computed(() => {
     if(currentIndex.value === -1) return result;
     const tag = tags.tagList[currentIndex.value];
     if(!tag) return result;
+    const { activeTags } = tags;
     if(tag.closable) {
         result.push({ label: t("current"), icon: CloseOutlined, key: "current" });
     }
@@ -57,7 +58,7 @@ const dropDownOptions = computed(() => {
         result.push({ divided: true, key: "d0" });
     }
     if(activeIndex !== -1) {
-        if(tags.activeTags.length > 1) {
+        if((tag.type === "keepTags" && activeTags.length > 0) || (tag.type === "activeTags" && activeTags.length > 1)) {
             result.push({ label: t("other"), key: "other", icon: ColumnWidthOutlined });
         }
         result.push({ label: t("all"), key: "all", icon: MinusOutlined });

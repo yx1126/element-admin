@@ -1,11 +1,3 @@
-<template>
-    <el-input v-model="inputValue" v-bind="$attrs">
-        <template v-for="slot in Object.keys($slots)" #[slot] :key="slot">
-            <slot :name="slot" />
-        </template>
-    </el-input>
-</template>
-
 <script setup lang="ts">
 import { debounce } from "lodash-es";
 
@@ -46,3 +38,11 @@ watch(modelValue, value => {
     inputValue.value = value;
 });
 </script>
+
+<template>
+    <el-input v-model="inputValue" v-bind="$attrs">
+        <template v-for="slot in Object.keys($slots)" #[slot] :key="slot">
+            <slot :name="slot" />
+        </template>
+    </el-input>
+</template>

@@ -13,7 +13,7 @@ const { height } = defineProps<{
 }>();
 
 defineSlots<{
-    default: () => VNode[];
+    default?: () => VNode[];
 }>();
 
 const { t } = useI18n();

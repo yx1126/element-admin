@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useNamespace } from "element-plus";
 import { ElListContext } from ".";
+import type { VNode } from "vue";
 
 defineOptions({
     name: "ElList",
@@ -16,9 +17,9 @@ const props = withDefaults(defineProps<{
 });
 
 const slots = defineSlots<{
-    default(): void;
-    header(): void;
-    footer(): void;
+    default?: () => VNode[];
+    header?: () => VNode[];
+    footer?: () => VNode[];
 }>();
 
 provide(ElListContext, reactive({ ...toRefs(props) }));

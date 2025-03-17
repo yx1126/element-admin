@@ -55,6 +55,17 @@ export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRec
     });
 }
 
+export function parseIcon(data?: RouteRecordRaw[], parent?: Nullable<RouteRecordRaw>): RouteRecordRaw[] {
+    return (data || []).map(v => ({
+        ...v,
+        meta: {
+            ...v.meta,
+            icon: v.meta?.icon || parent?.meta?.icon,
+        },
+        children: parseIcon(v.children, v),
+    }));
+}
+
 export function getRedirectPath(data: RouteRecordRaw[] | MenuItem[]) {
     let path = "";
     while(data.length > 0) {

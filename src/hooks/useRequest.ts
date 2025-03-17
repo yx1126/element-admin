@@ -1,5 +1,6 @@
+import { isFn } from "@/utils/validata";
+import { debounce } from "lodash-es";
 import type { Result } from "#/axios";
-import { isArray, isFn, isObject } from "@/utils/validata";
 import type { Ref } from "vue";
 
 type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
@@ -7,12 +8,9 @@ type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
 export interface RequestOptions<T, D extends any[]> {
     request: Request<T, D>;
     default: T extends object ? Partial<T> : T;
-    formatter?: (data: T) => T;
+    formatter?: (data: any) => T;
     immediate?: boolean;
-    // 对象是否合并
-    assign?: boolean;
-    // 数组是否合并
-    concat?: boolean;
+    delay?: number;
 }
 
 export interface UseRequest<T, R extends (...args: any) => any> {
@@ -39,12 +37,9 @@ export function useRequest<T, D extends any[]>(request: Request<T, D>, defaultVa
  */
 export function useRequest<T, D extends any[]>(request: Request<T, D>, defaultValue: T, immediate: boolean): UseRequest<T, Request<T, D>>;
 export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | Request<T, D>, defaultValue?: T, immediate?: boolean) {
-    const defOptions = Object.assign(
-        {
-            assign: true,
-        },
-        isFn(options) ? { request: options, default: defaultValue, immediate: immediate ?? true } : options,
-    ) as RequestOptions<T, D>;
+    const defOptions = isFn(options)
+        ? { request: options, default: defaultValue, immediate: immediate ?? true } as RequestOptions<T, D>
+        : options;
 
     if(!Object.hasOwn(defOptions, "default")) {
         throw new Error("[useRequest/options]: The default field cannot be empty");
@@ -54,26 +49,7 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
 
     const loading = ref(false);
     const data = ref(defOptions.default);
-
-    async function query(...query: any) {
-        try {
-            loading.value = true;
-            const { request, formatter, assign, concat } = defOptions;
-            const res = await request(...query);
-            const reqData: unknown = formatter ? formatter(res.data) : res.data;
-            if(isObject(data.value) && isObject(reqData) && assign) {
-                data.value = Object.assign(data.value, reqData);
-            } else if(isArray(data.value) && isArray(reqData) && concat) {
-                data.value = [...data.value, ...reqData];
-            } else {
-                data.value = reqData;
-            }
-        } catch (err: any) {
-            message.error(err?.msg || err?.data?.msg || "查询失败");
-        } finally {
-            loading.value = false;
-        }
-    }
+    const isFirst = ref(true);
 
     // 立即执行
     onBeforeMount(() => {
@@ -83,9 +59,32 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
         }
     });
 
+    async function queryOnce(...query: any) {
+        if(isFirst.value) {
+            isFirst.value = false;
+            await query(...query);
+        }
+    }
+
+    async function query(...query: any) {
+        try {
+            loading.value = true;
+            const { request, formatter } = defOptions;
+            const res = await request(...query);
+            const reqData: unknown = formatter ? formatter(res.data) : res.data;
+            data.value = reqData;
+        } catch (err: any) {
+            message.error(err?.msg || err?.data?.msg || "查询失败");
+        } finally {
+            loading.value = false;
+        }
+    }
+
     return {
         loading,
         data,
         query,
+        queryLazy: debounce(query, defOptions.delay),
+        queryOnce,
     };
 }

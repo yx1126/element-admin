@@ -36,7 +36,7 @@ export default defineComponent((_, { slots }) => {
                 <el-aside class="layout-aside">
                     {set.isShowLogo ? <Logo collapsed={set.collapsed} width={menuWidth} indent={16} /> : null}
                     <el-scrollbar class={{ "layout-aside-scrollbar": set.isShowLogo }}>
-                        <Menu />
+                        <Menu collapse={set.collapsed} />
                     </el-scrollbar>
                 </el-aside>
                 <el-container direction="vertical">

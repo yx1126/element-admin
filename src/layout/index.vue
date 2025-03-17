@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import Main from "./components/Main.vue";
 import type { LayoutMode } from "#/stores";
 import type { AsyncComponentLoader, Component } from "vue";
-import Main from "./components/Main.vue";
 
 defineOptions({
     name: "LayoutMain",

@@ -53,7 +53,7 @@ export default defineComponent((_, { slots }) => {
                         style={{ "--el-aside-width": `${isHidden.value ? 0 : set.collapsed ? 64 : menuWidth}px` }}
                     >
                         <el-scrollbar class="layout-aside-scrollbar">
-                            <Menu theme={menuTheme.value} type={set.isCutMenu ? "children" : "default"} />
+                            <Menu collapse={set.collapsed} theme={menuTheme.value} type={set.isCutMenu ? "children" : "default"} />
                         </el-scrollbar>
                         <Collapse inverted={set.inverted} collapsedWidth={64} width={menuWidth} border="top" />
                     </el-aside>

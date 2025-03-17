@@ -1,9 +1,3 @@
-<template>
-    <svg class="svg-icon" aria-hidden="true">
-        <use :href="symbolId" :xlink:href="symbolId" />
-    </svg>
-</template>
-
 <script lang="ts" setup>
 defineOptions({
     name: "SvgIcon",
@@ -19,6 +13,12 @@ const {
 
 const symbolId = computed(() => `#${prefix}-${icon}`);
 </script>
+
+<template>
+    <svg class="svg-icon" aria-hidden="true">
+        <use :href="symbolId" :xlink:href="symbolId" />
+    </svg>
+</template>
 
 <style>
 .svg-icon {
