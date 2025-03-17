@@ -11,6 +11,7 @@ export const useTagStore = defineStore("tags", () => {
     const state: TagsState = reactive({
         keepTags: [...defaultTags],
         activeTags: [],
+        oldRoute: "",
     });
 
     const tagList = computed(() => [...state.keepTags, ...state.activeTags]);

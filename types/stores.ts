@@ -45,6 +45,7 @@ export interface TagItem {
 export interface TagsState {
     keepTags: TagItem[];
     activeTags: TagItem[];
+    oldRoute: string;
 }
 
 export interface UserState {

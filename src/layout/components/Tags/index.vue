@@ -22,13 +22,14 @@ useWindowResize(moveToCurrentTag, { lazy: 200 });
 
 const currentIndex = computed(() => tags.tagList.findIndex(v => v.path === route.fullPath));
 
-watch(() => route.fullPath, fullPath => {
-    if(route.fullPath.startsWith("/redirect")) return;
+watch(() => route.fullPath, (fullPath, oldFullRoute) => {
+    tags.setState("oldRoute", oldFullRoute || "");
+    if(fullPath.startsWith("/redirect")) return;
     tags.insert("activeTags", {
         closable: true,
         title: route.meta.title || route.fullPath,
         name: route.name as string,
-        path: fullPath,
+        path: route.fullPath,
         meta: route.meta,
         query: route.query,
         matchedName: route.matched.map(item => (item.name as string)),

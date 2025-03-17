@@ -37,8 +37,6 @@ export default defineComponent((_, { slots }) => {
 
     watch(() => set.isMenuFixed, val => {
         hoverMenu.value = val ? user.routerList.find(r => r.path === route.matched[1].path) : null;
-    }, {
-        immediate: true,
     });
 
     function onMenuItemHover(_: RouteRecordRaw, i: number) {
@@ -53,63 +51,63 @@ export default defineComponent((_, { slots }) => {
 
     return () => {
         const { headerHeight, tagsHeight } = LayoutConfig;
+        const { navMode, collapsed, inverted, isShowTabs, isShowLogo, isKeepTags, isShowBreadcrumb, isMenuFixed } = set;
         const HeaderVNode = (
             <el-header height={headerHeight + "px"}>
                 <Header theme={headerTheme.value}>
                     {
-                        set.isShowBreadcrumb
-                            ? <Breadcrumb class="ml-[10px]" inverted={set.inverted && set.navMode === "inverted"} />
+                        isShowBreadcrumb
+                            ? <Breadcrumb class="ml-[10px]" inverted={inverted && navMode === "inverted"} />
                             : null
                     }
                 </Header>
             </el-header>
         );
+        const FixedIcon = (
+            <div class="icon box-center" onClick={() => set.isMenuFixed = !set.isMenuFixed}>
+                <icon icon={isMenuFixed ? "unfix" : "fix"} />
+            </div>
+        );
         const AsideChild = (
             <el-aside
-                class={`layout-aside-child ${set.isMenuFixed ? "layout-aside-fixed" : ""}`}
+                class={`layout-aside-child ${isMenuFixed ? "layout-aside-fixed" : ""}`}
                 style={{ "--el-aside-width": asideWidth.value }}
             >
                 <el-scrollbar class="layout-aside-child-scrollbar">
                     <Menu
-                        collapse={set.isMenuFixed ? false : set.collapsed}
+                        collapse={isMenuFixed ? false : collapsed}
                         options={asideMenuList.value}
                         type="children"
-                        theme={set.navMode === "dark" ? "dark" : "light"}
+                        theme={navMode === "dark" ? "dark" : "light"}
                         width="160"
                     />
                 </el-scrollbar>
                 <div class="layout-collapse">
-                    { !set.isMenuFixed ? <Collapse mode="menu" width={160} collapsedWidth={64} border="top" /> : null }
+                    { !isMenuFixed ? <Collapse mode="menu" width={160} collapsedWidth={64} border="top" /> : null }
                     <Transition name="fade-icon">
-                        {!set.collapsed
-                            ? (
-                                <div class="icon box-center" onClick={() => set.isMenuFixed = !set.isMenuFixed}>
-                                    <icon icon={set.isMenuFixed ? "unfix" : "fix"} />
-                                </div>
-                            )
-                            : null}
+                        {isMenuFixed ? FixedIcon : !collapsed ? FixedIcon : null}
                     </Transition>
                 </div>
             </el-aside>
         );
-        const TagsVNode = (set.isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
+        const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
         const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container" style={`--layout-header-height:${headerHeight}px;`}>
                 <el-aside class="layout-aside" onMouseleave={onMouseleave}>
-                    { set.isShowLogo ? <Logo collapsed showText={false} width="80" collapsedWidth={80} /> : null }
-                    <el-scrollbar class={set.isShowLogo ? "layout-aside-scrollbar" : ""}>
+                    { isShowLogo ? <Logo collapsed showText={false} width="80" collapsedWidth={80} /> : null }
+                    <el-scrollbar class={isShowLogo ? "layout-aside-scrollbar" : ""}>
                         <Menu class="layout-menu" type="root" width="80" onMenuItemHover={onMenuItemHover} />
                     </el-scrollbar>
-                    { set.isMenuFixed ? AsideChild : null}
+                    { isMenuFixed ? AsideChild : null}
                 </el-aside>
                 <el-container class="layout-container" direction="vertical">
                     {HeaderVNode}
                     <el-container class="layout-container-main">
-                        { !set.isMenuFixed ? AsideChild : null}
+                        { !isMenuFixed ? AsideChild : null}
                         <el-container direction="vertical">
                             {
-                                set.isKeepTags
+                                isKeepTags
                                     ? (
                                         <>
                                             {TagsVNode}

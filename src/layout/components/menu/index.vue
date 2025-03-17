@@ -24,6 +24,7 @@ const router = useRouter();
 const route = useRoute();
 const user = useUserStore();
 const set = useSetStore();
+const tags = useTagStore();
 
 const routerList = computed(() => {
     if(options) return options;
@@ -37,6 +38,12 @@ const routerList = computed(() => {
         });
     }
     if(type === "children") {
+        // 刷星页面取上个页面子菜单
+        if(route.fullPath.startsWith("/redirect") && tags.oldRoute) {
+            const parentPath = "/" + tags.oldRoute.split("/").at(1);
+            const parent = user.routerList.find(v => v.path === parentPath);
+            return parseIcon(parent?.children, parent);
+        }
         const parent = user.routerList.find(v => v.path === route.matched[1]?.path);
         return parseIcon(parent?.children, parent);
     }
