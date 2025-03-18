@@ -56,13 +56,13 @@ export const menuList: MenuItem[] = [{
     }, {
         id: "2-2",
         type: 1,
-        path: "401",
-        name: "401",
-        title: "401",
+        path: "403",
+        name: "403",
+        title: "403",
         keepAlive: false,
         visible: true,
         sort: 2,
-        component: "/error/401",
+        component: "/error/403",
         children: [],
     }],
 }, {

@@ -133,6 +133,10 @@ function onReset() {
                     <el-switch v-model="set.inverted" :disabled="isInvertedDisabled" />
                 </div>
                 <el-divider>{{ t("otherSet") }}</el-divider>
+                <div class="divider-content-item">
+                    <el-text>{{ t("watermark") }}</el-text>
+                    <el-switch v-model="set.isShowWatermark" />
+                </div>
                 <div class="divider-content">
                     <div class="divider-content-item">
                         <el-text>{{ t("routerTrans") }}</el-text>
@@ -235,6 +239,7 @@ zh:
   confirmSet: 确认还原为默认设置吗？
   inverted: 反转背景色
   setting: 设置位置
+  watermark: 水印
 en:
   title: Project configuration
   navTheme: Theme
@@ -257,4 +262,5 @@ en:
   confirmSet: Are you sure to restore the default Settings?
   inverted: Reverse background color
   setting: Set position
+  watermark: Watermark
 </i18n>

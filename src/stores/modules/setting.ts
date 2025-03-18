@@ -21,6 +21,7 @@ const defaultSetting: SetState = {
     asideMixinCollapsed: false, // asideMixin 布局 子菜单折叠
     setPlacement: "default", // 设置位置
     isMenuFixed: false,
+    isShowWatermark: true,
 };
 
 export const useSetStore = defineStore("setting", () => {

@@ -4,6 +4,9 @@ import Setting from "@/components/Setting";
 import { buttonConfig, messageConfig } from "./config";
 
 const { lang } = useLocales({ immediate: true });
+const set = useSetStore();
+
+const title = import.meta.env.VITE_APP_TITLE;
 
 const local = computed(() => {
     return LangMap[lang.value];
@@ -13,7 +16,7 @@ const local = computed(() => {
 <template>
     <el-config-provider :locale="local" :button="buttonConfig" :message="messageConfig">
         <router-view />
-        <el-watermark class="h-[100%] watermark" content="ElementAdmin" />
+        <el-watermark v-if="set.isShowWatermark" class="h-[100%] watermark" :content="title" />
         <Setting />
     </el-config-provider>
 </template>

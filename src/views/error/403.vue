@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import ErrGif from "@/assets/image/401.gif";
+import ErrGif from "@/assets/image/403.gif";
 defineOptions({
-    name: "401",
+    name: "403",
 });
 const router = useRouter();
 const { t } = useI18n();

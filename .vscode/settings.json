@@ -36,9 +36,6 @@
     "[typescriptreact]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "[html]": {
-        "editor.defaultFormatter": "vscode.html-language-features"
-    },
     "[json]": {
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
@@ -58,6 +55,10 @@
     },
     "[scss]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
+    },
+    "[html]": {
+        "editor.defaultFormatter": "vscode.html-language-features",
         "editor.formatOnSave": true
     },
     "i18n-ally.localesPaths": ["src/locales/langs"],

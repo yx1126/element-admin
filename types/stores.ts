@@ -29,6 +29,7 @@ export interface SetState {
     inverted: boolean;
     setPlacement: SetPlacement;
     isMenuFixed: boolean;
+    isShowWatermark: boolean;
 }
 
 export interface TagItem {

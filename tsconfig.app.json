@@ -9,7 +9,11 @@
             "@/*": ["./src/*"],
             "#/*": ["./types/*"]
         },
-        "types": ["element-plus/global", "@intlify/unplugin-vue-i18n/messages"]
+        "types": [
+            "element-plus/global",
+            "@intlify/unplugin-vue-i18n/messages",
+            "./scripts/build-icons/client.d.ts"
+        ]
     },
     "include": [
         "src/**/*.ts",

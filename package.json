@@ -5,6 +5,7 @@
     "private": true,
     "scripts": {
         "preinstall": "npx only-allow pnpm",
+        "prepare": "simple-git-hooks",
         "dev": "vite",
         "build": "run-p \"build-only {@}\" --",
         "preview": "vite preview",
@@ -12,8 +13,7 @@
         "type-check": "vue-tsc --build --force",
         "lint": "eslint .",
         "lint:fix": "eslint . --fix",
-        "inspector": "npx @eslint/config-inspector@latest",
-        "prepare": "simple-git-hooks"
+        "inspector": "npx @eslint/config-inspector@latest"
     },
     "dependencies": {
         "@ctrl/tinycolor": "^4.1.0",
@@ -32,7 +32,7 @@
         "vue-router": "^4.5.0"
     },
     "devDependencies": {
-        "@intlify/unplugin-vue-i18n": "^6.0.3",
+        "@intlify/unplugin-vue-i18n": "^6.0.4",
         "@tsconfig/node20": "^20.1.4",
         "@types/file-saver": "^2.0.7",
         "@types/fs-extra": "^11.0.4",
@@ -60,6 +60,7 @@
         "unplugin-vue-components": "^28.4.1",
         "vite": "^6.2.0",
         "vite-plugin-vue-devtools": "^7.7.2",
+        "vite-svg-loader": "^5.1.0",
         "vue-tsc": "^2.2.8"
     },
     "simple-git-hooks": {
