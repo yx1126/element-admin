@@ -1,4 +1,5 @@
-import type { RouteMeta, RouteRecordRaw } from "vue-router";
+import type { RouteMeta } from "vue-router";
+import type { MenuItem } from "./menu";
 
 export type NavTheme = "light" | "inverted" | "dark";
 
@@ -50,7 +51,7 @@ export interface TagsState {
 }
 
 export interface UserState {
-    routerList: RouteRecordRaw[];
+    routerList: MenuItem[];
     userInfo?: {
         username: string;
         nickName: string;

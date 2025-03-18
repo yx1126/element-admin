@@ -5,7 +5,7 @@ import { LayoutConfig } from "@/config";
 import { parseUnit } from "@/utils/unit";
 import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
-import type { RouteRecordRaw } from "vue-router";
+import type { MenuItem as MenuItemType } from "#/menu";
 
 const { width, theme, type, options } = defineProps<{
     collapse?: boolean;
@@ -13,11 +13,11 @@ const { width, theme, type, options } = defineProps<{
     mode?: "horizontal" | "vertical";
     theme?: NavTheme;
     type?: "default" | "root" | "children";
-    options?: RouteRecordRaw[];
+    options?: MenuItemType[];
 }>();
 
 const emit = defineEmits<{
-    menuItemHover: [RouteRecordRaw, number, MouseEvent];
+    menuItemHover: [MenuItemType, number, MouseEvent];
 }>();
 
 const router = useRouter();
@@ -30,9 +30,11 @@ const routerList = computed(() => {
     if(options) return options;
     if(type === "root") {
         return user.routerList.map(v => {
+            const first = v.children?.at(0);
             return {
                 ...v,
-                path: v.children?.at(0)?.path || v.path,
+                path: first?.path || v.path,
+                isIframe: isLink(first?.path) ? first?.isIframe : v.isIframe,
                 children: [],
             };
         });
@@ -57,15 +59,16 @@ const defaultActive = computed(() => {
 });
 const themeType = computed(() => theme ?? set.navMode);
 
-function onMenuSelect(index: string) {
-    if(isLink(index)) {
-        window.open(index);
+function onMenuSelect(index: string, menu: MenuItemType) {
+    const link = decodeURIComponent(index).slice(1);
+    if(isLink(link) && !menu.isIframe) {
+        window.open(link);
         return;
     }
     router.push(index);
 }
 
-function onMouseenter(item: RouteRecordRaw, i: number, e: MouseEvent) {
+function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
     emit("menuItemHover", item, i, e);
 }
 </script>
@@ -92,19 +95,24 @@ function onMouseenter(item: RouteRecordRaw, i: number, e: MouseEvent) {
         :unique-opened="set.uniqueMenuOpened"
         :show-timeout="100"
         :popper-class="'el-menu-aside ' + (themeType ? `menu-theme-${themeType}`: '')"
-        @select="onMenuSelect"
     >
         <template v-for="menu, i in routerList">
             <el-sub-menu v-if="menu.children && menu.children?.length > 0" :key="menu.path" :index="menu.path">
                 <template #title>
-                    <Icon v-if="menu.meta?.icon" :icon="menu.meta.icon" size="16" />
-                    <span :title="menu.meta?.title">{{ menu.meta?.title }}</span>
+                    <Icon v-if="menu.icon" :icon="menu.icon" size="16" />
+                    <span :title="menu.title">{{ menu.title }}</span>
                 </template>
-                <menu-item :routes="menu.children" />
+                <menu-item :routes="menu.children" @menu-click="onMenuSelect" />
             </el-sub-menu>
-            <el-menu-item v-else :key="menu.path + 'menu'" :index="menu.path" @mouseenter="onMouseenter(menu, i, $event)">
-                <Icon v-if="menu.meta?.icon" :icon="menu.meta.icon" size="16" />
-                <span :title="menu.meta?.title">{{ menu.meta?.title }}</span>
+            <el-menu-item
+                v-else
+                :key="menu.path + 'menu'"
+                :index="menu.path"
+                @click="onMenuSelect(menu.path, menu)"
+                @mouseenter="onMouseenter(menu, i, $event)"
+            >
+                <Icon v-if="menu.icon" :icon="menu.icon" size="16" />
+                <span :title="menu.title">{{ menu.title }}</span>
             </el-menu-item>
         </template>
     </el-menu>

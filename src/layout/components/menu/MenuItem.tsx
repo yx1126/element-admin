@@ -1,5 +1,5 @@
 import { Icon } from "@/components/GlobalRegister/Icon";
-import type { RouteRecordRaw } from "vue-router";
+import type { MenuItem as MenuItemType } from "#/menu";
 
 export function useIsHideAside() {
     const route = useRoute();
@@ -25,16 +25,20 @@ export function useIsHideAside() {
 export default defineComponent({
     name: "MenuItem",
     props: {
-        routes: { type: Array as PropType<RouteRecordRaw[]>, required: true },
+        routes: { type: Array as PropType<MenuItemType[]>, required: true },
     },
-    setup(props) {
+    emits: ["menu-click"],
+    setup(props, { emit }) {
+        function onClick(path: string, item: MenuItemType) {
+            emit("menu-click", path, item);
+        }
         return () => {
             const { routes } = props;
             return routes.map((route, index) => {
-                const title = route?.meta?.title;
+                const title = route.title;
                 const menuItem = (
                     <>
-                        {route?.meta?.icon ? <Icon icon={route.meta.icon} size="16" /> : null}
+                        {route?.icon ? <Icon icon={route.icon} size="16" /> : null}
                         <span title={title}>{title}</span>
                     </>
                 );
@@ -48,7 +52,15 @@ export default defineComponent({
                         </el-sub-menu>
                     );
                 }
-                return <el-menu-item index={route.path} key={index}>{menuItem}</el-menu-item>;
+                return (
+                    <el-menu-item
+                        index={route.path}
+                        key={index}
+                        onClick={() => onClick(route.path, route)}
+                    >
+                        {menuItem}
+                    </el-menu-item>
+                );
             });
         };
     },

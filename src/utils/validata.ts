@@ -87,7 +87,8 @@ export function isIdCard(val: string) {
     return IDCARD_REG.test(val);
 }
 
-export function isLink(val: string) {
+export function isLink(val: unknown) {
+    if(!isStr(val)) return false;
     return LINK_REG.test(val);
 }
 

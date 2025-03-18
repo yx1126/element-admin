@@ -28,6 +28,15 @@ export const staticRoutes: RouteRecordRaw[] = [
             },
             children: [],
         }, {
+            path: "/iframe/:link",
+            name: "Iframe",
+            component: () => import("@/views/iframe/index.vue"),
+            meta: {
+                title: "{0}",
+                keepAlive: false,
+            },
+            children: [],
+        }, {
             path: "/redirect/:path*",
             name: "Redirect",
             component: () => import("@/views/redirect/index.vue"),
@@ -40,8 +49,4 @@ export const staticRoutes: RouteRecordRaw[] = [
             },
         }],
     },
-];
-
-export const ayncStaticaRoutes: RouteRecordRaw[] = [
-    // { path: "/:path(.*)", redirect: "/error/404" },
 ];

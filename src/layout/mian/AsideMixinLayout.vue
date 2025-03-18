@@ -10,14 +10,14 @@ import { useIsHideAside } from "../components/menu/MenuItem";
 import { Transition } from "vue";
 import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
-import type { RouteRecordRaw } from "vue-router";
+import type { MenuItem } from "#/menu";
 
 export default defineComponent((_, { slots }) => {
     const set = useSetStore();
     const user = useUserStore();
     const route = useRoute();
 
-    const hoverMenu = ref<Empty<RouteRecordRaw>>(null);
+    const hoverMenu = ref<Empty<MenuItem>>(null);
 
     const headerTheme = computed<NavTheme>(() => {
         const { navMode, inverted } = set;
@@ -39,7 +39,7 @@ export default defineComponent((_, { slots }) => {
         hoverMenu.value = val ? user.routerList.find(r => r.path === route.matched[1].path) : null;
     });
 
-    function onMenuItemHover(_: RouteRecordRaw, i: number) {
+    function onMenuItemHover(_: MenuItem, i: number) {
         if(!set.isMenuFixed) return;
         hoverMenu.value = user.routerList[i];
     }

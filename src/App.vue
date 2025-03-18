@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LangMap } from "@/locales";
 import Setting from "@/components/Setting";
-import { buttonConfig, messageConfig } from "./config";
+import { buttonConfig, messageConfig, LayoutConfig } from "./config";
 
 const { lang } = useLocales({ immediate: true });
 const set = useSetStore();
@@ -10,6 +10,13 @@ const title = import.meta.env.VITE_APP_TITLE;
 
 const local = computed(() => {
     return LangMap[lang.value];
+});
+
+onBeforeMount(() => {
+    const { headerHeight, tagsHeight } = LayoutConfig;
+    const root = document.documentElement;
+    root.style.setProperty("--header-height", headerHeight + "px");
+    root.style.setProperty("--tags-height", tagsHeight + "px");
 });
 </script>
 

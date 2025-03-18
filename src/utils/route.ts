@@ -1,7 +1,7 @@
 import { ParentLayout } from "@/router/layout";
-import type { RouteRecordRaw } from "vue-router";
+import type { LocationQueryValue, RouteRecordRaw } from "vue-router";
 import type { MenuItem } from "#/menu";
-import { isLink } from "./validata";
+import { isArray, isLink } from "./validata";
 
 /**
  * 自动导入所有目录下index.vue,index.tsx
@@ -16,6 +16,7 @@ const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
 
 function parsePath(data: MenuItem[]) {
     return data.reduce((pre, { path }) => {
+        if(isLink(path)) path = encodeURIComponent(path);
         if(path.startsWith("/")) {
             return pre + path;
         }
@@ -24,9 +25,13 @@ function parsePath(data: MenuItem[]) {
 }
 
 function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
+    if(isLink(menu.path)) {
+        return pages["/src/views/iframe/index.vue"];
+    }
     if(menu.type === MenuType.FOLDER) {
         return ParentLayout(menu.name);
-    } if(menu.type === MenuType.MENU) {
+    }
+    if(menu.type === MenuType.MENU) {
         if(!menu.component) return;
         const compPath = ("/src/views/" + menu.component).replace(/\/\//g, "/");
         for(let i = 0; i < PAGE_SUFFIX.length; i++) {
@@ -40,28 +45,46 @@ function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
 
 export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRecordRaw[] {
     return data.map(menu => {
-        const result: RouteRecordRaw = {
-            path: isLink(menu.path) ? menu.path : parsePath([...parents, menu]),
+        const route: RouteRecordRaw = {
+            path: parsePath([...parents, menu]),
             name: menu.name,
             meta: {
                 title: menu.title,
                 icon: menu.icon,
-                keepAlive: menu.keepAlive,
+                keepAlive: !!menu.keepAlive,
+                isIframe: !!menu.isIframe,
             },
             component: parseComponent(menu),
             children: parseRoute(menu.children, [...parents, menu]),
         };
-        return result;
+        return route;
     });
 }
 
-export function parseIcon(data?: RouteRecordRaw[], parent?: Nullable<RouteRecordRaw>): RouteRecordRaw[] {
+export function formatMenuTitle(title: LocationQueryValue | LocationQueryValue[], template?: string) {
+    const custom = isArray<LocationQueryValue[]>(title) ? title : [title];
+    return template?.replace(/\{(\d+)\}/g, (_, i) => {
+        return custom[i] || "";
+    });
+}
+
+export function formatMenuList(data?: MenuItem[], parents: MenuItem[] = []) {
+    return (data || []).reduce<MenuItem[]>((pre, menu) => {
+        if(menu.visible) {
+            pre.push({
+                ...menu,
+                path: parsePath([...parents, menu]),
+                children: formatMenuList(menu.children, [...parents, menu]),
+            });
+        }
+        return pre;
+    }, []);
+}
+
+export function parseIcon(data?: MenuItem[], parent?: Nullable<MenuItem>): MenuItem[] {
     return (data || []).map(v => ({
         ...v,
-        meta: {
-            ...v.meta,
-            icon: v.meta?.icon || parent?.meta?.icon,
-        },
+        icon: v?.icon || parent?.icon,
         children: parseIcon(v.children, v),
     }));
 }

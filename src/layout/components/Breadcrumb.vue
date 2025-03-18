@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { formatMenuTitle } from "@/utils/route";
+
 defineOptions({
     name: "Breadcrumb",
 });
@@ -11,7 +13,19 @@ const route = useRoute();
 const router = useRouter();
 
 const breadcrumbList = computed(() => {
-    return route.matched.filter(r => r.path && r.meta.title);
+    const list = route.matched.filter(r => r.path && r.meta.title);
+    const current = list.at(-1);
+    const title = formatMenuTitle(route.query.tagName, current?.meta.title) || current?.meta.title;
+    return [
+        ...list.slice(0, -1),
+        {
+            ...current,
+            meta: {
+                ...current?.meta,
+                title,
+            },
+        },
+    ];
 });
 
 function onCommand(path: string) {

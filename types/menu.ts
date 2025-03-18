@@ -4,6 +4,7 @@ export interface RouteMeta {
     readonly title: string;
     readonly icon?: string;
     readonly keepAlive?: boolean;
+    readonly isIframe?: boolean;
 }
 
 export interface MenuItem extends Writable<RouteMeta> {

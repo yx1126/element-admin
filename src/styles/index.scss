@@ -67,3 +67,15 @@ li {
 a {
     text-decoration: none;
 }
+
+.full-page {
+    height: calc(100vh - var(--header-height) - var(--tags-height) - 20px);
+    transition: none;
+    & > .el-card__body {
+        height: 100%;
+    }
+}
+
+.el-card.no-padding > .el-card__body {
+    padding: 0;
+}

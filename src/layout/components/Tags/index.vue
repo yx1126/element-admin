@@ -1,10 +1,7 @@
 <script setup lang="ts">
-import {
-    MoreOutlined,
-    ReloadOutlined,
-} from "@vicons/antd";
-import router from "@/router";
+import { MoreOutlined, ReloadOutlined } from "@vicons/antd";
 import Dropdown from "./Dropdown.vue";
+import { formatMenuTitle } from "@/utils/route";
 import type { TagItem } from "#/stores";
 
 defineOptions({
@@ -15,19 +12,21 @@ const tagsRef = useTemplateRef("tagsRef");
 const dropdownRef = useTemplateRef("dropdownRef");
 const tags = useTagStore();
 const route = useRoute();
+const router = useRouter();
+
 const msgBox = useMessageBox();
 const { t } = useI18n();
 const { t: $t } = useI18n({ useScope: "global" });
+
 useWindowResize(moveToCurrentTag, { lazy: 200 });
 
 const currentIndex = computed(() => tags.tagList.findIndex(v => v.path === route.fullPath));
-
 watch(() => route.fullPath, (fullPath, oldFullRoute) => {
     tags.setState("oldRoute", oldFullRoute || "");
     if(fullPath.startsWith("/redirect")) return;
     tags.insert("activeTags", {
         closable: true,
-        title: route.meta.title || route.fullPath,
+        title: formatMenuTitle(route.query.tagName, route.meta.title) || route.fullPath,
         name: route.name as string,
         path: route.fullPath,
         meta: route.meta,
@@ -39,7 +38,6 @@ watch(() => route.fullPath, (fullPath, oldFullRoute) => {
 }, {
     immediate: true,
 });
-
 function onClick(tag: TagItem) {
     router.push(tag.path);
 }
