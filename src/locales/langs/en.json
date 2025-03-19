@@ -1,5 +1,5 @@
 {
-    "input": "Please enter your {value}",
+    "input": "Please input {value}",
     "select": "Please select {value}",
     "tip": "Tip",
     "button": {

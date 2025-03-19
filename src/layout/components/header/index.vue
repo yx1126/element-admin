@@ -4,6 +4,7 @@ import { renderIcon } from "@/utils/renderIcon";
 import UpdatePwd from "./UpdatePwd.vue";
 import { parseUnit } from "@/utils/unit";
 import LangSelect from "@/components/LangSelect";
+import Search from "./Search.vue";
 import type { VNode } from "vue";
 import type { NavTheme } from "#/stores";
 
@@ -66,6 +67,7 @@ function onDropDown(command: string) {
             <slot />
         </div>
         <div class="h-[100%] flex items-center pr-[10px]">
+            <Search class="search" />
             <div class="header-item" @click="onToggle">
                 <Icon :icon="isFullScreen ? FullscreenExitOutlined : FullscreenOutlined" size="18" />
             </div>
@@ -100,6 +102,10 @@ function onDropDown(command: string) {
 .header {
     position: relative;
     transition: background-color var(--el-transition-duration);
+    .search {
+        --el-text-color-regular: currentColor;
+        --el-input-icon-color: currentColor;
+    }
     @include border(bottom, var(--border-light-color));
     @include when(inverted) {
         background-color: var(--menu-bg-color);
@@ -115,6 +121,10 @@ function onDropDown(command: string) {
     @include when(dark) {
         background-color: var(--dark-bg-color);
         @include border(bottom, var(--border-dark-color));
+        .search {
+            --el-text-color-regular: #fff;
+            --el-input-icon-color: #fff;
+        }
     }
     &-item {
         height: 100%;

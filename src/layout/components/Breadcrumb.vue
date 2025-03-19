@@ -64,9 +64,6 @@ function onCommand(path: string) {
 <style lang="scss" scoped>
 .breadcrumb {
     position: relative;
-    .title {
-        transition: color var(--el-transition-duration);
-    }
     :deep(.el-breadcrumb__item){
         .el-breadcrumb__inner {
             cursor: pointer;
@@ -76,7 +73,6 @@ function onCommand(path: string) {
         }
         &:not(:last-child) .el-breadcrumb__inner {
             cursor: pointer;
-            transition: color var(--el-transition-duration);
             &:hover {
                 color: var(--el-color-primary);
                 .title {
