@@ -5,8 +5,9 @@ import Menu from "../components/menu/index.vue";
 import Logo from "../components/Logo.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Collapse from "../components/Collapse.vue";
-import { LayoutConfig } from "@/config";
 import { useIsHideAside } from "../components/menu/MenuItem";
+import { LayoutConfig } from "@/config";
+import { useZIndex } from "element-plus";
 import { Transition } from "vue";
 import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
@@ -16,6 +17,7 @@ export default defineComponent((_, { slots }) => {
     const set = useSetStore();
     const user = useUserStore();
     const route = useRoute();
+    const { currentZIndex } = useZIndex();
 
     const hoverMenu = ref<Empty<MenuItem>>(null);
 
@@ -51,9 +53,9 @@ export default defineComponent((_, { slots }) => {
 
     return () => {
         const { headerHeight, tagsHeight } = LayoutConfig;
-        const { navMode, collapsed, inverted, isShowTabs, isShowLogo, isKeepTags, isShowBreadcrumb, isMenuFixed } = set;
+        const { navMode, collapsed, inverted, isShowTabs, isShowLogo, isKeepTags, isShowBreadcrumb, isMenuFixed, isMainFull } = set;
         const HeaderVNode = (
-            <el-header height={headerHeight + "px"}>
+            <el-header v-show={!isMainFull} height={headerHeight + "px"}>
                 <Header theme={headerTheme.value}>
                     {
                         isShowBreadcrumb
@@ -70,8 +72,12 @@ export default defineComponent((_, { slots }) => {
         );
         const AsideChild = (
             <el-aside
+                v-show={!isMainFull}
                 class={`layout-aside-child ${isMenuFixed ? "layout-aside-fixed" : ""}`}
-                style={{ "--el-aside-width": asideWidth.value }}
+                style={{
+                    "--el-aside-width": asideWidth.value,
+                    "--el-aside-zIndex": isMenuFixed ? currentZIndex.value : 1,
+                }}
             >
                 <el-scrollbar class="layout-aside-child-scrollbar">
                     <Menu
@@ -94,7 +100,7 @@ export default defineComponent((_, { slots }) => {
         const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container" style={`--layout-header-height:${headerHeight}px;`}>
-                <el-aside class="layout-aside" onMouseleave={onMouseleave}>
+                <el-aside v-show={!isMainFull} class="layout-aside" onMouseleave={onMouseleave}>
                     { isShowLogo ? <Logo collapsed showText={false} width="80" collapsedWidth={80} /> : null }
                     <el-scrollbar class={isShowLogo ? "layout-aside-scrollbar" : ""}>
                         <Menu class="layout-menu" type="root" width="80" onMenuItemHover={onMenuItemHover} />
@@ -168,7 +174,7 @@ export default defineComponent((_, { slots }) => {
             bottom: 0;
             left: 80px;
             height: calc(100vh - 50px);
-            z-index: 1;
+            z-index: var(--el-aside-zIndex);
         }
     }
     &-aside-child {

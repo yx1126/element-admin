@@ -1,4 +1,5 @@
 <script lang="ts">
+import { isLink } from "@/utils/validata";
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "Redirect",
@@ -6,12 +7,14 @@ export default defineComponent({
         const route = useRoute();
         const router = useRouter();
         onBeforeMount(() => {
-            const path = route.params.path;
-            if(!path) {
+            const path = (route.params.path as string[]).map(v => {
+                return isLink(v) ? encodeURIComponent(v) : v;
+            });
+            if(!path?.length) {
                 router.replace("/");
                 return;
             }
-            router.replace({ path: `/${(path as string[]).join("/")}`, query: route.query });
+            router.replace({ path: `/${path.join("/")}`, query: route.query });
         });
     },
     render() {

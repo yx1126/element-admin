@@ -9,20 +9,21 @@ export default defineComponent((_, { slots }) => {
     const set = useSetStore();
     return () => {
         const { headerHeight, tagsHeight } = LayoutConfig;
+        const { navMode, isKeepHeader, isKeepTags, isShowTabs, isShowLogo, isMainFull } = set;
         const HeaderVNode = (
-            <el-header height={headerHeight + "px"}>
-                <Header theme={set.navMode}>
-                    {set.isShowLogo ? <Logo minWidth="200" /> : null}
-                    <Menu class="layout-menu" style={{ "--menu-width": set.isShowLogo ? "200px" : "0px" }} mode="horizontal" />
+            <el-header v-show={!isMainFull} height={headerHeight + "px"}>
+                <Header theme={navMode}>
+                    {isShowLogo ? <Logo minWidth="200" /> : null}
+                    <Menu class="layout-menu" style={{ "--menu-width": isShowLogo ? "200px" : "0px" }} mode="horizontal" />
                 </Header>
             </el-header>
         );
-        const TagsVNode = (set.isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
+        const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
         const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container" direction="vertical">
                 {
-                    !set.isKeepHeader && !set.isKeepTags
+                    !isKeepHeader && !isKeepTags
                         ? (
                             <el-scrollbar>
                                 {HeaderVNode}
@@ -32,12 +33,12 @@ export default defineComponent((_, { slots }) => {
                         )
                         : (
                             <>
-                                {set.isKeepHeader ? HeaderVNode : null}
-                                {set.isKeepTags ? TagsVNode : null}
+                                {isKeepHeader ? HeaderVNode : null}
+                                {isKeepTags ? TagsVNode : null}
                                 <el-main>
                                     <el-scrollbar>
-                                        {set.isKeepHeader ? null : HeaderVNode}
-                                        {set.isKeepTags ? null : TagsVNode}
+                                        {isKeepHeader ? null : HeaderVNode}
+                                        {isKeepTags ? null : TagsVNode}
                                         { slot }
                                     </el-scrollbar>
                                 </el-main>

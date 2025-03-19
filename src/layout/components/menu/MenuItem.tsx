@@ -35,19 +35,14 @@ export default defineComponent({
         return () => {
             const { routes } = props;
             return routes.map((route, index) => {
-                const title = route.title;
-                const menuItem = (
-                    <>
-                        {route?.icon ? <Icon icon={route.icon} size="16" /> : null}
-                        <span title={title}>{title}</span>
-                    </>
-                );
+                const icon = route?.icon ? <Icon icon={route.icon} size="16" /> : null;
+                const title = (<span>{route.title}</span>);
                 if(route.children && route.children?.length > 0) {
                     return (
                         <el-sub-menu index={route.path} key={index}>
                             {{
-                                title: () => menuItem,
-                                default: () => <menu-item routes={route.children} />,
+                                title: () => [icon, title],
+                                default: () => <menu-item routes={route.children} onMenuClick={onClick} />,
                             }}
                         </el-sub-menu>
                     );
@@ -58,7 +53,10 @@ export default defineComponent({
                         key={index}
                         onClick={() => onClick(route.path, route)}
                     >
-                        {menuItem}
+                        {{
+                            default: () => icon,
+                            title: () => title,
+                        }}
                     </el-menu-item>
                 );
             });

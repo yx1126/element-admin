@@ -32,7 +32,7 @@ export const staticRoutes: RouteRecordRaw[] = [
             name: "Iframe",
             component: () => import("@/views/iframe/index.vue"),
             meta: {
-                title: "{0}",
+                title: "{0|iframe}",
                 keepAlive: false,
             },
             children: [],

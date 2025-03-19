@@ -14,6 +14,9 @@ const pages = import.meta.glob([
 
 const PAGE_SUFFIX = [".vue", ".tsx", "/index.vue", "/index.tsx"];
 
+/**
+ * 解析路径
+ */
 function parsePath(data: MenuItem[]) {
     return data.reduce((pre, { path }) => {
         if(isLink(path)) path = encodeURIComponent(path);
@@ -24,8 +27,11 @@ function parsePath(data: MenuItem[]) {
     }, "");
 }
 
+/**
+ * 解析组件
+ */
 function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
-    if(isLink(menu.path)) {
+    if(menu.type === MenuType.LINK) {
         return pages["/src/views/iframe/index.vue"];
     }
     if(menu.type === MenuType.FOLDER) {
@@ -43,6 +49,9 @@ function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
     }
 }
 
+/**
+ * 格式化路由
+ */
 export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRecordRaw[] {
     return data.map(menu => {
         const route: RouteRecordRaw = {
@@ -53,6 +62,7 @@ export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRec
                 icon: menu.icon,
                 keepAlive: !!menu.keepAlive,
                 isIframe: !!menu.isIframe,
+                link: menu.link,
             },
             component: parseComponent(menu),
             children: parseRoute(menu.children, [...parents, menu]),
@@ -61,13 +71,31 @@ export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRec
     });
 }
 
+/**
+ * 格式化标题
+ * @example
+ * ```js
+ * const query = ["test", "test1"];
+ * const template = "{0}-{1}";
+ * formatMenuTitle(query, template);  // "test-test1"
+ *
+ * const template = "{0}-{1}-{2}";
+ * formatMenuTitle(query, template);  // "test-test1-"
+ *
+ * const template = "{0}-{1}-{2|test2}";
+ * formatMenuTitle(query, template);  // "test-test1-test2"
+ * ```
+ */
 export function formatMenuTitle(title: LocationQueryValue | LocationQueryValue[], template?: string) {
     const custom = isArray<LocationQueryValue[]>(title) ? title : [title];
-    return template?.replace(/\{(\d+)\}/g, (_, i) => {
-        return custom[i] || "";
+    return template?.replace(/\{(\d+)(\|(.*))?\}/g, (...args) => {
+        return custom[args[1]] || args[3] || "";
     });
 }
 
+/**
+ * 格式化菜单路径
+ */
 export function formatMenuList(data?: MenuItem[], parents: MenuItem[] = []) {
     return (data || []).reduce<MenuItem[]>((pre, menu) => {
         if(menu.visible) {
@@ -81,6 +109,9 @@ export function formatMenuList(data?: MenuItem[], parents: MenuItem[] = []) {
     }, []);
 }
 
+/**
+ * 菜单没有图标取上级图标
+ */
 export function parseIcon(data?: MenuItem[], parent?: Nullable<MenuItem>): MenuItem[] {
     return (data || []).map(v => ({
         ...v,

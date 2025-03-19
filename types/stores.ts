@@ -18,8 +18,10 @@ export interface SetState {
     layoutMode: LayoutMode;
     isShowLogo: boolean;
     isShowTabs: boolean;
+    isShowTabsIcon: boolean;
     uniqueMenuOpened: boolean;
     isShowBreadcrumb: boolean;
+    isShowBreadIcon: true;
     isKeepHeader: boolean;
     isKeepTags: boolean;
     isCutMenu: boolean;
@@ -31,6 +33,7 @@ export interface SetState {
     setPlacement: SetPlacement;
     isMenuFixed: boolean;
     isShowWatermark: boolean;
+    isMainFull: boolean;
 }
 
 export interface TagItem {

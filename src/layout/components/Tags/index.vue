@@ -11,6 +11,7 @@ defineOptions({
 const tagsRef = useTemplateRef("tagsRef");
 const dropdownRef = useTemplateRef("dropdownRef");
 const tags = useTagStore();
+const set = useSetStore();
 const route = useRoute();
 const router = useRouter();
 
@@ -21,6 +22,7 @@ const { t: $t } = useI18n({ useScope: "global" });
 useWindowResize(moveToCurrentTag, { lazy: 200 });
 
 const currentIndex = computed(() => tags.tagList.findIndex(v => v.path === route.fullPath));
+
 watch(() => route.fullPath, (fullPath, oldFullRoute) => {
     tags.setState("oldRoute", oldFullRoute || "");
     if(fullPath.startsWith("/redirect")) return;
@@ -38,6 +40,7 @@ watch(() => route.fullPath, (fullPath, oldFullRoute) => {
 }, {
     immediate: true,
 });
+
 function onClick(tag: TagItem) {
     router.push(tag.path);
 }
@@ -137,6 +140,10 @@ async function moveToCurrentTag() {
         });
     }
 }
+
+function onFullClick() {
+    set.setState("isMainFull", !set.isMainFull);
+}
 </script>
 
 <template>
@@ -152,7 +159,7 @@ async function moveToCurrentTag() {
                     @click.right="onRightClick($event, i)"
                     @close="onClose(tag, i)"
                 >
-                    <!-- <Icon v-if="tag.meta.icon" :icon="tag.meta.icon" /> -->
+                    <Icon v-if="set.isShowTabsIcon && tag.meta?.icon" :icon="tag.meta.icon" />
                     {{ tag.title }}
                 </el-tag>
             </template>
@@ -161,6 +168,8 @@ async function moveToCurrentTag() {
             <Icon class="tag-actions-icon" size="18" @click.stop="onRedirect">
                 <reload-outlined />
             </Icon>
+            <el-divider direction="vertical" />
+            <Icon class="tag-actions-icon" :icon="set.isMainFull ? 'unfull' : 'full'" size="18" @click.stop="onFullClick" />
             <el-divider direction="vertical" />
             <Icon class="tag-actions-icon" size="22" @click.stop="onMoreClick">
                 <more-outlined />
@@ -210,6 +219,11 @@ async function moveToCurrentTag() {
                 background-color: #0000;
                 border-color: rgba($color: #fff, $alpha: 0.24);
             }
+        }
+        :deep(.el-tag__content) {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
         }
     }
     &-actions {

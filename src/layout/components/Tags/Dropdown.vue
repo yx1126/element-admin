@@ -169,7 +169,7 @@ zh:
   right: 关闭右侧
   other: 关闭其他
   all: 关闭全部
-  remove: 移除固定
+  remove: 取消固定
   keep: 保持固定
   clear: 一键清除
 en:

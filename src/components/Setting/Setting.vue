@@ -108,8 +108,16 @@ function onReset() {
                     <el-switch v-model="set.isShowBreadcrumb" />
                 </div>
                 <div class="divider-content-item">
+                    <el-text>{{ t("isShowBreadIcon") }}</el-text>
+                    <el-switch v-model="set.isShowBreadIcon" />
+                </div>
+                <div class="divider-content-item">
                     <el-text>{{ t("isShowTabs") }}</el-text>
                     <el-switch v-model="set.isShowTabs" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isShowTabsIcon") }}</el-text>
+                    <el-switch v-model="set.isShowTabsIcon" />
                 </div>
                 <el-divider>{{ t("pageFunction") }}</el-divider>
                 <div class="divider-content-item">
@@ -225,7 +233,9 @@ zh:
   pageDisplay: 界面显示
   isShowLogo: 显示 Logo
   isShowBreadcrumb: 显示 面包屑
+  isShowBreadIcon: 显示 面包屑图标
   isShowTabs: 显示 标签页
+  isShowTabsIcon: 显示 标签页图标
   pageFunction: 界面功能
   isKeepHeader: 固定顶栏
   isKeepTags: 固定标签页
@@ -241,17 +251,19 @@ zh:
   setting: 设置位置
   watermark: 水印
 en:
-  title: Project configuration
+  title: Project Configuration
   navTheme: Theme
-  sysTheme: System theme
-  layoutMode: Navigation mode
+  sysTheme: System Theme
+  layoutMode: Navigation Mode
   pageDisplay: Page Display
-  isShowLogo: Show Logo
-  isShowBreadcrumb: Show Breadcrumb
-  isShowTabs: Show Tabs
+  isShowLogo: Show logo
+  isShowBreadcrumb: Show breadcrumb
+  isShowBreadIcon: Show breadcrumb icon
+  isShowTabs: Show tabs
+  isShowTabsIcon: Show tabs icon
   pageFunction: Page Function
   isKeepHeader: Fixed the top bar
-  isKeepTags: Fixed Tabs
+  isKeepTags: Fixed tabs
   isCutMenu: Split the menu
   uniqueMenuOpened: Keep a submenu open
   otherSet: Other Settings

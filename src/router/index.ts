@@ -1,7 +1,8 @@
-import { createRouter } from "vue-router";
+import { createRouter, type RouteLocationNormalizedGeneric } from "vue-router";
 import { createWebHistory } from "vue-router";
 import Nprogress from "nprogress";
 import "nprogress/nprogress.css";
+import { formatMenuTitle } from "@/utils/route";
 import { staticRoutes } from "./staticRoutes";
 
 const router = createRouter({
@@ -11,11 +12,24 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach(async (to, from, next) => {
+function getTitle(to: RouteLocationNormalizedGeneric) {
+    const current = to.matched.at(-1) as any;
+    const before = [...to.matched.slice(0, -1)];
+    before.push({
+        ...current,
+        meta: {
+            ...current?.meta,
+            title: formatMenuTitle(to.query.tagName, to?.meta.title) || to?.meta.title,
+        },
+    });
+    return before.map(r => r.meta.title).filter(v => v).reverse().join("-");
+}
+
+router.beforeEach(async (to, _, next) => {
     try {
         Nprogress.start();
         const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
-        title.value = to.matched.map(r => r.meta.title).filter(v => v).reverse().join("-");
+        title.value = getTitle(to);
         const route = useUserStore();
         if(route.routerList.length > 0) {
             next();

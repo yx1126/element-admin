@@ -15,33 +15,44 @@ export default defineComponent((_, { slots }) => {
         return navMode === "inverted" ? inverted ? "inverted" : "light" : navMode;
     });
     return () => {
+        const {
+            inverted,
+            navMode,
+            isKeepHeader,
+            isKeepTags,
+            isShowBreadcrumb,
+            isShowTabs,
+            isShowLogo,
+            collapsed,
+            isMainFull,
+        } = set;
         const { headerHeight, tagsHeight, menuWidth } = LayoutConfig;
         const HeaderVNode = (
-            <el-header height={headerHeight + "px"}>
+            <el-header v-show={!isMainFull} height={headerHeight + "px"}>
                 <Header theme={headerTheme.value}>
                     <Collapse
-                        inverted={set.inverted}
+                        inverted={inverted}
                         width={headerHeight}
                         height={headerHeight}
                         collapsedWidth={headerHeight}
                     />
-                    { set.isShowBreadcrumb ? <Breadcrumb inverted={set.inverted && set.navMode === "inverted"} /> : null }
+                    { isShowBreadcrumb ? <Breadcrumb inverted={inverted && navMode === "inverted"} /> : null }
                 </Header>
             </el-header>
         );
-        const TagsVNode = (set.isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
+        const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
         const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container">
-                <el-aside class="layout-aside">
-                    {set.isShowLogo ? <Logo collapsed={set.collapsed} width={menuWidth} indent={16} /> : null}
-                    <el-scrollbar class={{ "layout-aside-scrollbar": set.isShowLogo }}>
-                        <Menu collapse={set.collapsed} />
+                <el-aside v-show={!isMainFull} class="layout-aside">
+                    {isShowLogo ? <Logo collapsed={collapsed} width={menuWidth} indent={16} /> : null}
+                    <el-scrollbar class={{ "layout-aside-scrollbar": isShowLogo }}>
+                        <Menu collapse={collapsed} />
                     </el-scrollbar>
                 </el-aside>
                 <el-container direction="vertical">
                     {
-                        !set.isKeepHeader && !set.isKeepTags
+                        !isKeepHeader && !isKeepTags
                             ? (
                                 <el-scrollbar>
                                     {HeaderVNode}
@@ -51,12 +62,12 @@ export default defineComponent((_, { slots }) => {
                             )
                             : (
                                 <>
-                                    {set.isKeepHeader ? HeaderVNode : null}
-                                    {set.isKeepTags ? TagsVNode : null}
+                                    {isKeepHeader ? HeaderVNode : null}
+                                    {isKeepTags ? TagsVNode : null}
                                     <el-main>
                                         <el-scrollbar>
-                                            {set.isKeepHeader ? null : HeaderVNode}
-                                            {set.isKeepTags ? null : TagsVNode}
+                                            {isKeepHeader ? null : HeaderVNode}
+                                            {isKeepTags ? null : TagsVNode}
                                             { slot }
                                         </el-scrollbar>
                                     </el-main>

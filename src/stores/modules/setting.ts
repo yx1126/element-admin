@@ -6,11 +6,13 @@ const defaultSetting: SetState = {
     isShowDrawer: false, // 全局设置
     themeColor: "#409EFF", // 系统主题
     navMode: "inverted", // 导航模式
-    layoutMode: "aside",
+    layoutMode: "aside", // 分栏模式
     isShowLogo: true, // 显示 logo
     isShowTabs: true, // 显示 标签页
+    isShowTabsIcon: true, // 显示 标签页图标
     uniqueMenuOpened: true, // 菜单单选
     isShowBreadcrumb: true, // 显示 面包屑
+    isShowBreadIcon: true, // 显示 面包屑图标
     isKeepHeader: true, // 固定 顶栏
     isKeepTags: true, // 固定 标签页
     isCutMenu: false, // 切割菜单
@@ -20,8 +22,9 @@ const defaultSetting: SetState = {
     inverted: false, // 反转颜色
     asideMixinCollapsed: false, // asideMixin 布局 子菜单折叠
     setPlacement: "default", // 设置位置
-    isMenuFixed: false,
-    isShowWatermark: true,
+    isMenuFixed: false, // 是否固定侧边菜单
+    isShowWatermark: true, // 是否显示水印
+    isMainFull: false, // 是否显示侧边栏和标题
 };
 
 export const useSetStore = defineStore("setting", () => {

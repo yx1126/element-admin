@@ -60,9 +60,8 @@ const defaultActive = computed(() => {
 const themeType = computed(() => theme ?? set.navMode);
 
 function onMenuSelect(index: string, menu: MenuItemType) {
-    const link = decodeURIComponent(index).slice(1);
-    if(isLink(link) && !menu.isIframe) {
-        window.open(link);
+    if(isLink(index) && !menu.isIframe) {
+        window.open(index);
         return;
     }
     router.push(index);
@@ -112,7 +111,9 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
                 @mouseenter="onMouseenter(menu, i, $event)"
             >
                 <Icon v-if="menu.icon" :icon="menu.icon" size="16" />
-                <span :title="menu.title">{{ menu.title }}</span>
+                <template #title>
+                    <span>{{ menu.title }}</span>
+                </template>
             </el-menu-item>
         </template>
     </el-menu>
@@ -145,7 +146,7 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
         width: var(--menu-width);
         max-width: var(--menu-width);
     }
-    :deep(.el-menu) {
+    .el-menu {
         background-color: transparent;
     }
     @extend %bg-color;

@@ -17,49 +17,51 @@ export default defineComponent((_, { slots }) => {
     const { isHidden } = useIsHideAside();
     return () => {
         const { headerHeight, tagsHeight, menuWidth } = LayoutConfig;
-        const TagsVNode = (set.isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
+        const { navMode, isKeepTags, isShowTabs, isShowLogo, isShowBreadcrumb, isCutMenu, inverted, collapsed, isMainFull } = set;
+        const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
         const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container">
-                <el-header height={headerHeight + "px"}>
-                    <Header theme={set.navMode}>
-                        {set.isShowLogo ? <Logo indent={16} /> : null}
+                <el-header v-show={!isMainFull} height={headerHeight + "px"}>
+                    <Header theme={navMode}>
+                        {isShowLogo ? <Logo indent={16} /> : null}
                         {
-                            set.isCutMenu
+                            isCutMenu
                                 ? (
                                     <Menu
                                         class="layout-header-menu"
                                         type="root"
                                         mode="horizontal"
-                                        style={`--menu-width: ${set.isShowLogo ? 200 : 0}px`}
+                                        style={`--menu-width: ${isShowLogo ? 200 : 0}px`}
                                     />
                                 )
-                                : set.isShowBreadcrumb && !set.isCutMenu
-                                    ? <Breadcrumb inverted={set.navMode === "inverted"} />
+                                : isShowBreadcrumb && !isCutMenu
+                                    ? <Breadcrumb inverted={navMode === "inverted"} />
                                     : null
                         }
                     </Header>
                 </el-header>
                 <el-container class="layout-container-main">
                     <el-aside
+                        v-show={!isMainFull}
                         class={
                             [
                                 "layout-aside",
                                 {
-                                    "is-inverted": set.inverted && set.navMode === "inverted",
+                                    "is-inverted": inverted && navMode === "inverted",
                                 },
                             ]
                         }
-                        style={{ "--el-aside-width": `${isHidden.value ? 0 : set.collapsed ? 64 : menuWidth}px` }}
+                        style={{ "--el-aside-width": `${isHidden.value ? 0 : collapsed ? 64 : menuWidth}px` }}
                     >
                         <el-scrollbar class="layout-aside-scrollbar">
-                            <Menu collapse={set.collapsed} theme={menuTheme.value} type={set.isCutMenu ? "children" : "default"} />
+                            <Menu collapse={collapsed} theme={menuTheme.value} type={isCutMenu ? "children" : "default"} />
                         </el-scrollbar>
-                        <Collapse inverted={set.inverted} collapsedWidth={64} width={menuWidth} border="top" />
+                        <Collapse inverted={inverted} collapsedWidth={64} width={menuWidth} border="top" />
                     </el-aside>
                     <el-container direction="vertical">
                         {
-                            set.isKeepTags
+                            isKeepTags
                                 ? (
                                     <>
                                         {TagsVNode}

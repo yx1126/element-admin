@@ -2,13 +2,30 @@
 import IconSelect from "@/components/IconSelect";
 import LazyInput from "@/components/LazyInput";
 
+const router = useRouter();
+
 const icon = ref("");
 
 const lazyValue = ref("");
+
+function onClick() {
+    router.push({
+        path: "/iframe/" + encodeURIComponent("https://www.baidu.com/"),
+        query: { tagName: "百度" },
+    });
+}
+function onClick2() {
+    router.push({
+        path: "/iframe/" + encodeURIComponent("https://juejin.cn/frontend"),
+        query: { tagName: "稀土掘金" },
+    });
+}
 </script>
 
 <template>
     <div>
+        <el-button @click="onClick">baidu iframe</el-button>
+        <el-button @click="onClick2">juejin iframe</el-button>
         <div class="">
             workbench
         </div>
