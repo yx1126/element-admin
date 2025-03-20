@@ -1,3 +1,5 @@
+import type { MaybeRef, MaybeRefOrGetter } from "vue";
+
 export {};
 
 declare global {
@@ -30,5 +32,11 @@ declare global {
 
     export type DeepWritable<T> = {
         -readonly [P in keyof T]: T[P] extends object ? DeepWritable<T[P]> : T[P];
+    };
+
+    export type UnRef<T> = T extends MaybeRef<infer V> ? V : T extends MaybeRefOrGetter<infer CV> ? CV : T;
+
+    export type UnRefable<T extends object> = {
+        [K in keyof T]: UnRef<T[K]>
     };
 }

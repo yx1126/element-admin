@@ -4,6 +4,7 @@
         "dbaeumer.vscode-eslint",
         "lokalise.i18n-ally",
         "reallyx.vscode-location",
-        "reallyx.vscode-ui"
+        "reallyx.vscode-ui",
+        "antfu.unocss"
     ]
 }

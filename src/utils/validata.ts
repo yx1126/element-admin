@@ -10,7 +10,7 @@ const EMAIL_REG = /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/;
 
 const PHONE_LIST: readonly string[] = ["Android", "iPhone", "Windows Phone", "SymbianOS", "iPad", "iPod", "BlackBerry", "MeeGo", "HarmonyOS"];
 
-function toString(val: unknown) {
+function callToString(val: unknown) {
     return Object.prototype.toString.call(val);
 }
 
@@ -19,7 +19,7 @@ export function isNum(val: unknown): val is number {
 }
 
 export function isObject<T extends object>(val: unknown): val is T {
-    return toString(val) === "[object Object]";
+    return callToString(val) === "[object Object]";
 }
 
 export function isStr(val: unknown): val is string {
@@ -35,7 +35,7 @@ export function isFn<T extends Function>(val: unknown): val is T {
 }
 
 export function isDate(val: unknown): val is Date {
-    return toString(val) === "[object Date]";
+    return callToString(val) === "[object Date]";
 }
 
 export function isBoolean(val: unknown): val is boolean {
@@ -51,7 +51,7 @@ export function isPromise<T = any>(val: unknown): val is Promise<T> {
 }
 
 export function isRegExp(val: unknown) {
-    return toString(val) === "[object RegExp]";
+    return callToString(val) === "[object RegExp]";
 }
 
 export function isNull(val: unknown) {
@@ -98,4 +98,8 @@ export function isEmail(val: string) {
 
 export function isMobile() {
     return PHONE_LIST.some(item => navigator.userAgent.includes(item));
+}
+
+export function toString(val: unknown) {
+    return val?.toString ? val.toString() : String(val);
 }

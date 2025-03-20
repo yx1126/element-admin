@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Echarts from "@/components/Echarts";
-import { lineOptions, gaugeOptions, pieOptions, barOptions, lineOptions2 } from "./echarts";
+import CountTo from "@/components/CountTo";
+import { lineOptions, gaugeOptions, pieOptions, barOptions, lineOptions2 } from "../echarts";
 
 defineOptions({
     name: "Console",
@@ -26,7 +27,7 @@ const cardPanels = [
                         <div>
                             <div class="leading-[18px] text-[16px] text-right mb-[12px]">{{ item.title }}</div>
                             <div class="text-[20px] text-right">
-                                <el-statistic :value="item.value" />
+                                <count-to :value="item.value" :options="{ duration: 1000 }" />
                             </div>
                         </div>
                     </div>

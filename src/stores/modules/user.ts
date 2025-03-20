@@ -10,7 +10,7 @@ export const useUserStore = defineStore("user", () => {
         routerList: [],
         userInfo: {
             username: "admin",
-            nickName: "admin",
+            nickName: "Admin",
             sex: 1,
             avatar: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
         },

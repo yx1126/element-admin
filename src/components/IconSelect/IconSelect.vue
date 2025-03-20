@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import Icon from "@/components/GlobalRegister/Icon";
 import LazyInput from "@/components/LazyInput";
 import type { PopoverProps } from "./";
 import IconList from "./IconList.vue";
