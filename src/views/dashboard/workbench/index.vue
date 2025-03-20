@@ -28,7 +28,7 @@ const underwayList = ref([
                 <div class="flex items-center flex-1">
                     <el-avatar :size="64" :src="user.userInfo?.avatar" />
                     <div class="ml-5">
-                        <p class="m-0 text-[20px] c-[#333]">{{ t("salutation", [user.userInfo?.nickName]) }}</p>
+                        <p class="m-0 text-[20px] c-[#333] dark:c-white">{{ t("salutation", [user.userInfo?.nickName]) }}</p>
                         <p class="m-0 text-[14px] text-gray-400">{{ t("weather") }}</p>
                     </div>
                 </div>
@@ -129,6 +129,9 @@ const underwayList = ref([
             margin-top: 4px;
             font-size: 24px;
             color: #333639;
+            @include when-dark {
+                color: #fff;
+            }
         }
     }
     .project-card {

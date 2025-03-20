@@ -1,4 +1,6 @@
-export const lineOptions = {
+import type { EChartsOption } from "echarts";
+
+export const lineOptions: EChartsOption = {
     title: {
         text: "Stacked Line",
     },
@@ -61,7 +63,7 @@ export const lineOptions = {
     ],
 };
 
-export const gaugeOptions = {
+export const gaugeOptions: EChartsOption = {
     series: [
         {
             type: "gauge",
@@ -171,7 +173,7 @@ export const gaugeOptions = {
     ],
 };
 
-export const pieOptions = {
+export const pieOptions: EChartsOption = {
     tooltip: {
         trigger: "item",
         formatter: "{a} <br/>{b} : {c} ({d}%)",
@@ -201,7 +203,7 @@ export const pieOptions = {
     ],
 };
 
-export const barOptions = {
+export const barOptions: EChartsOption = {
     tooltip: {
         trigger: "axis",
         axisPointer: { // 坐标轴指示器，坐标轴触发有效
@@ -252,7 +254,7 @@ export const barOptions = {
     }],
 };
 
-export const lineOptions2 = {
+export const lineOptions2: EChartsOption = {
     xAxis: {
         data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
         boundaryGap: false,
@@ -283,15 +285,7 @@ export const lineOptions2 = {
         data: ["expected", "actual"],
     },
     series: [{
-        name: "expected", itemStyle: {
-            directly: {
-                color: "#FF005A",
-                lineStyle: {
-                    color: "#FF005A",
-                    width: 2,
-                },
-            },
-        },
+        name: "expected",
         smooth: true,
         type: "line",
         data: [100, 120, 161, 134, 105, 160, 165],
@@ -302,18 +296,6 @@ export const lineOptions2 = {
         name: "actual",
         smooth: true,
         type: "line",
-        itemStyle: {
-            directly: {
-                color: "#3888fa",
-                lineStyle: {
-                    color: "#3888fa",
-                    width: 2,
-                },
-                areaStyle: {
-                    color: "#f3f8ff",
-                },
-            },
-        },
         data: [120, 82, 91, 154, 162, 140, 145],
         animationDuration: 1000,
         animationEasing: "quadraticOut",
@@ -334,7 +316,7 @@ function contains(arrays: any[], obj: any) {
     return false;
 }
 
-export const radarOptions = {
+export const radarOptions: EChartsOption = {
     backgroundColor: "transparent",
     tooltip: {
         show: true,
@@ -393,17 +375,12 @@ export const radarOptions = {
                 color: "#3299FD30", // 设置网格的颜色
             },
         },
-    },
+    } as any,
     series: [
         {
             name: "报警类型分析",
             type: "radar",
             symbol: "circle",
-            itemStyle: {
-                areaStyle: {
-                    type: "default",
-                },
-            },
             data: [
                 {
                     symbol: "none",

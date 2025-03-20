@@ -1,13 +1,14 @@
 <script lang="ts" setup>
 import * as Echarts from "echarts";
-import type { EChartsCoreOption, ECharts as EchartsInstance } from "echarts";
+import { useResizeObserver } from "@vueuse/core";
+import type { EChartsOption, ECharts as EchartsInstance } from "echarts";
 
 const {
     options,
     renderer = "canvas",
     dark,
 } = defineProps<{
-    options: EChartsCoreOption;
+    options: EChartsOption;
     renderer?: "svg" | "canvas";
     dark?: boolean;
 }>();
@@ -17,33 +18,24 @@ const set = useSetStore();
 const echartsRef = useTemplateRef("echartsRef");
 const echarts = shallowRef<Nullable<EchartsInstance>>(null);
 
-const defaultOptions = computed(() => {
-    return {
-        backgroundColor: dark ? undefined : "transparent",
-        ...options,
-    };
+useResizeObserver(echartsRef, onResize);
+
+watch(() => options, value => {
+    setOption(value);
+}, {
+    deep: true,
+    immediate: true,
+    flush: "post",
 });
 
-watch([() => set.collapsed, () => set.asideMixinCollapsed], () => {
-    setTimeout(() => {
-        refresh();
-    }, 300);
-});
-
-watch(() => options, options => {
-    echarts.value?.setOption(options);
-});
-
-watch([() => renderer, () => dark, () => set.navMode], () => {
+watch(() => [renderer, dark], () => {
     if(dark) return;
     init();
 });
 
-onMounted(() => {
-    init();
-});
+onMounted(init);
 
-onUnmounted(() => {
+onScopeDispose(() => {
     if(echarts.value) echarts.value.dispose();
 });
 
@@ -52,30 +44,35 @@ function init() {
     echarts.value = Echarts.init(echartsRef.value!, dark ? "dark" : set.navMode === "dark" ? "dark" : undefined, {
         renderer: renderer,
     });
-    echarts.value.setOption(defaultOptions.value);
-    if(set.layoutMode === "asideMixin") {
-        setTimeout(resize, 300);
-    }
+    setOption(options);
 }
 
-function refresh() {
-    clear();
-    resize();
-    echarts.value?.setOption(defaultOptions.value);
+function setOption(options?: EChartsOption) {
+    echarts.value?.setOption({
+        backgroundColor: dark ? undefined : "transparent",
+        ...options,
+    });
 }
 
-function resize() {
+function onRefresh() {
+    onClear();
+    onResize();
+    setOption(options);
+}
+
+function onResize() {
     echarts.value?.resize();
 }
 
-function clear() {
+function onClear() {
     echarts.value?.clear();
 }
 
 defineExpose({
-    refresh,
-    resize,
-    clear,
+    onRefresh,
+    onResize,
+    onClear,
+    setOption,
     instance: echarts,
 });
 </script>

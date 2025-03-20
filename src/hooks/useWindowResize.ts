@@ -4,6 +4,7 @@ interface ResizeFn {
     (ev: UIEvent): void;
     cancel?: () => void;
 };
+
 const fnList: ResizeFn[] = [];
 
 let windowFn: Nullable<ResizeFn> = null;
@@ -15,6 +16,10 @@ interface Options {
 
 export function useWindowResize(fn: ResizeFn, options?: Options) {
     const { options: _options, lazy } = options || {};
+
+    const width = ref(window.innerWidth);
+    const height = ref(window.innerHeight);
+
     if(lazy) {
         fn = debounce(fn, lazy);
     }
@@ -25,6 +30,8 @@ export function useWindowResize(fn: ResizeFn, options?: Options) {
 
     if(!windowFn) {
         windowFn = (e: UIEvent) => {
+            width.value = window.innerWidth;
+            height.value = window.innerHeight;
             fnList.forEach(f => f.call(window, e));
         };
         window.addEventListener("resize", windowFn, _options);
@@ -47,6 +54,8 @@ export function useWindowResize(fn: ResizeFn, options?: Options) {
     onScopeDispose(stop);
 
     return {
+        width,
+        height,
         stop,
     };
 }

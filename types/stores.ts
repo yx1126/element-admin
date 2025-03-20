@@ -28,7 +28,6 @@ export interface SetState {
     routerTrans: RouterTrans;
     lang: Lang;
     collapsed: boolean;
-    asideMixinCollapsed: boolean;
     inverted: boolean;
     setPlacement: SetPlacement;
     isMenuFixed: boolean;

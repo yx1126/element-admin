@@ -20,7 +20,6 @@ const defaultSetting: SetState = {
     lang: "zh", // 语言
     collapsed: false, // 菜单折叠
     inverted: false, // 反转颜色
-    asideMixinCollapsed: false, // asideMixin 布局 子菜单折叠
     setPlacement: "default", // 设置位置
     isMenuFixed: false, // 是否固定侧边菜单
     isShowWatermark: true, // 是否显示水印
