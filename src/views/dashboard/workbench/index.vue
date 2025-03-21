@@ -51,7 +51,7 @@ const underwayList = ref([
             </div>
         </el-card>
         <div class="grid grid-cols-[16fr_8fr] gap-[12px]">
-            <div>
+            <div class="overflow-auto">
                 <el-card class="mt-12px no-padding" shadow="never">
                     <template #header>
                         <div class="flex justify-between items-center">
@@ -81,7 +81,7 @@ const underwayList = ref([
                     <to-do-list />
                 </el-card>
             </div>
-            <div>
+            <div class="overflow-auto">
                 <el-card class="no-padding mt-[12px]" :header="t('card3-title')" shadow="never">
                     <el-carousel trigger="click" height="240px">
                         <el-carousel-item>

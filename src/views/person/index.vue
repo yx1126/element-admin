@@ -95,10 +95,10 @@ function onEditPwd() {
                                 require-asterisk-position="right"
                             >
                                 <el-form-item prop="username" :label="t('username2')">
-                                    <el-input v-model="form.username" :placeholder="$t('input', { value: t('username2') })" readonly />
+                                    <el-input v-model="form.username" :placeholder="$t('input', [t('username2')])" readonly />
                                 </el-form-item>
                                 <el-form-item prop="nickName" :label="t('nickname2')">
-                                    <el-input v-model="form.nickName" :placeholder="$t('input', { value: t('nickname2') })" clearable />
+                                    <el-input v-model="form.nickName" :placeholder="$t('input', [t('nickname2')])" clearable />
                                 </el-form-item>
                                 <el-form-item prop="sex" :label="t('sex')">
                                     <el-radio-group v-model="form.sex">
@@ -108,10 +108,10 @@ function onEditPwd() {
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item prop="email" :label="t('email2')">
-                                    <el-input v-model="form.email" :placeholder="$t('input', { value: t('email2') })" clearable />
+                                    <el-input v-model="form.email" :placeholder="$t('input', [t('email2')])" clearable />
                                 </el-form-item>
                                 <el-form-item prop="description" :label="t('personalProfile')">
-                                    <el-input v-model="form.description" type="textarea" :placeholder="$t('input', { value: t('personalProfile') })" clearable />
+                                    <el-input v-model="form.description" type="textarea" :placeholder="$t('input', [t('personalProfile')])" clearable />
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit">{{ $t('button.save') }}</el-button>

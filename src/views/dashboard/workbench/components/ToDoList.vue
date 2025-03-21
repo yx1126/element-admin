@@ -40,7 +40,7 @@ const toDoList = ref<ToDoThings[]>([
                 <el-tag :type="row.isFinish ? 'success' : 'danger'">{{ row.isFinish ? "已完成" : "未完成" }}</el-tag>
             </template>
         </el-table-column>
-        <el-table-column width="120" align="center">
+        <el-table-column width="100" align="center" fixed="right">
             <template #default="{ $index }">
                 <Icon class="pointer" @click="toDoList.splice($index, 1)"><close-outlined /></Icon>
             </template>

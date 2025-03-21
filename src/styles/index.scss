@@ -53,6 +53,7 @@ body,
 #app {
     height: 100%;
     overflow: hidden;
+    will-change: background, background-color;
 }
 
 ul {
@@ -76,6 +77,16 @@ a {
     }
 }
 
-.el-card.no-padding > .el-card__body {
-    padding: 0;
+.el-card {
+    &.no-padding > .el-card__body {
+        padding: 0;
+    }
+    &.no-border {
+        .el-card__header {
+            border-bottom: none;
+        }
+        .el-card__footer {
+            border-top: none;
+        }
+    }
 }

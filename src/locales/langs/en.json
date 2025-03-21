@@ -1,6 +1,6 @@
 {
-    "input": "Please input {value}",
-    "select": "Please select {value}",
+    "input": "Please input {0}",
+    "select": "Please select {0}",
     "tip": "Tip",
     "button": {
         "edit": "Edit",

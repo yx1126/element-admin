@@ -69,10 +69,10 @@ defineExpose({
     >
         <el-form ref="formRef" :model="form" :rules="rules" label-position="top" label-suffix="：" autocomplete="off">
             <el-form-item :label="t('oldPwd')" prop="password">
-                <el-input v-model="form.password" type="password" :placeholder="$t('input', { value: t('oldPwd') })" show-password clearable />
+                <el-input v-model="form.password" type="password" :placeholder="$t('input', [t('oldPwd')])" show-password clearable />
             </el-form-item>
             <el-form-item :label="t('newPwd')" prop="newPwd">
-                <el-input v-model="form.newPwd" type="password" :placeholder="$t('input', { value: t('newPwd') })" show-password clearable />
+                <el-input v-model="form.newPwd" type="password" :placeholder="$t('input', [t('newPwd')])" show-password clearable />
             </el-form-item>
             <el-form-item :label="t('conifrm')" prop="confirmPwd">
                 <el-input v-model="form.confirmPwd" type="password" :placeholder="t('conifrm2')" show-password clearable />

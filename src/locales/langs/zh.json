@@ -1,6 +1,6 @@
 {
-    "input": "请输入{value}",
-    "select": "请选择{value}",
+    "input": "请输入{0}",
+    "select": "请选择{0}",
     "tip": "提示",
     "button": {
         "edit": "修改",
