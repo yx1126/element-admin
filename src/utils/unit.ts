@@ -1,7 +1,7 @@
 import { isNum, isStr } from "./validata";
 
-export function parseUnit(val: Empty<string | number>, defaultValue?: string | number) {
-    if(!val && !isNum(val)) val = defaultValue;
+export function parseUnit(val?: unknown, defaultValue?: string | number) {
+    if(!val && val !== 0) val = defaultValue;
     if(isNum(val) || (isStr(val) && /^\d+$/.test(val))) {
         return val + "px";
     }

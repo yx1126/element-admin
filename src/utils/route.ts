@@ -113,11 +113,14 @@ export function formatMenuList(data?: MenuItem[], parents: MenuItem[] = []) {
  * 菜单没有图标取上级图标
  */
 export function parseIcon(data?: MenuItem[], parent?: Nullable<MenuItem>): MenuItem[] {
-    return (data || []).map(v => ({
-        ...v,
-        icon: v?.icon || parent?.icon,
-        children: parseIcon(v.children, v),
-    }));
+    return (data || []).map(v => {
+        const icon = v?.icon || parent?.icon;
+        return {
+            ...v,
+            icon,
+            children: parseIcon(v.children, { ...v, icon }),
+        };
+    });
 }
 
 export function getRedirectPath(data: RouteRecordRaw[] | MenuItem[]) {

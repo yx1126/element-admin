@@ -9,6 +9,9 @@ export default defineConfig({
     ],
     transformers: [],
     rules: [
-        [/^(c|text)-(primary|success|info|warning|danger)$/, ([,,type]) => ({ color: `var(--el-color-${type})` })],
+        [
+            /^(c|text)-(primary|success|info|warning|danger)$/,
+            ([,,type]) => ({ color: `var(--el-color-${type})` }),
+        ],
     ],
 });

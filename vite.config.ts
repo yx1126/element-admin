@@ -9,6 +9,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import { defineConfig } from "vite";
 import VitePluginSvgIcon from "./scripts/build-icons";
 // import VueDevTools from "vite-plugin-vue-devtools";
+import pkg from "./package.json";
 
 function resolve(path: string) {
     return fileURLToPath(new URL(path, import.meta.url));
@@ -51,7 +52,7 @@ export default defineConfig({
         // VueDevTools(),
     ],
     optimizeDeps: {
-        include: ["lodash-es", "mitt", "screenfull"],
+        include: [...Object.keys(pkg.dependencies)],
     },
     server: {
         host: "0.0.0.0",

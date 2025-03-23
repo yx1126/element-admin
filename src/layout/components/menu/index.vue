@@ -60,8 +60,8 @@ const defaultActive = computed(() => {
 const themeType = computed(() => theme ?? set.navMode);
 
 function onMenuSelect(index: string, menu: MenuItemType) {
-    if(isLink(index) && !menu.isIframe) {
-        window.open(index);
+    if(isLink(menu.link) && !menu.isIframe) {
+        window.open(menu.link);
         return;
     }
     router.push(index);

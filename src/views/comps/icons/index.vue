@@ -17,8 +17,7 @@ const iconName = ref("");
 const tabsActive = ref<"element" | "local" | "">("");
 const copyType = ref(false);
 
-const code = `
-<script setup lang="ts">
+const code = `<script setup lang="ts">
 import { ref } from "vue";
 import IconSelect from "@/components/IconSelect";
 
@@ -28,7 +27,6 @@ const selectIcon = ref("");
 <template>
     <icon-select v-model="selectIcon" class="w-240px" clearable />
 </template>
-
 `;
 
 const iconList = computed(() => {
