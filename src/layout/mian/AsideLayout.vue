@@ -5,7 +5,7 @@ import Menu from "../components/menu/index.vue";
 import Logo from "../components/Logo.vue";
 import Collapse from "../components/Collapse.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
-import { LayoutConfig } from "@/config";
+import { Configs } from "@/config";
 import type { NavTheme } from "#/stores";
 
 export default defineComponent((_, { slots }) => {
@@ -26,7 +26,7 @@ export default defineComponent((_, { slots }) => {
             collapsed,
             isMainFull,
         } = set;
-        const { headerHeight, tagsHeight, menuWidth } = LayoutConfig;
+        const { headerHeight, tagsHeight, menuWidth } = Configs;
         const HeaderVNode = (
             <el-header v-show={!isMainFull} height={headerHeight + "px"}>
                 <Header theme={headerTheme.value}>

@@ -6,7 +6,7 @@ import Logo from "../components/Logo.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import Collapse from "../components/Collapse.vue";
 import { useIsHideAside } from "../components/menu/MenuItem";
-import { LayoutConfig } from "@/config";
+import { Configs } from "@/config";
 import { useZIndex } from "element-plus";
 import { Transition } from "vue";
 import { parseIcon } from "@/utils/route";
@@ -52,7 +52,7 @@ export default defineComponent((_, { slots }) => {
     }
 
     return () => {
-        const { headerHeight, tagsHeight } = LayoutConfig;
+        const { headerHeight, tagsHeight } = Configs;
         const { navMode, collapsed, inverted, isShowTabs, isShowLogo, isKeepTags, isShowBreadcrumb, isMenuFixed, isMainFull } = set;
         const HeaderVNode = (
             <el-header v-show={!isMainFull} height={headerHeight + "px"}>

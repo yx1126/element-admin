@@ -12,6 +12,9 @@ trim_trailing_whitespace = true
 insert_final_newline = false
 tab_width = 4
 
+[*.{yml,yaml}]
+indent_size = 2
+
 [*.md]
 insert_final_newline = false
 trim_trailing_whitespace = false

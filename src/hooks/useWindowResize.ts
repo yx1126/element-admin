@@ -20,13 +20,10 @@ export function useWindowResize(fn: ResizeFn, options?: Options) {
     const width = ref(window.innerWidth);
     const height = ref(window.innerHeight);
 
-    if(lazy) {
-        fn = debounce(fn, lazy);
-    }
+    if(lazy) fn = debounce(fn, lazy);
+
     const index = fnList.findIndex(v => v === fn);
-    if(index === -1) {
-        fnList.push(fn);
-    }
+    if(index === -1) fnList.push(fn);
 
     if(!windowFn) {
         windowFn = (e: UIEvent) => {

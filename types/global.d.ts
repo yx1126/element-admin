@@ -1,4 +1,4 @@
-import type { MaybeRef, MaybeRefOrGetter } from "vue";
+import type { MaybeRef, MaybeRefOrGetter, VNode } from "vue";
 
 export {};
 
@@ -38,5 +38,9 @@ declare global {
 
     export type UnRefable<T extends object> = {
         [K in keyof T]: UnRef<T[K]>
+    };
+
+    export type Slotsable<T extends string> = {
+        [K in T]?: () => VNode[];
     };
 }

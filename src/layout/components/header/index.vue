@@ -5,7 +5,6 @@ import UpdatePwd from "./UpdatePwd.vue";
 import { parseUnit } from "@/utils/unit";
 import LangSelect from "@/components/LangSelect";
 import Search from "./Search.vue";
-import type { VNode } from "vue";
 import type { NavTheme } from "#/stores";
 
 const { height } = defineProps<{
@@ -13,9 +12,7 @@ const { height } = defineProps<{
     theme?: NavTheme;
 }>();
 
-defineSlots<{
-    default?: () => VNode[];
-}>();
+defineSlots<Slotsable<"default">>();
 
 const { t } = useI18n();
 const router = useRouter();

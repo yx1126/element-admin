@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { LangMap } from "@/locales";
 import Setting from "@/components/Setting";
-import { buttonConfig, messageConfig, LayoutConfig } from "./config";
+import { Configs } from "./config";
 
 const { lang } = useLocales({ immediate: true });
 const set = useSetStore();
@@ -13,7 +13,7 @@ const local = computed(() => {
 });
 
 onBeforeMount(() => {
-    const { headerHeight, tagsHeight } = LayoutConfig;
+    const { headerHeight, tagsHeight } = Configs;
     const root = document.documentElement;
     root.style.setProperty("--header-height", headerHeight + "px");
     root.style.setProperty("--tags-height", tagsHeight + "px");
@@ -21,7 +21,7 @@ onBeforeMount(() => {
 </script>
 
 <template>
-    <el-config-provider :locale="local" :button="buttonConfig" :message="messageConfig">
+    <el-config-provider :locale="local" v-bind="Configs.elConfigProvide">
         <router-view />
         <el-watermark v-if="set.isShowWatermark" class="h-[100%] watermark" :content="title" />
         <Setting />

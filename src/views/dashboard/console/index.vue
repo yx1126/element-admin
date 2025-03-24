@@ -27,7 +27,7 @@ const cardPanels = [
                         <div>
                             <div class="leading-[18px] text-[16px] text-right mb-[12px]">{{ item.title }}</div>
                             <div class="text-[20px] text-right">
-                                <count-to :value="item.value" :options="{ duration: 1000 }" />
+                                <count-to :value="item.value" :duration="1000" />
                             </div>
                         </div>
                     </div>

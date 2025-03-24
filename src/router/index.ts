@@ -1,12 +1,14 @@
 import { createRouter, type RouteLocationNormalizedGeneric } from "vue-router";
-import { createWebHistory } from "vue-router";
+import { createWebHashHistory } from "vue-router";
 import Nprogress from "nprogress";
 import "nprogress/nprogress.css";
 import { formatMenuTitle } from "@/utils/route";
 import { staticRoutes } from "./staticRoutes";
+import { Configs } from "@/config";
 
 const router = createRouter({
-    history: createWebHistory(import.meta.env.BASE_URL),
+    history: createWebHashHistory(import.meta.env.BASE_URL),
+    strict: true,
     routes: [
         ...staticRoutes,
     ],
@@ -19,7 +21,7 @@ function getTitle(to: RouteLocationNormalizedGeneric) {
         ...current,
         meta: {
             ...current?.meta,
-            title: formatMenuTitle(to.query.tagName, to?.meta.title) || to?.meta.title,
+            title: formatMenuTitle(to.query[Configs.queryKey], to?.meta.title) || to?.meta.title,
         },
     });
     return before.map(r => r.meta.title).filter(v => v).reverse().join("-");

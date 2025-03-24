@@ -19,12 +19,10 @@ const routeList = computed(() => formatMenuList(user.routerList));
 function onRemoteMethod(query: string) {
     if(query) {
         loading.value = true;
-        setTimeout(() => {
-            loading.value = false;
-            options.value = routeList.value.filter(item => {
-                return item.title.includes(query) || item.path.includes(query);
-            });
-        }, 500);
+        options.value = routeList.value.filter(item => {
+            return item.title.includes(query) || item.path.includes(query);
+        });
+        loading.value = false;
     } else {
         options.value = [];
     }
@@ -87,9 +85,15 @@ function formatMenuList(menus: MenuItem[], split = " -> ") {
             border-radius: 0;
             box-shadow: none;
             border-bottom: 1px solid transparent;
-            .el-select__selection {
-                width: 0;
-                transition: width 0.2s cubic-bezier(.4, 0, .2, 1);
+            background-color: transparent;
+            .el-select{
+                &__prefix {
+                    cursor: pointer;
+                }
+                &__selection {
+                    width: 0;
+                    transition: width 0.2s cubic-bezier(.4, 0, .2, 1);
+                }
             }
             @include when(focused) {
                 border-bottom-color: var(--el-color-primary);

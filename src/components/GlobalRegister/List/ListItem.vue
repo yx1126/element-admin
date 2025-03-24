@@ -1,17 +1,12 @@
 <script setup lang="ts">
 import { useNamespace } from "element-plus";
 import { ElListContext } from ".";
-import type { VNode } from "vue";
 
 defineOptions({
     name: "ElListItem",
 });
 
-const slots = defineSlots<{
-    default?: () => VNode[];
-    prefix?: () => VNode[];
-    suffix?: () => VNode[];
-}>();
+const slots = defineSlots<Slotsable<"default" | "prefix" | "suffix">>();
 
 const listContext = inject(ElListContext);
 

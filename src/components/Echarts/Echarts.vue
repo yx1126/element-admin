@@ -7,10 +7,14 @@ const {
     options,
     renderer = "canvas",
     dark,
+    beforeRender,
+    afterRender,
 } = defineProps<{
     options: EChartsOption;
     renderer?: "svg" | "canvas";
     dark?: boolean;
+    beforeRender?: (echarts: typeof Echarts) => void;
+    afterRender?: (instance: EchartsInstance, echarts: typeof Echarts) => void;
 }>();
 
 const set = useSetStore();
@@ -24,14 +28,10 @@ watch(() => options, value => {
     setOption(value);
 }, {
     deep: true,
-    immediate: true,
     flush: "post",
 });
 
-watch(() => [renderer, dark], () => {
-    if(dark) return;
-    init();
-});
+watch(() => [renderer, dark], init);
 
 onMounted(init);
 
@@ -39,12 +39,17 @@ onScopeDispose(() => {
     if(echarts.value) echarts.value.dispose();
 });
 
-function init() {
+async function init() {
     if(echarts.value) echarts.value.dispose();
-    echarts.value = Echarts.init(echartsRef.value!, dark ? "dark" : set.navMode === "dark" ? "dark" : undefined, {
+    await nextTick();
+    if(beforeRender) beforeRender(Echarts);
+    echarts.value = Echarts.init(echartsRef.value!, dark || set.navMode === "dark" ? "dark" : undefined, {
         renderer: renderer,
     });
     setOption(options);
+    if(afterRender) {
+        afterRender(echarts.value!, Echarts);
+    }
 }
 
 function setOption(options?: EChartsOption) {

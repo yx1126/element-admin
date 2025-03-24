@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { formatMenuTitle } from "@/utils/route";
+import { Configs } from "@/config";
 
 defineOptions({
     name: "Breadcrumb",
@@ -17,7 +18,7 @@ const breadcrumbList = computed(() => {
     if(route.fullPath.startsWith("/redirect")) return [];
     const list = route.matched.filter(r => r.path && r.meta.title);
     const current = list.at(-1);
-    const title = formatMenuTitle(route.query.tagName, current?.meta.title) || current?.meta.title;
+    const title = formatMenuTitle(route.query[Configs.queryKey], current?.meta.title) || current?.meta.title;
     return [
         ...list.slice(0, -1),
         {
@@ -66,25 +67,21 @@ function onCommand(path: string) {
     position: relative;
     :deep(.el-breadcrumb__item){
         .el-breadcrumb__inner {
-            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 0.25rem;
+        }
+        .el-breadcrumb__inner,
+        .el-dropdown {
+            color: inherit;
         }
         &:not(:last-child) .el-breadcrumb__inner {
             cursor: pointer;
             &:hover {
                 color: var(--el-color-primary);
-                .title {
-                    color: var(--el-color-primary);
-                }
             }
         }
-    }
-    @include when(inverted) {
-        .title {
-            color: #fff;
-        }
+
     }
 }
 </style>

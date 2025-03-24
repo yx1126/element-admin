@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { parseNum, parseUnit } from "@/utils/unit";
-import type { VNode } from "vue";
 
 const {
     width = 200,
@@ -22,10 +21,7 @@ const {
     showText?: boolean;
 }>();
 
-const slots = defineSlots<{
-    default?: () => VNode[];
-    icon?: () => VNode[];
-}>();
+const slots = defineSlots<Slotsable<"default" | "icon">>();
 
 const logoStyle = computed(() => {
     const cw = parseNum(collapsedWidth);

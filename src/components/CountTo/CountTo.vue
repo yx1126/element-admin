@@ -8,16 +8,18 @@ defineOptions({
 const {
     value,
     options,
+    duration = 500,
 } = defineProps<{
     value: number;
-    options?: UnRefable<UseTransitionOptions>;
+    duration?: number;
+    options?: UnRefable<Omit<UseTransitionOptions, "duration">>;
 }>();
 
 const source = ref(0);
 
 const outputValue = useTransition(source, {
-    duration: 500,
     ...options,
+    duration,
 });
 
 watch(() => value, val => {

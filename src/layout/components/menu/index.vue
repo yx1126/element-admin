@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import MenuItem from "./MenuItem";
 import { isLink } from "@/utils/validata";
-import { LayoutConfig } from "@/config";
+import { Configs } from "@/config";
 import { parseUnit } from "@/utils/unit";
 import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
@@ -85,8 +85,8 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
             type ? `menu-type--${type}` : ''
         ]"
         :style="{
-            '--menu-width': parseUnit(width, LayoutConfig.menuWidth),
-            '--menu-height': `${LayoutConfig.headerHeight}px`,
+            '--menu-width': parseUnit(width, Configs.menuWidth),
+            '--menu-height': `${Configs.headerHeight}px`,
         }"
         :mode
         :collapse

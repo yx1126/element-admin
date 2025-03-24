@@ -6,7 +6,7 @@ import Logo from "../components/Logo.vue";
 import Collapse from "../components/Collapse.vue";
 import Breadcrumb from "../components/Breadcrumb.vue";
 import { useIsHideAside } from "../components/menu/MenuItem";
-import { LayoutConfig } from "@/config";
+import { Configs } from "@/config";
 
 export default defineComponent((_, { slots }) => {
     const set = useSetStore();
@@ -16,7 +16,7 @@ export default defineComponent((_, { slots }) => {
     });
     const { isHidden } = useIsHideAside();
     return () => {
-        const { headerHeight, tagsHeight, menuWidth } = LayoutConfig;
+        const { headerHeight, tagsHeight, menuWidth } = Configs;
         const { navMode, isKeepTags, isShowTabs, isShowLogo, isShowBreadcrumb, isCutMenu, inverted, collapsed, isMainFull } = set;
         const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
         const slot = renderSlot(slots, "default");

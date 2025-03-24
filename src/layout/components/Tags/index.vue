@@ -2,6 +2,7 @@
 import { MoreOutlined, ReloadOutlined } from "@vicons/antd";
 import Dropdown from "./Dropdown.vue";
 import { formatMenuTitle } from "@/utils/route";
+import { Configs } from "@/config";
 import type { TagItem } from "#/stores";
 
 defineOptions({
@@ -28,7 +29,7 @@ watch(() => route.fullPath, (fullPath, oldFullRoute) => {
     if(fullPath.startsWith("/redirect")) return;
     tags.insert("activeTags", {
         closable: true,
-        title: formatMenuTitle(route.query.tagName, route.meta.title) || route.fullPath,
+        title: formatMenuTitle(route.query[Configs.queryKey], route.meta.title) || route.fullPath,
         name: route.name as string,
         path: route.fullPath,
         meta: route.meta,

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { VNode } from "vue";
-
 defineOptions({
     name: "CodeCard",
 });
@@ -9,9 +7,7 @@ const { code } = defineProps<{
     code?: string;
 }>();
 
-defineSlots<{
-    default?: () => VNode[];
-}>();
+defineSlots<Slotsable<"default">>();
 
 const { t } = useI18n();
 const message = useMessage();

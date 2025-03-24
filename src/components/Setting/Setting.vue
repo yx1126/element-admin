@@ -5,7 +5,7 @@ import { useZIndex } from "element-plus";
 import NavMode from "./NavMode.vue";
 import { navTheme, layoutMode } from "@/stores/helper";
 import LangSelect from "../LangSelect";
-import { LayoutConfig } from "@/config";
+import { Configs } from "@/config";
 
 defineOptions({
     name: "Setting",
@@ -89,7 +89,7 @@ function onReset() {
                 </div>
                 <el-divider>{{ t("sysTheme") }}</el-divider>
                 <div class="flex justify-center">
-                    <el-color-picker v-model="themeColor" class="color-picker" :predefine="LayoutConfig.themes" />
+                    <el-color-picker v-model="themeColor" class="color-picker" :predefine="Configs.themes" />
                 </div>
                 <el-divider>{{ t("layoutMode") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">

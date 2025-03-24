@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { useNamespace } from "element-plus";
-import type { StyleValue, VNode } from "vue";
+import type { StyleValue } from "vue";
 
 defineOptions({
     name: "ElCardV2",
@@ -22,12 +22,7 @@ const {
     always?: boolean;
 }>();
 
-const slots = defineSlots<{
-    default?: () => VNode[];
-    header?: () => VNode[];
-    footer?: () => VNode[];
-    extra?: () => VNode[];
-}>();
+const slots = defineSlots<Slotsable<"default" | "header" | "footer" | "extra">>();
 
 const ns = useNamespace("card");
 

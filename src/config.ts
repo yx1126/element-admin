@@ -5,24 +5,22 @@ function createConfig<T extends object>(config: T) {
     return markRaw(readonly(config)) as Raw<T>;
 }
 
-/**
- * el-config-provider button 配置
- */
-const buttonConfig: ButtonConfigContext = createConfig({
-    autoInsertSpace: true,
-});
-
-/**
- * el-config-provider message 配置
- */
-const messageConfig: MessageConfigContext = createConfig({
-    duration: 1500,
-});
+interface ConfigOptions {
+    headerHeight: number;
+    tagsHeight: number;
+    menuWidth: number;
+    themes: string[];
+    queryKey: string;
+    elConfigProvide: {
+        button: ButtonConfigContext;
+        message: MessageConfigContext;
+    };
+}
 
 /**
  * 全局配置
  */
-const LayoutConfig = createConfig({
+const Configs: ConfigOptions = createConfig({
     /**
      * 头部高度
      * @default 50
@@ -43,10 +41,25 @@ const LayoutConfig = createConfig({
      * 主题色预设
      */
     themes: ["#409EFF", "#18a058", "#67C23A", "#E6A23C", "#F56C6C", "#909399"],
+    /**
+     * 标签名称参数
+     * @default tagName
+     * @see {@link file://./layout/components/Tags/index.vue#L32}
+     */
+    queryKey: "tagName",
+    /**
+     * el-config-provider 配置
+     */
+    elConfigProvide: {
+        button: {
+            autoInsertSpace: true,
+        },
+        message: {
+            duration: 1500,
+        },
+    },
 });
 
 export {
-    buttonConfig,
-    messageConfig,
-    LayoutConfig,
+    Configs,
 };

@@ -3,12 +3,12 @@ import Header from "../components/header/index.vue";
 import Tags from "../components/Tags/index.vue";
 import Menu from "../components/menu/index.vue";
 import Logo from "../components/Logo.vue";
-import { LayoutConfig } from "@/config";
+import { Configs } from "@/config";
 
 export default defineComponent((_, { slots }) => {
     const set = useSetStore();
     return () => {
-        const { headerHeight, tagsHeight } = LayoutConfig;
+        const { headerHeight, tagsHeight } = Configs;
         const { navMode, isKeepHeader, isKeepTags, isShowTabs, isShowLogo, isMainFull } = set;
         const HeaderVNode = (
             <el-header v-show={!isMainFull} height={headerHeight + "px"}>

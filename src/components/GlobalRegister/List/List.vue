@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useNamespace } from "element-plus";
 import { ElListContext } from ".";
-import type { VNode } from "vue";
 
 defineOptions({
     name: "ElList",
@@ -16,11 +15,7 @@ const props = withDefaults(defineProps<{
     showDivider: true,
 });
 
-const slots = defineSlots<{
-    default?: () => VNode[];
-    header?: () => VNode[];
-    footer?: () => VNode[];
-}>();
+const slots = defineSlots<Slotsable<"default" | "header" | "footer">>();
 
 provide(ElListContext, reactive({ ...toRefs(props) }));
 

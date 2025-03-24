@@ -9,12 +9,18 @@ export default defineComponent({
     },
     setup(props) {
         const set = useSetStore();
+        // const tags = useTagStore();
 
         const routerTrans = computed(() => set.routerTrans);
 
         const transitionMode = computed(() => {
             return routerTransList.find(r => r.value === routerTrans.value)?.mode || "default";
         });
+
+        // const keeps = computed(() => {
+        //     const names = tags.tagList.filter(v => v.meta.keepAlive).flatMap(v => [...(v.matchedName || []), v.name]);
+        //     return [...new Set(names)];
+        // });
 
         return () => {
             const { transition } = props;
