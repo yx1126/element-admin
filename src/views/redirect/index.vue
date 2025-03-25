@@ -1,24 +1,27 @@
 <script lang="ts">
-import { isLink } from "@/utils/validata";
 import { defineComponent } from "vue";
 export default defineComponent({
     name: "Redirect",
     setup() {
         const route = useRoute();
         const router = useRouter();
+        const keepMitt = useMitt("keepAlive");
+
         onBeforeMount(() => {
-            const path = (route.params.path as string[]).map(v => {
-                return isLink(v) ? encodeURIComponent(v) : v;
-            });
+            const path = route.params.path as string[];
             if(!path?.length) {
                 router.replace("/");
                 return;
             }
             router.replace({ path: `/${path.join("/")}`, query: route.query });
         });
+
+        onBeforeUnmount(() => {
+            keepMitt.emit("");
+        });
     },
     render() {
-        return null;
+        return h("span", { style: "display: none;" });
     },
 });
 </script>

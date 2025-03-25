@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { formatMenuTitle } from "@/utils/route";
 import { Configs } from "@/config";
+import type { MenuItem } from "#/menu";
 
 defineOptions({
     name: "Breadcrumb",
@@ -16,17 +17,14 @@ const set = useSetStore();
 
 const breadcrumbList = computed(() => {
     if(route.fullPath.startsWith("/redirect")) return [];
-    const list = route.matched.filter(r => r.path && r.meta.title);
-    const current = list.at(-1);
-    const title = formatMenuTitle(route.query[Configs.queryKey], current?.meta.title) || current?.meta.title;
+    const list = route.meta.matched?.filter(r => r.path && r.title) || [];
+    const current: Partial<MenuItem> = list.at(-1) || { title: route.meta.title, path: route.fullPath, children: [], icon: route.meta.icon };
+    const title = formatMenuTitle(route.query[Configs.queryKey], current?.title) || current?.title;
     return [
         ...list.slice(0, -1),
         {
             ...current,
-            meta: {
-                ...current?.meta,
-                title,
-            },
+            title,
         },
     ];
 });
@@ -41,21 +39,21 @@ function onCommand(path: string) {
         <TransitionGroup name="list-breadcrumb">
             <template v-for="b in breadcrumbList" :key="b.path">
                 <el-breadcrumb-item class="breadcrumb-item">
-                    <Icon v-if="set.isShowBreadIcon && b.meta?.icon" :icon="b.meta.icon" size="16" />
+                    <Icon v-if="set.isShowBreadIcon && b.icon" :icon="b.icon" size="16" />
                     <el-dropdown v-if="b.children?.length" :persistent="false" trigger="click" @command="onCommand">
-                        <span class="title">{{ b.meta?.title }}</span>
+                        <span class="title">{{ b.title }}</span>
                         <template #dropdown>
                             <el-dropdown-menu>
                                 <template v-for="item in b.children" :key="item.path">
                                     <el-dropdown-item :command="item.path">
-                                        <Icon v-if="item.meta?.icon" :icon="item.meta?.icon" />
-                                        {{ item.meta?.title }}
+                                        <Icon v-if="set.isShowBreadIcon && item.icon" :icon="item.icon" />
+                                        {{ item.title }}
                                     </el-dropdown-item>
                                 </template>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>
-                    <span v-else class="title">{{ b.meta?.title }}</span>
+                    <span v-else class="title">{{ b.title }}</span>
                 </el-breadcrumb-item>
             </template>
         </TransitionGroup>

@@ -16,7 +16,7 @@ const cardPanels = [
 </script>
 
 <template>
-    <div class="">
+    <div class="console">
         <div class="grid grid-cols-4 grid-rows-[120px] gap-[12px]">
             <template v-for="item in cardPanels" :key="item.title">
                 <el-card shadow="hover">

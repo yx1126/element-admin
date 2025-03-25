@@ -5,6 +5,7 @@ type EventType = {
     toggleSetting: [];
     updatePwd: [];
     mainFull: [];
+    keepAlive: [string];
 };
 
 const emitter = mitt<EventType>();

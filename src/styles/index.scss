@@ -45,7 +45,7 @@ html {
 
 // 解决全屏部分元素背景变黑
 ::backdrop {
-    background-color: #fff;
+    background-color: var(--el-bg-color);
 }
 
 html,

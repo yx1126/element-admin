@@ -8,6 +8,7 @@ import type { UserState } from "#/stores";
 export const useUserStore = defineStore("user", () => {
     const state: UserState = reactive({
         routerList: [],
+        redirectName: "",
         userInfo: {
             username: "admin",
             nickName: "Admin",

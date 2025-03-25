@@ -9,7 +9,7 @@ export default defineComponent({
     },
     setup(props) {
         const set = useSetStore();
-        // const tags = useTagStore();
+        const tags = useTagStore();
 
         const routerTrans = computed(() => set.routerTrans);
 
@@ -17,10 +17,10 @@ export default defineComponent({
             return routerTransList.find(r => r.value === routerTrans.value)?.mode || "default";
         });
 
-        // const keeps = computed(() => {
-        //     const names = tags.tagList.filter(v => v.meta.keepAlive).flatMap(v => [...(v.matchedName || []), v.name]);
-        //     return [...new Set(names)];
-        // });
+        const keeps = computed(() => {
+            const names = tags.tagList.filter(v => v.meta.keepAlive).flatMap(v => [...(v.matchedName || []), v.name]);
+            return [...new Set(names)];
+        });
 
         return () => {
             const { transition } = props;
@@ -28,19 +28,13 @@ export default defineComponent({
                 <router-view>
                     {{
                         default: ({ Component, route }: { Component: any; route: RouteLocationNormalizedLoaded }) => {
-                            const comp = (
-                                <KeepAlive include={[]} exclude={["Redirect"]}>
-                                    <Component key={transition ? route.fullPath : undefined} />
-                                </KeepAlive>
+                            return (
+                                <Transition name={routerTrans.value} mode={transitionMode.value}>
+                                    <KeepAlive include={keeps.value} exclude={["Redirect"]}>
+                                        <Component key={transition ? route.fullPath : undefined} />
+                                    </KeepAlive>
+                                </Transition>
                             );
-                            if(transition) {
-                                return (
-                                    <Transition name={routerTrans.value} mode={transitionMode.value}>
-                                        <comp />
-                                    </Transition>
-                                );
-                            }
-                            return comp;
                         },
                     }}
                 </router-view>

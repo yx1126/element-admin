@@ -15,6 +15,7 @@ const tags = useTagStore();
 const set = useSetStore();
 const route = useRoute();
 const router = useRouter();
+const keepMitt = useMitt("keepAlive");
 
 const msgBox = useMessageBox();
 const { t } = useI18n();
@@ -123,6 +124,7 @@ function onSelect(type: string, index: number) {
 }
 
 function onRedirect() {
+    keepMitt.emit(route.name as string);
     router.replace(`/redirect${route.fullPath}`);
 }
 

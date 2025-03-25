@@ -15,16 +15,10 @@ const router = createRouter({
 });
 
 function getTitle(to: RouteLocationNormalizedGeneric) {
-    const current = to.matched.at(-1) as any;
-    const before = [...to.matched.slice(0, -1)];
-    before.push({
-        ...current,
-        meta: {
-            ...current?.meta,
-            title: formatMenuTitle(to.query[Configs.queryKey], to?.meta.title) || to?.meta.title,
-        },
-    });
-    return before.map(r => r.meta.title).filter(v => v).reverse().join("-");
+    const current = to.meta.matched?.at(-1);
+    const title = formatMenuTitle(to.query[Configs.queryKey], to?.meta.title) || to.meta.title;
+    const before = [...(to.meta.matched?.slice(0, -1) || []), { ...current, title }];
+    return before.map(r => r.title).filter(v => v).reverse().join("-");
 }
 
 router.beforeEach(async (to, _, next) => {

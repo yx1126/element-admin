@@ -18,6 +18,7 @@ export const staticRoutes: RouteRecordRaw[] = [
             keepAlive: true,
         },
         component: () => import("@/layout/index.vue"),
+        // 扁平化
         children: [{
             path: "/person",
             name: "Person",
