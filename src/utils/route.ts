@@ -1,6 +1,7 @@
+import { isArray, isLink } from "./validata";
+import { ParentLayout } from "@/router/layout";
 import type { LocationQueryValue, RouteRecordRaw } from "vue-router";
 import type { MenuItem } from "#/menu";
-import { isArray, isLink } from "./validata";
 
 /**
  * 自动导入所有目录下index.vue,index.tsx
@@ -34,7 +35,7 @@ function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
         return pages["/src/views/iframe/index.vue"];
     }
     if(menu.type === MenuType.FOLDER) {
-        return null;
+        return ParentLayout(menu.name);
     }
     if(menu.type === MenuType.MENU) {
         if(!menu.component) return;
@@ -52,8 +53,7 @@ function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
  * 格式化、扁平化路由
  */
 export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRecordRaw[] {
-    const routes: RouteRecordRaw[] = [];
-    data.forEach(menu => {
+    return data.map(menu => {
         const route: RouteRecordRaw = {
             path: parsePath([...parents, menu]),
             name: menu.name,
@@ -63,17 +63,15 @@ export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRec
                 keepAlive: !!menu.keepAlive,
                 isIframe: !!menu.isIframe,
                 link: menu.link,
-                matched: [...parents, menu],
             },
             component: parseComponent(menu),
             children: parseRoute(menu.children || [], [...parents, menu]),
         };
-        if(route.children.length) {
+        if(route.children.length > 0) {
             route.redirect = route.children.at(0)?.path;
         }
-        routes.push(route, ...route.children);
+        return route;
     });
-    return routes;
 }
 
 /**

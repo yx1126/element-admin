@@ -20,7 +20,6 @@ app.use(pinia)
     .use(i18n)
     .use(GlobalRegister);
 
-// router.isReady().then(() => {
-//     app.mount("#app");
-// });
-app.mount("#app");
+router.isReady().then(() => {
+    app.mount("#app");
+});

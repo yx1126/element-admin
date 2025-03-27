@@ -36,17 +36,20 @@ const {
 $light-color: #fff;
 $inverted-color: #304156;
 $dark-color: rgba(0, 0, 0, 0.7);
-$body-color: #f0f2f5;
+$body-color: var(--page-bg-color);
 
 .nav-mode {
     width: 45px;
     height: 40px;
     background-color: $body-color;
     border-radius: 4px;
-    box-shadow: 0 1px 2.5px 0 rgba(0, 0, 0, 0.2);
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    box-shadow: var(--el-box-shadow-light);
+    @include when-dark {
+        box-shadow: var(--el-box-shadow-dark);
+    }
     &::before {
         content: "";
         display: block;
@@ -117,7 +120,7 @@ $body-color: #f0f2f5;
     }
 }
 .nav-mode-asideMixin-item {
-    width: 6px;
+    width: 10px;
     height: 100%;
     background-color: $light-color;
     position: absolute;

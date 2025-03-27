@@ -28,26 +28,21 @@ export default defineComponent({
     justify-content: center;
     & > div {
         display: grid;
-        grid: {
-            template: {
-                columns: 15px 15px;
-                rows: 15px 15px;
-            }
-            gap: 10px;
-        }
+        grid-template-columns: repeat(2, 15px);
+        grid-template-rows: repeat(2, 15px);
+        gap: 10px;
         animation: rotate 1s linear infinite;
         & > i {
-            $bg-color: #409eff;
-            background-color: $bg-color;
+            background-color: var(--el-color-primary);
             animation: rotate2 1s linear infinite;
             &:nth-child(1) {
-                background-color: rgba($color: $bg-color, $alpha: 0.25);
+                background-color: var(--el-color-primary-light-7);
             }
             &:nth-child(2) {
-                background-color: rgba($color: $bg-color, $alpha: 0.5);
+                background-color: var(--el-color-primary-light-5);
             }
-            &:nth-child(3) {
-                background-color: rgba($color: $bg-color, $alpha: 0.75);
+            &:nth-child(4) {
+                background-color: var(--el-color-primary-light-3);
             }
         }
     }

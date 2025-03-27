@@ -31,7 +31,7 @@ watch(() => options, value => {
     flush: "post",
 });
 
-watch(() => [renderer, dark], init);
+watch(() => [renderer, dark, set.navMode], init);
 
 onMounted(init);
 
@@ -40,6 +40,11 @@ onScopeDispose(() => {
 });
 
 async function init() {
+    /**
+     * fix warning:
+     *   [ECharts] Can't get DOM width or height. Please check dom.clientWidth and dom.clientHeight. They should not be 0.For example,
+     */
+    if(!echartsRef.value?.clientWidth || !echartsRef.value?.clientHeight) return;
     if(echarts.value) echarts.value.dispose();
     await nextTick();
     if(beforeRender) beforeRender(Echarts);

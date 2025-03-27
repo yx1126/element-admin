@@ -38,7 +38,7 @@ function loadComponent<T extends Component>(loader: AsyncComponentLoader<T>): Re
 }
 
 .el-main {
-    background-color: #f5f7f9;
+    background-color: var(--page-bg-color);
     @include when-dark {
         background-color: transparent;
     }

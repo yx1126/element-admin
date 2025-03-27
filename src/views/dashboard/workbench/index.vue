@@ -11,7 +11,7 @@ const user = useUserStore();
 const { t } = useI18n();
 
 const underwayList = ref([
-    { title: "NaiveUI", icon: "github", desc: "一个 Vue 3 组件库,比较完整，主题可调，使用 TypeScript，快有点意思", group: "NaiveUI", time: "9小时前" },
+    { title: "ElementPlus", icon: "element-plus", desc: "基于 Vue 3，面向设计师和开发者的组件库", group: "NaiveUI", time: "9小时前" },
     { title: "Vite", icon: "vite", desc: "Vite 下一代的前端工具链 为开发提供极速响应", group: "Vite", time: "9小时前" },
     { title: "Vue", icon: "vue", desc: "渐进式 JavaScript 框架 易学易用，性能出色，适用场景丰富的 Web 前端框架。", group: "Vue", time: "9小时前" },
     { title: "Typescript", icon: "typescript", desc: "TypeScript是JavaScript类型的超集。", group: "Typescript9", time: "9小时前" },

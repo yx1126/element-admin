@@ -6,7 +6,6 @@ export interface RouteMeta {
     readonly keepAlive?: boolean;
     readonly isIframe?: boolean;
     readonly link?: string;
-    readonly matched?: MenuItem[];
 }
 
 export interface MenuItem extends Writable<RouteMeta> {
@@ -15,9 +14,9 @@ export interface MenuItem extends Writable<RouteMeta> {
     name: string;
     type: MenuType;
     path: string;
-    component?: string;
+    component?: Nullable<string>;
     permission?: Nullable<string>;
     sort: Nullable<number>;
-    visible?: boolean;
+    visible?: Nullable<boolean>;
     children: MenuItem[];
 }

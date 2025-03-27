@@ -52,7 +52,15 @@ export default defineConfig({
         // VueDevTools(),
     ],
     optimizeDeps: {
-        include: [...Object.keys(pkg.dependencies)],
+        include: [
+            ...Object.keys(pkg.dependencies),
+            "shiki/core",
+            "shiki/langs/vue.mjs",
+            "shiki/langs/typescript.mjs",
+            "shiki/engine-javascript.mjs",
+            "shiki/themes/github-dark.mjs",
+            "shiki/themes/github-light.mjs",
+        ],
     },
     server: {
         host: "0.0.0.0",

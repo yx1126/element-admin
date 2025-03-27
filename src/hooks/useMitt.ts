@@ -1,4 +1,5 @@
 import mitt, { type Emitter } from "mitt";
+import { tryOnScopeDispose } from "@vueuse/core";
 
 type EventType = {
     "*": any;
@@ -32,6 +33,10 @@ type MittBacks<K extends (keyof EventType)[]> = K extends [infer Key, ...infer O
 function create<T extends keyof EventType>(key: T): MittBack<T> {
     function on(fn: EventFunc<T>) {
         emitter.on(key, fn);
+        // 自动销毁
+        tryOnScopeDispose(() => {
+            emitter.off(key, fn);
+        });
     }
     function emit(...args: EventType[T]) {
         emitter.emit.apply(null, [key].concat(args) as any);
