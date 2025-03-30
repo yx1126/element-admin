@@ -50,7 +50,7 @@ function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
 }
 
 /**
- * 格式化、扁平化路由
+ * 格式化路由
  */
 export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRecordRaw[] {
     return data.map(menu => {

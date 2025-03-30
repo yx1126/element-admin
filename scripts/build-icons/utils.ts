@@ -33,9 +33,20 @@ function parseSVG(file: string, id: string, config?: Config): Output {
     try {
         return svgo.optimize(file, assign<Config, Config>({
             plugins: [
-                "preset-default",
+                {
+                    name: "preset-default",
+                    params: {
+                        overrides: {
+                            cleanupIds: {
+                                minify: false,
+                            },
+                        },
+                    },
+                },
                 "removeDimensions",
                 "removeXMLNS",
+                "removeStyleElement",
+                "removeScriptElement",
                 {
                     name: "removeAttrs",
                     params: {

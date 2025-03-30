@@ -20,5 +20,14 @@ export interface TableResult<T = any> {
 }
 
 declare module "axios" {
-    export function mergeConfig<T extends object>(target: T, source: T): T;
+    export interface AxiosInstance {
+        request<T = any, R = Result<T>>(config: AxiosRequestConfig): Promise<R>;
+        get<T = any, R = Result<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+        delete<T = any, R = Result<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+        head<T = any, R = Result<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+        options<T = any, R = Result<T>>(url: string, config?: AxiosRequestConfig): Promise<R>;
+        post<T = any, R = Result<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R>;
+        put<T = any, R = Result<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R>;
+        patch<T = any, R = Result<T>>(url: string, data?: any, config?: AxiosRequestConfig): Promise<R>;
+    }
 }
