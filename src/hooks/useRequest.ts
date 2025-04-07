@@ -19,22 +19,8 @@ export interface UseRequest<T, R extends (...args: any) => any> {
     query: (...querys: Parameters<R>) => Promise<void>;
 }
 
-/**
- * @param options 配置
- */
 export function useRequest<T, D extends any[] = any>(options: RequestOptions<T, D>): UseRequest<T, RequestOptions<T, D>["request"]>;
-/**
- *
- * @param request 请求方法
- * @param defaultValue 默认值
- */
 export function useRequest<T, D extends any[]>(request: Request<T, D>, defaultValue: T): UseRequest<T, Request<T, D>>;
-/**
- *
- * @param request 请求方法
- * @param defaultValue 默认值
- * @param immediate `onBeforeMount` 里立即执行 `request` 方法
- */
 export function useRequest<T, D extends any[]>(request: Request<T, D>, defaultValue: T, immediate: boolean): UseRequest<T, Request<T, D>>;
 export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | Request<T, D>, defaultValue?: T, immediate?: boolean) {
     const defOptions = isFn(options)

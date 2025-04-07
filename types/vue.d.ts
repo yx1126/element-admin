@@ -17,5 +17,6 @@ declare module "vue" {
         ElListItem: typeof import("../src/components/GlobalRegister/List/ListItem.vue")["default"];
         ElThing: typeof import("../src/components/GlobalRegister/Thing/Thing.vue")["default"];
         ElCardV2: typeof import("../src/components/GlobalRegister/CardV2/CardV2.vue")["default"];
+        TableLayout: typeof import("../src/components/GlobalRegister/TableLayout/TableLayout.vue")["default"];
     }
 }

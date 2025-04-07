@@ -92,3 +92,18 @@ a {
         }
     }
 }
+
+.el-form {
+    &.search-form {
+        .el-input {
+            width: 160px;
+        }
+    }
+    &.form-flex {
+        display: flex;
+        gap: 32px 18px;
+        .el-form-item {
+            margin: 0;
+        }
+    }
+}

@@ -3,6 +3,7 @@ import Icon, { ElIcon } from "./Icon";
 import List from "./List";
 import Thing from "./Thing";
 import CardV2 from "./CardV2";
+import TableLayout from "./TableLayout";
 
 /**
  * 全局注册
@@ -14,4 +15,5 @@ export default withInstall(app => {
     app.use(List);
     app.use(Thing);
     app.use(CardV2);
+    app.use(TableLayout);
 });
