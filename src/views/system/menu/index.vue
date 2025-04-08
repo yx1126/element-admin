@@ -11,6 +11,32 @@ const queryForm = ref({
     status: "",
 });
 
+const columns = defineColumns<MenuItem>([{
+    type: "index",
+    label: "序号",
+    width: 80,
+}, {
+    label: "菜单名称",
+    prop: "title",
+    align: "left",
+}, {
+    label: "图标",
+    prop: "icon",
+    slotName: "icon",
+}, {
+    label: "访问路径",
+    prop: "path",
+}, {
+    label: "组件路径",
+    prop: "component",
+}, {
+    label: "操作",
+    width: 180,
+    fixed: "right",
+}], {
+    align: "center",
+});
+
 const { data, loading, query } = useRequest<MenuItem[]>({
     request: getMenuTree,
     default: [],
@@ -30,9 +56,11 @@ function onSearch() {
                     <el-input v-model="queryForm.title" placeholder="请输入菜单名称" clearable />
                 </el-form-item>
             </template>
-            <el-table v-loading="loading" :data="data" border>
-                <el-table-column label="菜单名称" prop="title" />
-            </el-table>
+            <base-table :columns="columns" :loading="loading" :data="data" row-key="id" border size="large" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+                <template #icon="{row}">
+                    <Icon v-if="row.icon" :icon="row.icon" size="25" />
+                </template>
+            </base-table>
         </table-layout>
     </div>
 </template>
