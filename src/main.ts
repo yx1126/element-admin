@@ -3,13 +3,13 @@ import App from "@/App.vue";
 import i18n from "@/locales";
 import router from "@/router";
 import pinia from "@/stores";
+import Directive from "@/directive";
+import ElementPlus from "@/plugins/element-plus";
+import GlobalRegister from "@/components/GlobalRegister";
+import "@/components/WebComponents";
 import "@/styles/index.scss";
 import "virtual:svg-icons-load";
 import "virtual:uno.css";
-import Directive from "@/directive";
-import ElementPlus from "element-plus";
-import GlobalRegister from "@/components/GlobalRegister";
-import "@/components/WebComponents";
 
 const app = createApp(App);
 

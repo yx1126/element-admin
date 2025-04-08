@@ -20,9 +20,15 @@ const columns = defineColumns<MenuItem>([{
     prop: "title",
     align: "left",
 }, {
+    label: "类型",
+    prop: "type",
+}, {
     label: "图标",
     prop: "icon",
     slotName: "icon",
+}, {
+    label: "权限标识",
+    prop: "permission",
 }, {
     label: "访问路径",
     prop: "path",
@@ -30,9 +36,13 @@ const columns = defineColumns<MenuItem>([{
     label: "组件路径",
     prop: "component",
 }, {
+    label: "状态",
+    prop: "status",
+}, {
     label: "操作",
     width: 180,
     fixed: "right",
+    slotName: "operate",
 }], {
     align: "center",
 });
@@ -57,8 +67,15 @@ function onSearch() {
                 </el-form-item>
             </template>
             <base-table :columns="columns" :loading="loading" :data="data" row-key="id" border size="large" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
-                <template #icon="{row}">
+                <template #action>
+                    <el-button type="primary" icon="ElePlus">新增</el-button>
+                </template>
+                <template #icon="{ row }">
                     <Icon v-if="row.icon" :icon="row.icon" size="25" />
+                </template>
+                <template #operate>
+                    <el-link type="primary" icon="EleEdit" />
+                    <el-link type="danger" icon="EleDelete" />
                 </template>
             </base-table>
         </table-layout>

@@ -28,8 +28,11 @@ const { columns: BaseColumns } = useColumns(columns);
 <template>
     <div :class="ns.b()">
         <div :class="ns.e('tool')">
-            <div :class="ns.e('action')"></div>
+            <div :class="ns.e('action')">
+                <slot name="action" />
+            </div>
             <div :class="ns.e('extra')">
+                <slot name="extra" />
                 <Icon cursor>
                     <setting-outlined />
                 </Icon>
