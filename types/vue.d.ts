@@ -19,5 +19,6 @@ declare module "vue" {
         ElCardV2: typeof import("../src/components/GlobalRegister/CardV2/CardV2.vue")["default"];
         TableLayout: typeof import("../src/components/GlobalRegister/TableLayout/TableLayout.vue")["default"];
         BaseTable: typeof import("../src/components/GlobalRegister/Table/Table.vue")["default"];
+        TableAction: typeof import("../src/components/GlobalRegister/Table/TableAction.vue")["default"];
     }
 }

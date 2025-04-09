@@ -13,4 +13,5 @@ export const TableContext = Symbol() as InjectionKey<{ slots: Slots }>;
 
 export default withInstall(app => {
     app.component("BaseTable", defineAsyncComponent(() => import("./Table.vue")));
+    app.component("TableAction", defineAsyncComponent(() => import("./TableAction.vue")));
 });

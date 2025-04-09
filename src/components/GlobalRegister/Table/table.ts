@@ -1,6 +1,6 @@
 import baseTableColumnProps from "element-plus/es/components/table/src/table-column/defaults";
-import type { ExtractPublicPropTypes, VNode } from "vue";
-import type { TableProps as BaseTableProps, TableColumnCtx } from "element-plus";
+import type { Component, ExtractPublicPropTypes, VNode } from "vue";
+import type { TableProps as BaseTableProps, TableColumnCtx, LinkProps } from "element-plus";
 
 type BaseTableColumn = ExtractPublicPropTypes<typeof baseTableColumnProps>;
 
@@ -29,6 +29,13 @@ export type TableColumn<T = any> = BaseTableColumn & {
 export type TableColumnFormat = TableColumn & {
     visible: boolean;
 };
+
+export interface TableActionItem {
+    action: string;
+    icon: string | Component;
+    append?: "before";
+    type?: LinkProps["type"];
+}
 
 function formatColumns(columns?: TableColumn[]): TableColumnFormat[] {
     if(!columns?.length) return [];

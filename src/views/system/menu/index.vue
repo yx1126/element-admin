@@ -74,8 +74,7 @@ function onSearch() {
                     <Icon v-if="row.icon" :icon="row.icon" size="25" />
                 </template>
                 <template #operate>
-                    <el-link type="primary" icon="EleEdit" />
-                    <el-link type="danger" icon="EleDelete" />
+                    <table-action />
                 </template>
             </base-table>
         </table-layout>
