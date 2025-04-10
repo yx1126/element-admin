@@ -13,7 +13,6 @@ const queryForm = ref({
 
 const columns = defineColumns<MenuItem>([{
     type: "selection",
-    label: "序号",
     width: 80,
 }, {
     type: "index",
@@ -26,15 +25,6 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "类型",
     prop: "type",
-    children: [{
-        label: "菜单名称1",
-        prop: "type",
-        align: "left",
-    }, {
-        label: "菜单名称2",
-        prop: "type",
-        align: "left",
-    }],
 }, {
     label: "图标",
     prop: "icon",
@@ -58,6 +48,7 @@ const columns = defineColumns<MenuItem>([{
     slotName: "operate",
 }], {
     align: "center",
+    minWidth: 100,
 });
 
 const { data, loading, query } = useRequest<MenuItem[]>({
@@ -79,7 +70,15 @@ function onSearch() {
                     <el-input v-model="queryForm.title" placeholder="请输入菜单名称" clearable />
                 </el-form-item>
             </template>
-            <base-table :columns="columns" :loading="loading" :data="data" row-key="id" border size="large" :tree-props="{ children: 'children', hasChildren: 'hasChildren' }">
+            <base-table
+                :columns="columns"
+                :loading="loading"
+                :data="data"
+                row-key="id"
+                border
+                size="large"
+                :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
+            >
                 <template #action>
                     <el-button type="primary" icon="ElePlus">新增</el-button>
                 </template>

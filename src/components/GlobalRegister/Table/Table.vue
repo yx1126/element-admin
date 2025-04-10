@@ -2,6 +2,7 @@
 import { useNamespace } from "element-plus";
 import { useColumns, type TableColumn, type TableColumnFormat, type TableSlot } from "./table";
 import { SettingOutlined } from "@vicons/antd";
+import { VerticalLeftOutlined, VerticalRightOutlined } from "@vicons/antd";
 
 export default defineComponent({
     name: "BaseTable",
@@ -9,6 +10,7 @@ export default defineComponent({
     props: {
         columns: { type: Array as PropType<TableColumn[]>, default: () => [] },
         loading: Boolean,
+        tools: { type: Boolean, default: true },
     },
     setup(props, { attrs, slots }) {
         const ns = useNamespace("table", ref("base"));
@@ -23,6 +25,7 @@ export default defineComponent({
             checkedSelection,
             checkAll,
             indeterminate,
+            isEmpty,
             onReset,
         } = useColumns(props.columns);
 
@@ -55,70 +58,117 @@ export default defineComponent({
             });
         }
 
+        function onFixedClick(item: TableColumnFormat, value: TableColumnFormat["fixed"]) {
+            if(value === "left") {
+                item.fixed = item.fixed === "left" || item.fixed === true ? undefined : value;
+            } else if(value === "right") {
+                item.fixed = item.fixed === "right" ? undefined : value;
+            }
+        }
+
         return () => {
-            const { loading } = props;
+            const { loading, tools } = props;
             return (
                 <div class={ns.b()}>
-                    <div class={ns.e("tool")}>
-                        <div class={ns.e("action")}>{renderSlot(slots, "action")}</div>
-                        <div class={ns.e("extra")}>
-                            {renderSlot(slots, "extra")}
-                            <el-popover visible width="auto" placement="bottom-end" popper-style="padding: 0;">
-                                {{
-                                    reference: () => <icon cursor><SettingOutlined /></icon>,
-                                    default: () => {
-                                        return (
-                                            <div class="table-set">
-                                                <div class="table-set__header">
-                                                    <el-checkbox v-model={checkAll.value} indeterminate={indeterminate.value}>列展示</el-checkbox>
-                                                    {isShowIndex.value ? <el-checkbox v-model={checkedIndex.value}>序号列</el-checkbox> : null}
-                                                    {isShowSelection.value ? <el-checkbox v-model={checkedSelection.value}>勾选列</el-checkbox> : null}
-                                                    <el-popconfirm width="200" title={t("confirmSet")} hide-after={0} onConfirm={onReset}>
-                                                        {{
-                                                            reference: () => <el-link class="ml-20px" type="primary">{$t("button.reset")}</el-link>,
-                                                        }}
-                                                    </el-popconfirm>
+                    {tools
+                        ? (
+                            <div class={ns.e("tool")}>
+                                <div class={ns.e("action")}>{renderSlot(slots, "action")}</div>
+                                <div class={ns.e("extra")}>
+                                    {renderSlot(slots, "extra")}
+                                    <el-popover
+                                        width="auto"
+                                        placement="bottom-end"
+                                        persistent={false}
+                                        trigger="click"
+                                        hide-after={0}
+                                        popper-style="padding: 0;"
+                                    >
+                                        {{
+                                            reference: () => <icon cursor><SettingOutlined /></icon>,
+                                            default: () => {
+                                                return (
+                                                    <div class="table-set">
+                                                        <div class="table-set__header">
+                                                            <el-checkbox
+                                                                v-model={checkAll.value}
+                                                                indeterminate={indeterminate.value}
+                                                            >
+                                                                列展示
+                                                            </el-checkbox>
+                                                            {isShowIndex.value ? <el-checkbox v-model={checkedIndex.value}>序号列</el-checkbox> : null}
+                                                            {isShowSelection.value ? <el-checkbox v-model={checkedSelection.value}>勾选列</el-checkbox> : null}
+                                                            <el-popconfirm
+                                                                width="200"
+                                                                title={t("confirmSet")}
+                                                                hide-after={0}
+                                                                onConfirm={onReset}
+                                                            >
+                                                                {{ reference: () => <el-link class="ml-20px" type="primary">{$t("button.reset")}</el-link> }}
+                                                            </el-popconfirm>
 
-                                                </div>
-                                                <div class="table-set__list">
-                                                    <el-scrollbar max-height="300">
-                                                        <el-tree
-                                                            class="tree"
-                                                            data={setColumns.value}
-                                                            props={treeProps}
-                                                            expand-on-click-node={false}
-                                                            node-key="id"
-                                                        >
-                                                            {{
-                                                                default: ({ data }: any) => {
-                                                                    return (
-                                                                        <div class="table-set__list-item">
-                                                                            <div class="flex items-center gap-10px">
-                                                                                <el-checkbox v-model={data.visible} />
-                                                                                <span>{ data.label }</span>
-                                                                            </div>
-                                                                            <div class="flex items-center"></div>
-                                                                        </div>
-                                                                    );
-                                                                },
-                                                            }}
-                                                        </el-tree>
-                                                    </el-scrollbar>
-                                                </div>
-                                            </div>
-                                        );
-                                    },
-                                }}
-                            </el-popover>
-                        </div>
-                    </div>
-                    <el-table v-loading={loading} {...attrs}>
+                                                        </div>
+                                                        <div class="table-set__list">
+                                                            <el-scrollbar max-height="300">
+                                                                <el-tree
+                                                                    class="tree"
+                                                                    data={setColumns.value}
+                                                                    props={treeProps}
+                                                                    expand-on-click-node={false}
+                                                                    node-key="id"
+                                                                >
+                                                                    {{
+                                                                        default: ({ data }: { data: TableColumnFormat }) => {
+                                                                            return (
+                                                                                <div class="table-set__list-item">
+                                                                                    <div class="flex items-center gap-10px">
+                                                                                        <el-checkbox v-model={data.visible} />
+                                                                                        <span>{ data.label }</span>
+                                                                                    </div>
+                                                                                    <div class="flex items-center">
+                                                                                        <el-button-group size="small">
+                                                                                            <el-button
+                                                                                                type={[true, "left"].includes(data.fixed!) ? "primary" : undefined}
+                                                                                                icon={VerticalRightOutlined}
+                                                                                                onClick={() => onFixedClick(data, "left")}
+                                                                                            />
+                                                                                            <el-button
+                                                                                                type={data.fixed === "right" ? "primary" : undefined}
+                                                                                                icon={VerticalLeftOutlined}
+                                                                                                onClick={() => onFixedClick(data, "right")}
+                                                                                            />
+                                                                                        </el-button-group>
+                                                                                    </div>
+                                                                                </div>
+                                                                            );
+                                                                        },
+                                                                    }}
+                                                                </el-tree>
+                                                            </el-scrollbar>
+                                                        </div>
+                                                    </div>
+                                                );
+                                            },
+                                        }}
+                                    </el-popover>
+                                </div>
+                            </div>
+                        )
+                        : null}
+                    <el-table v-show={!isEmpty.value} v-loading={loading} {...attrs}>
                         {{
                             default: () => renderColumns(baseColumns.value),
                             append: slots.append ? () => renderSlot(slots, "append") : undefined,
                             empty: slots.empty ? () => renderSlot(slots, "empty") : undefined,
                         }}
                     </el-table>
+                    {isEmpty.value
+                        ? (
+                            <div class={ns.e("empty")}>
+                                <span class={ns.em("empty", "text")}>{t("empty-column")}</span>
+                            </div>
+                        )
+                        : null}
                 </div>
             );
         };
@@ -142,6 +192,23 @@ export default defineComponent({
             align-items: center;
         }
     }
+    &__empty {
+        position: sticky;
+        left: 0;
+        min-height: 60px;
+        text-align: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid var(--el-border-color-lighter);
+        &--text {
+            line-height: 60px;
+            width: 50%;
+            color: var(--el-text-color-secondary);
+            font-size: 14px;
+        }
+    }
     // &__action {
 
     // }
@@ -150,6 +217,7 @@ export default defineComponent({
     // }
 }
 .table-set {
+    @include no-select;
     &__header {
         min-width: 250px;
         display: flex;
@@ -173,6 +241,7 @@ export default defineComponent({
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding-right: 14px;
             .index {
                 display: inline-block;
                 width: 30px;
@@ -188,6 +257,8 @@ export default defineComponent({
 <i18n lang="yaml">
 zh:
   confirmSet: 确认要重置吗？
+  empty-column: 暂无列数据
 en:
   confirmSet: Are you sure you want to reset?
+  empty-column: No Column Data
 </i18n>

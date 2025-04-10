@@ -1,5 +1,5 @@
 import { withInstall } from "@/utils/withInstall";
-import { makeInstaller } from "element-plus";
+import { makeInstaller, ElButtonGroup } from "element-plus";
 import BaseComponents from "element-plus/es/component";
 import Plugin from "element-plus/es/plugin";
 import ElButton from "./components/ElButton";
@@ -11,6 +11,7 @@ import ElThing from "./components/Thing";
 const Exclude: Record<`El${string}`, Component> = {
     ElButton,
     ElLink,
+    ElButtonGroup,
 };
 
 const Components = BaseComponents.filter(comp => !Object.keys(Exclude).includes((comp as any).name));

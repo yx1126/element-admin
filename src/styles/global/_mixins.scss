@@ -79,3 +79,14 @@
     scrollbar-width: none; /* firefox */
     -ms-overflow-style: none; /* IE 10+ */
 }
+
+@mixin no-select {
+    // 禁止文字被鼠标选中
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

@@ -51,3 +51,9 @@
         border-top: 1px solid var(--el-border-color);
     }
 }
+
+.el-table thead th.el-table__cell,
+.el-table.is-scrolling-none th.el-table-fixed-column--left,
+.el-table.is-scrolling-none th.el-table-fixed-column--right {
+    background: var(--el-fill-color-light) !important;
+}

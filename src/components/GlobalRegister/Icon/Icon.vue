@@ -3,16 +3,18 @@ import { isStr } from "@/utils/validata";
 import SvgIcon from "./SvgIcon.vue";
 import type { CSSProperties, Component } from "vue";
 import { parseUnit } from "@/utils/unit";
+import type { LinkProps } from "element-plus";
 
 defineOptions({
     name: "Icon",
 });
 
-const { rotate = 0, cursor = false, size } = defineProps<{
+const { rotate = 0, cursor = false, size, type } = defineProps<{
     icon?: string | Component;
     rotate?: string | number;
     cursor?: boolean | CSSProperties["cursor"];
     size?: number | string;
+    type?: LinkProps["type"];
 }>();
 
 const style = computed(() => {
@@ -22,6 +24,9 @@ const style = computed(() => {
     }
     if(cursor) {
         styles.cursor = cursor ? isStr(cursor) ? cursor : "pointer" : undefined;
+    }
+    if(type) {
+        styles.color = `var(--el-color-${type})`;
     }
     return styles;
 });

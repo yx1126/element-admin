@@ -50,6 +50,7 @@ function formatColumns(columns?: TableColumn[], index?: number, deep = 0): Table
             visible: true,
             children: formatColumns(column.children, i, deep + 1),
             deep,
+            fixed: ["index", "selection"].includes(column.type!) ? "left" : column.fixed,
         };
         if(item.type === "index") {
             pre.index.push(item);
@@ -98,7 +99,9 @@ export function useColumns(data?: TableColumn[]) {
     const isShowSelection = computed(() => columns.value.some(v => v.type === "selection"));
 
     const checkedIndex = computed({
-        get: () => columns.value.find(v => v.type === "index")?.visible || false,
+        get: () => {
+            return columns.value.find(v => v.type === "index")?.visible || false;
+        },
         set: value => {
             const index = columns.value.findIndex(v => v.type === "index");
             columns.value[index].visible = value;
@@ -114,7 +117,10 @@ export function useColumns(data?: TableColumn[]) {
     });
 
     const checkAll = computed({
-        get: () => getCheckedAll(columns.value),
+        get: () => {
+            if(columns.value.length <= 0) return false;
+            return getCheckedAll(columns.value);
+        },
         set: value => {
             // eslint-disable-next-line @typescript-eslint/no-use-before-define
             if(indeterminate.value) {
@@ -126,6 +132,8 @@ export function useColumns(data?: TableColumn[]) {
     });
     const indeterminate = computed(() => checkAll.value ? false : getCheckedOne(columns.value));
 
+    const isEmpty = computed(() => columns.value.filter(v => v.visible).length <= 0);
+
     watch(() => data, onReset, {
         immediate: true,
         deep: true,
@@ -134,10 +142,12 @@ export function useColumns(data?: TableColumn[]) {
     function onReset() {
         columns.value = formatColumns(cloneDeep(data));
     }
+
     return {
         columns,
         isShowIndex,
         isShowSelection,
+        isEmpty,
         checkAll,
         indeterminate,
         checkedIndex,
