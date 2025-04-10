@@ -12,11 +12,13 @@ declare module "vue" {
     }
 
     export interface GlobalComponents {
+        // element-plus extra components
+        ElList: typeof import("../src/plugins/element-plus/components/List/List.vue")["default"];
+        ElListItem: typeof import("../src/plugins/element-plus/components/List/ListItem.vue")["default"];
+        ElThing: typeof import("../src/plugins/element-plus/components/Thing/Thing.vue")["default"];
+        ElCardV2: typeof import("../src/plugins/element-plus/components/CardV2/CardV2.vue")["default"];
+        // local global components
         Icon: typeof import("../src/components/GlobalRegister/Icon/Icon.vue")["default"];
-        ElList: typeof import("../src/components/GlobalRegister/List/List.vue")["default"];
-        ElListItem: typeof import("../src/components/GlobalRegister/List/ListItem.vue")["default"];
-        ElThing: typeof import("../src/components/GlobalRegister/Thing/Thing.vue")["default"];
-        ElCardV2: typeof import("../src/components/GlobalRegister/CardV2/CardV2.vue")["default"];
         TableLayout: typeof import("../src/components/GlobalRegister/TableLayout/TableLayout.vue")["default"];
         BaseTable: typeof import("../src/components/GlobalRegister/Table/Table.vue")["default"];
         TableAction: typeof import("../src/components/GlobalRegister/Table/TableAction.vue")["default"];
