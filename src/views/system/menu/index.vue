@@ -12,6 +12,10 @@ const queryForm = ref({
 });
 
 const columns = defineColumns<MenuItem>([{
+    type: "selection",
+    label: "序号",
+    width: 80,
+}, {
     type: "index",
     label: "序号",
     width: 80,
@@ -22,6 +26,15 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "类型",
     prop: "type",
+    children: [{
+        label: "菜单名称1",
+        prop: "type",
+        align: "left",
+    }, {
+        label: "菜单名称2",
+        prop: "type",
+        align: "left",
+    }],
 }, {
     label: "图标",
     prop: "icon",
