@@ -1,5 +1,5 @@
 <script lang="tsx">
-import type { PropType } from "vue";
+import type { PropType, SlotsType, VNode } from "vue";
 import type { TableActionItem } from "./table";
 import { parseUnit } from "@/utils/unit";
 
@@ -8,7 +8,14 @@ export default defineComponent({
     props: {
         actions: { type: Array as PropType<TableActionItem[]>, default: () => [] },
         size: { type: [Number, String], default: 16 },
+        type: { type: String as PropType<"link" | "button">, default: "link" },
+        gap: [Number, String],
+        showDefaults: { type: Boolean, default: true },
     },
+    slots: Object as SlotsType<{
+        default?: () => VNode[];
+        before?: () => VNode[];
+    }>,
     setup(props, { emit, slots }) {
         const middle: TableActionItem[] = [{
             action: "edit",
@@ -29,7 +36,7 @@ export default defineComponent({
                     before.push(item);
                 }
             });
-            return [...before, ...middle, ...after];
+            return [...before, ...(props.showDefaults ? middle : []), ...after];
         });
 
         function onClick(item: TableActionItem) {
@@ -37,11 +44,21 @@ export default defineComponent({
         }
 
         return () => {
+            const { size, type, gap } = props;
             return (
-                <div class="table-action" style={{ "--table-action-size": parseUnit(props.size) }}>
+                <div
+                    class="table-action"
+                    style={{
+                        "--table-action-size": parseUnit(size),
+                        "--table-action-gap": parseUnit(gap || type === "button" ? 12 : 10),
+                    }}
+                >
                     {renderSlot(slots, "before")}
                     {actions.value.map(item => {
-                        return <el-link type={item.type} icon={item.icon} onClick={() => onClick(item)} />;
+                        if(type === "button") {
+                            return <el-button type={item.type} icon={item.icon} onClick={() => onClick(item)}>{item.text}</el-button>;
+                        }
+                        return <el-link type={item.type} icon={item.icon} onClick={() => onClick(item)}>{item.text}</el-link>;
                     })}
                     {renderSlot(slots, "default")}
                 </div>
@@ -58,7 +75,10 @@ export default defineComponent({
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: var(--table-action-gap);
     --el-font-size-base: var(--table-action-size);
+    & > * {
+        margin: 0;
+    }
 }
 </style>

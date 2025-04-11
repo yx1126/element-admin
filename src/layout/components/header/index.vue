@@ -98,6 +98,7 @@ function onDropDown(command: string) {
 <style lang="scss" scoped>
 .header {
     position: relative;
+    background-color: #fff;
     transition: background-color var(--el-transition-duration);
     .search {
         --el-text-color-regular: currentColor;

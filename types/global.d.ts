@@ -40,7 +40,7 @@ declare global {
         [K in keyof T]: UnRef<T[K]>
     };
 
-    export type Slotsable<T extends string, D = any> = {
-        [K in T]?: (data: D) => VNode[];
+    export type Slotsable<T extends string, D = never> = {
+        [K in T]?: D extends never ? () => VNode[] : (data: D) => VNode[];
     };
 }

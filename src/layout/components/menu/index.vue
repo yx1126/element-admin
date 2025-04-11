@@ -34,7 +34,7 @@ const routerList = computed(() => {
             return {
                 ...v,
                 path: first?.path || v.path,
-                isIframe: isLink(first?.path) ? first?.isIframe : v.isIframe,
+                // isIframe: isLink(first?.path) ? first?.isIframe : v.isIframe,
                 children: [],
             };
         });

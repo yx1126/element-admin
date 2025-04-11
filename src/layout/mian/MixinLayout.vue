@@ -19,7 +19,6 @@ export default defineComponent((_, { slots }) => {
         const { headerHeight, tagsHeight, menuWidth } = Configs;
         const { navMode, isKeepTags, isShowTabs, isShowLogo, isShowBreadcrumb, isCutMenu, inverted, collapsed, isMainFull } = set;
         const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
-        const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container">
                 <el-header v-show={!isMainFull} height={headerHeight + "px"}>
@@ -60,25 +59,13 @@ export default defineComponent((_, { slots }) => {
                         <Collapse inverted={inverted} collapsedWidth={64} width={menuWidth} border="top" />
                     </el-aside>
                     <el-container direction="vertical">
-                        {
-                            isKeepTags
-                                ? (
-                                    <>
-                                        {TagsVNode}
-                                        <el-main>
-                                            <el-scrollbar>{ slot }</el-scrollbar>
-                                        </el-main>
-                                    </>
-                                )
-                                : (
-                                    <el-main>
-                                        <el-scrollbar>
-                                            {TagsVNode}
-                                            { slot }
-                                        </el-scrollbar>
-                                    </el-main>
-                                )
-                        }
+                        {isKeepTags ? TagsVNode : null}
+                        <el-main>
+                            <el-scrollbar>
+                                {isKeepTags ? null : TagsVNode}
+                                { renderSlot(slots, "default") }
+                            </el-scrollbar>
+                        </el-main>
                     </el-container>
                 </el-container>
             </el-container>

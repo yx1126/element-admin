@@ -54,17 +54,6 @@ export default defineComponent((_, { slots }) => {
     return () => {
         const { headerHeight, tagsHeight } = Configs;
         const { navMode, collapsed, inverted, isShowTabs, isShowLogo, isKeepTags, isShowBreadcrumb, isMenuFixed, isMainFull } = set;
-        const HeaderVNode = (
-            <el-header v-show={!isMainFull} height={headerHeight + "px"}>
-                <Header theme={headerTheme.value}>
-                    {
-                        isShowBreadcrumb
-                            ? <Breadcrumb class="ml-[10px]" inverted={inverted && navMode === "inverted"} />
-                            : null
-                    }
-                </Header>
-            </el-header>
-        );
         const FixedIcon = (
             <div class="icon box-center" onClick={() => set.isMenuFixed = !set.isMenuFixed}>
                 <icon icon={isMenuFixed ? "unfix" : "fix"} />
@@ -97,7 +86,6 @@ export default defineComponent((_, { slots }) => {
             </el-aside>
         );
         const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
-        const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container" style={`--layout-header-height:${headerHeight}px;`}>
                 <el-aside v-show={!isMainFull} class="layout-aside" onMouseleave={onMouseleave}>
@@ -108,29 +96,21 @@ export default defineComponent((_, { slots }) => {
                     { isMenuFixed ? AsideChild : null}
                 </el-aside>
                 <el-container class="layout-container" direction="vertical">
-                    {HeaderVNode}
+                    <el-header v-show={!isMainFull} height={headerHeight + "px"}>
+                        <Header theme={headerTheme.value}>
+                            { isShowBreadcrumb ? <Breadcrumb class="ml-[10px]" inverted={inverted && navMode === "inverted"} /> : null }
+                        </Header>
+                    </el-header>
                     <el-container class="layout-container-main">
                         { !isMenuFixed ? AsideChild : null}
                         <el-container direction="vertical">
-                            {
-                                isKeepTags
-                                    ? (
-                                        <>
-                                            {TagsVNode}
-                                            <el-main>
-                                                <el-scrollbar>{ slot }</el-scrollbar>
-                                            </el-main>
-                                        </>
-                                    )
-                                    : (
-                                        <el-main>
-                                            <el-scrollbar>
-                                                {TagsVNode}
-                                                { slot }
-                                            </el-scrollbar>
-                                        </el-main>
-                                    )
-                            }
+                            {isKeepTags ? TagsVNode : null}
+                            <el-main>
+                                <el-scrollbar>
+                                    {isKeepTags ? null : TagsVNode}
+                                    { renderSlot(slots, "default") }
+                                </el-scrollbar>
+                            </el-main>
                         </el-container>
                     </el-container>
                 </el-container>

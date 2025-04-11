@@ -1,4 +1,5 @@
 import type { ButtonConfigContext, MessageConfigContext } from "element-plus";
+import type { TableColumn } from "@/hooks/useTable";
 import type { Raw } from "vue";
 
 function createConfig<T extends object>(config: T) {
@@ -15,6 +16,8 @@ interface ConfigOptions {
         button: ButtonConfigContext;
         message: MessageConfigContext;
     };
+    tableColumn: TableColumn | ((column: TableColumn) => TableColumn);
+    formSplit: boolean;
 }
 
 /**
@@ -44,7 +47,7 @@ const Configs: ConfigOptions = createConfig({
     /**
      * 标签名称参数
      * @default tagName
-     * @see {@link file://./layout/components/Tags/index.vue#L32}
+     * @see {@link file://./layout/components/Tags/index.vue#L33}
      */
     queryKey: "tagName",
     /**
@@ -52,12 +55,32 @@ const Configs: ConfigOptions = createConfig({
      */
     elConfigProvide: {
         button: {
-            autoInsertSpace: true,
+            autoInsertSpace: false,
         },
         message: {
             duration: 1500,
         },
     },
+    /**
+     * `defineColumns`表格列默认属性
+     * @see {@link file://./hooks/useTable.ts#L13}
+     */
+    tableColumn: column => {
+        // 序号列、多选列
+        const isIndexSelection = ["index", "selection"].includes(column.type!);
+        return {
+            ...column,
+            width: isIndexSelection ? 80 : undefined,
+            minWidth: isIndexSelection ? undefined : 100,
+            // 操作不显示tooltip
+            showOverflowTooltip: (column.slotName === "operate" || column.label === "操作") ? false : column.showOverflowTooltip,
+        };
+    },
+    /**
+     * 搜索表单按钮固定在容器最右边
+     * @see {@link file://./components/GlobalRegister/TableLayout/TableLayout.vue#L11}
+     */
+    formSplit: false,
 });
 
 export {

@@ -19,32 +19,17 @@ export default defineComponent((_, { slots }) => {
             </el-header>
         );
         const TagsVNode = (isShowTabs ? <el-header height={tagsHeight + "px"}><Tags /></el-header> : null);
-        const slot = renderSlot(slots, "default");
         return (
             <el-container class="layout-container" direction="vertical">
-                {
-                    !isKeepHeader && !isKeepTags
-                        ? (
-                            <el-scrollbar>
-                                {HeaderVNode}
-                                {TagsVNode}
-                                <el-main>{ slot }</el-main>
-                            </el-scrollbar>
-                        )
-                        : (
-                            <>
-                                {isKeepHeader ? HeaderVNode : null}
-                                {isKeepTags ? TagsVNode : null}
-                                <el-main>
-                                    <el-scrollbar>
-                                        {isKeepHeader ? null : HeaderVNode}
-                                        {isKeepTags ? null : TagsVNode}
-                                        { slot }
-                                    </el-scrollbar>
-                                </el-main>
-                            </>
-                        )
-                }
+                {isKeepHeader ? HeaderVNode : null}
+                {isKeepTags ? TagsVNode : null}
+                <el-main>
+                    <el-scrollbar>
+                        {isKeepHeader ? null : HeaderVNode}
+                        {isKeepTags ? null : TagsVNode}
+                        { renderSlot(slots, "default") }
+                    </el-scrollbar>
+                </el-main>
             </el-container>
         );
     };

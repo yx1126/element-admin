@@ -13,11 +13,9 @@ const queryForm = ref({
 
 const columns = defineColumns<MenuItem>([{
     type: "selection",
-    width: 80,
 }, {
     type: "index",
     label: "序号",
-    width: 80,
 }, {
     label: "菜单名称",
     prop: "title",
@@ -48,7 +46,6 @@ const columns = defineColumns<MenuItem>([{
     slotName: "operate",
 }], {
     align: "center",
-    minWidth: 100,
 });
 
 const { data, loading, query } = useRequest<MenuItem[]>({

@@ -1,6 +1,6 @@
 import baseTableColumnProps from "element-plus/es/components/table/src/table-column/defaults";
-import type { Component, ExtractPublicPropTypes, VNode } from "vue";
-import type { TableProps as BaseTableProps, TableColumnCtx, LinkProps } from "element-plus";
+import type { Component, ExtractPublicPropTypes, VNode, Ref, ComputedRef, WritableComputedRef, InjectionKey } from "vue";
+import type { TableProps as BaseTableProps, TableColumnCtx, LinkProps, ButtonProps } from "element-plus";
 import { cloneDeep } from "lodash-es";
 
 type BaseTableColumn = ExtractPublicPropTypes<typeof baseTableColumnProps>;
@@ -28,7 +28,7 @@ export type TableColumn<T = any> = BaseTableColumn & {
 };
 
 export type TableColumnFormat = TableColumn & {
-    visible: boolean;
+    checked: boolean;
     children?: TableColumnFormat[];
     deep: number;
 };
@@ -37,17 +37,34 @@ export interface TableActionItem {
     action: string;
     icon: string | Component;
     append?: "before";
-    type?: LinkProps["type"];
+    type?: LinkProps["type"] | ButtonProps["type"];
+    text?: string;
 }
+
+export interface TableContext {
+    columns: Ref<TableColumnFormat[]>;
+    isShowIndex: ComputedRef<boolean>;
+    isShowSelection: ComputedRef<boolean>;
+    checkedIndex: WritableComputedRef<boolean>;
+    checkedSelection: WritableComputedRef<boolean>;
+    checkAll: WritableComputedRef<boolean>;
+    indeterminate: ComputedRef<boolean>;
+    onReset: () => void;
+}
+
+export const tableContextKey = Symbol() as InjectionKey<TableContext>;
+
+export const FixedLeft: TableColumn["fixed"][] = [true, "left"];
+export const FixedRight: TableColumn["fixed"][] = ["right"];
 
 function formatColumns(columns?: TableColumn[], index?: number, deep = 0): TableColumnFormat[] {
     if(!columns?.length) return [];
     const { index: indexList, selection, left, middle, right } = columns.reduce<Record<string, TableColumnFormat[]>>((pre, column, i) => {
         if(deep !== 0 && ["selection", "index", "expand"].includes(column.type || "default")) return pre;
         const item = {
-            id: index !== null && index !== undefined ? `${index}-${i}` : `${i}`,
+            id: "crypto" in window ? crypto.randomUUID() : index !== null && index !== undefined ? `${index}-${i}` : `${i}`,
             ...column,
-            visible: true,
+            checked: true,
             children: formatColumns(column.children, i, deep + 1),
             deep,
             fixed: ["index", "selection"].includes(column.type!) ? "left" : column.fixed,
@@ -58,9 +75,9 @@ function formatColumns(columns?: TableColumn[], index?: number, deep = 0): Table
             pre.selection.push(item);
         } else if(!item.fixed || deep !== 0) {
             pre.middle.push(item);
-        } else if([true, "left"].includes(item.fixed)) {
+        } else if(FixedLeft.includes(item.fixed)) {
             pre.left.push(item);
-        } else if(item.fixed === "right") {
+        } else if(FixedRight.includes(item.fixed)) {
             pre.right.push(item);
         }
         return pre;
@@ -71,21 +88,21 @@ function formatColumns(columns?: TableColumn[], index?: number, deep = 0): Table
 function getCheckedAll(columns: TableColumnFormat[]): boolean {
     return columns.every(c => {
         if(c.type === "index" || c.type === "selection") return true;
-        return !c.children?.length ? c.visible : (c.visible && getCheckedAll(c.children));
+        return !c.children?.length ? c.checked : (c.checked && getCheckedAll(c.children));
     });
 }
 
 function getCheckedOne(columns: TableColumnFormat[]): boolean {
     return columns.some(c => {
         if(c.type === "index" || c.type === "selection") return false;
-        return !c.children?.length ? c.visible : (c.visible || getCheckedAll(c.children));
+        return !c.children?.length ? c.checked : (c.checked || getCheckedAll(c.children));
     });
 }
 
 function setVisible(columns: TableColumnFormat[], value: boolean) {
     columns.forEach(item => {
         if(item.type === "index" || item.type === "selection") return;
-        item.visible = value;
+        item.checked = value;
         if(item.children) {
             setVisible(item.children, value);
         }
@@ -94,25 +111,26 @@ function setVisible(columns: TableColumnFormat[], value: boolean) {
 
 export function useColumns(data?: TableColumn[]) {
     const columns = ref<TableColumnFormat[]>([]);
+    const setColumns = ref<TableColumnFormat[]>([]);
 
     const isShowIndex = computed(() => columns.value.some(v => v.type === "index"));
     const isShowSelection = computed(() => columns.value.some(v => v.type === "selection"));
 
     const checkedIndex = computed({
         get: () => {
-            return columns.value.find(v => v.type === "index")?.visible || false;
+            return columns.value.find(v => v.type === "index")?.checked || false;
         },
         set: value => {
             const index = columns.value.findIndex(v => v.type === "index");
-            columns.value[index].visible = value;
+            columns.value[index].checked = value;
         },
     });
 
     const checkedSelection = computed({
-        get: () => columns.value.find(v => v.type === "selection")?.visible || false,
+        get: () => columns.value.find(v => v.type === "selection")?.checked || false,
         set: value => {
             const index = columns.value.findIndex(v => v.type === "selection");
-            columns.value[index].visible = value;
+            columns.value[index].checked = value;
         },
     });
 
@@ -132,7 +150,7 @@ export function useColumns(data?: TableColumn[]) {
     });
     const indeterminate = computed(() => checkAll.value ? false : getCheckedOne(columns.value));
 
-    const isEmpty = computed(() => columns.value.filter(v => v.visible).length <= 0);
+    const isEmpty = computed(() => columns.value.filter(v => v.checked).length <= 0);
 
     watch(() => data, onReset, {
         immediate: true,
@@ -141,10 +159,12 @@ export function useColumns(data?: TableColumn[]) {
 
     function onReset() {
         columns.value = formatColumns(cloneDeep(data));
+        setColumns.value = columns.value.filter(v => !["index", "selection"].includes(v.type || ""));
     }
 
     return {
         columns,
+        setColumns,
         isShowIndex,
         isShowSelection,
         isEmpty,

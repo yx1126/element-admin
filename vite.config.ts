@@ -34,6 +34,9 @@ export default defineConfig(() => {
             AutoImport({
                 dts: "./types/auto-imports.d.ts",
                 dirs: ["./src/hooks", "./src/enums", "./src/stores/modules"],
+                dirsScanOptions: {
+                    types: false,
+                },
                 imports: [
                     "vue",
                     "vue-router",
