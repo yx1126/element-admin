@@ -16,6 +16,8 @@ export interface DialogOptions<Form extends object = any> extends Partial<Omit<W
     confirmText?: string;
     showActions?: boolean;
     onAction?: (item: TableActionItem) => void;
+    onCancel?: () => void;
+    onSubmit?: () => void;
 }
 
 let dialogWrapper: Nullable<HTMLDivElement> = null;
@@ -93,6 +95,8 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
         confirmText,
         renderHeader,
         renderFooter,
+        onCancel,
+        onSubmit,
         ...otherDialogProps
     } = Object.assign({}, options);
 
@@ -158,16 +162,23 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
                 },
             };
 
-            function close() {
+            function close(fn?: () => void) {
                 visivle.value = false;
+                fn && fn();
             }
 
             function onClick(item: TableActionItem) {
                 if(item.action === "cancel") {
                     close();
+                    onCancel?.();
                     cancelLifeCycle.value.forEach(fn => fn());
                 } else if(item.action === "submit") {
-                    submitLifeCycle.value.forEach(fn => fn(close, formData.value));
+                    submitLifeCycle.value.forEach(fn => {
+                        function done() {
+                            close(() => onSubmit?.());
+                        }
+                        fn(done, formData.value);
+                    });
                 }
                 emit("action", item);
             }

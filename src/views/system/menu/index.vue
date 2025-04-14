@@ -12,9 +12,16 @@ const queryForm = ref({
     status: "",
 });
 
+const { data, loading, query } = useRequest<MenuItem[]>({
+    request: getMenuTree,
+    default: [],
+    immediate: true,
+});
+
 const dialog = useDialog(MenuForm, {
     title: data => data?.form?.id ? "编辑菜单" : "新增菜单",
     width: 600,
+    onSubmit: onSearch,
 });
 
 const columns = defineColumns<MenuItem>([{
@@ -29,6 +36,7 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "类型",
     prop: "type",
+    slotName: "type",
 }, {
     label: "图标",
     prop: "icon",
@@ -45,6 +53,7 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "状态",
     prop: "status",
+    slotName: "status",
 }, {
     label: "操作",
     width: 180,
@@ -52,12 +61,6 @@ const columns = defineColumns<MenuItem>([{
     slotName: "operate",
 }], {
     align: "center",
-});
-
-const { data, loading, query } = useRequest<MenuItem[]>({
-    request: getMenuTree,
-    default: [],
-    immediate: true,
 });
 
 function onSearch() {
@@ -87,6 +90,15 @@ function onSearch() {
                 </template>
                 <template #icon="{ row }">
                     <Icon v-if="row.icon" :icon="row.icon" size="25" />
+                </template>
+                <template #type="{ row }">
+                    <el-tag v-if="row.type === 0">目录</el-tag>
+                    <el-tag v-else-if="row.type === 1" type="success">菜单</el-tag>
+                    <el-tag v-else-if="row.type === 2" type="warning">链接</el-tag>
+                    <el-tag v-else-if="row.type === 3" type="info">按钮</el-tag>
+                </template>
+                <template #status="{ row }">
+                    <el-tag :type="row.status == 0 ? 'danger' : 'primary'">{{ row.status == 0 ? '禁用' : '启用' }}</el-tag>
                 </template>
                 <template #operate="{ row }">
                     <table-action @click="dialog.open(row)" />

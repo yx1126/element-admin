@@ -8,7 +8,7 @@ type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
 export interface RequestOptions<T, D extends any[]> {
     request: Request<T, D>;
     default: T extends object ? Partial<T> : T;
-    formatter?: (data: any) => T;
+    formatter?: (data: any) => any;
     immediate?: boolean;
     delay?: number;
 }
@@ -30,8 +30,6 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
     if(!Object.hasOwn(defOptions, "default")) {
         throw new Error("[useRequest/options]: The default field cannot be empty");
     }
-
-    const message = useMessage();
 
     const loading = ref(false);
     const data = ref(defOptions.default);
@@ -59,8 +57,8 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
             const res = await request(...query);
             const reqData: unknown = formatter ? formatter(res.data) : res.data;
             data.value = reqData;
-        } catch (err: any) {
-            message.error(err?.msg || err?.data?.msg || "查询失败");
+        } catch (error: any) {
+            console.error(error);
         } finally {
             loading.value = false;
         }

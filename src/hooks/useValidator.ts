@@ -1,4 +1,5 @@
 import { isFn } from "@/utils/validata";
+import i18n from "@/locales";
 import type { FormItemRule } from "element-plus";
 
 export type Triggers = "blur" | "change";
@@ -14,7 +15,7 @@ function Required(message: string | FormItemRule["asyncValidator"] | FormItemRul
     if(isFn(message)) {
         value.validator = message as any;
     } else {
-        value.message = message;
+        value.message = i18n.global.t(trigger === "blur" ? "input" : "select", [message]);
     }
     return value;
 }

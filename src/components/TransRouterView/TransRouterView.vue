@@ -21,7 +21,7 @@ export default defineComponent({
         });
 
         const keeps = computed(() => {
-            const names = tags.tagList.filter(v => v.meta.keepAlive).flatMap(v => [...(v.matchedName || []), v.name]);
+            const names = tags.tagList.filter(v => v.meta.isCache === "1").flatMap(v => [...(v.matchedName || []), v.name]);
             return [...new Set(names)];
         });
 

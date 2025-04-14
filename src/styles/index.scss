@@ -107,4 +107,21 @@ a {
             margin: 0;
         }
     }
+    @for $i from 2 through 4 {
+        &.column-#{$i} {
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+            .el-form-item {
+                margin: 0;
+                width: calc((100% - ($i - 1) * 18px) / 2);
+                .el-form-item__content {
+                    align-content: flex-start;
+                }
+                &.full {
+                    width: 100%;
+                }
+            }
+        }
+    }
 }

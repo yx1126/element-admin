@@ -60,8 +60,8 @@ export function parseRoute(data: MenuItem[], parents: MenuItem[] = []): RouteRec
             meta: {
                 title: menu.title,
                 icon: menu.icon,
-                keepAlive: !!menu.keepAlive,
-                isIframe: !!menu.isIframe,
+                isCache: menu.isCache,
+                isIframe: menu.isIframe,
                 link: menu.link,
             },
             component: parseComponent(menu),
@@ -101,7 +101,7 @@ export function formatMenuTitle(title: LocationQueryValue | LocationQueryValue[]
  */
 export function formatMenuList(data?: MenuItem[], parents: MenuItem[] = []) {
     return (data || []).reduce<MenuItem[]>((pre, menu) => {
-        if(menu.visible) {
+        if(menu.visible === "1") {
             pre.push({
                 ...menu,
                 path: parsePath([...parents, menu]),

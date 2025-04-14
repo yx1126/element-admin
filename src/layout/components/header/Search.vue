@@ -29,7 +29,7 @@ function onRemoteMethod(query: string) {
 }
 
 function onChange(menu: MenuItem) {
-    if(isLink(menu.link) && !menu.isIframe) {
+    if(isLink(menu.link) && menu.isIframe === "0") {
         window.open(menu.link);
     } else {
         router.push(menu.path);

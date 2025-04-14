@@ -6,7 +6,7 @@ export const staticRoutes: RouteRecordRaw[] = [
         name: "Login",
         meta: {
             title: "登录",
-            keepAlive: false,
+            isCache: "0",
         },
         component: () => import("@/views/login/index.vue"),
     },
@@ -15,7 +15,7 @@ export const staticRoutes: RouteRecordRaw[] = [
         name: "LayoutMain",
         meta: {
             title: "",
-            keepAlive: true,
+            isCache: "1",
         },
         component: () => import("@/layout/index.vue"),
         // 扁平化
@@ -25,7 +25,7 @@ export const staticRoutes: RouteRecordRaw[] = [
             component: () => import("@/views/person/index.vue"),
             meta: {
                 title: "个人中心",
-                keepAlive: false,
+                isCache: "0",
             },
             children: [],
         }, {
@@ -34,7 +34,7 @@ export const staticRoutes: RouteRecordRaw[] = [
             component: () => import("@/views/iframe/index.vue"),
             meta: {
                 title: "{0|iframe}",
-                keepAlive: false,
+                isCache: "0",
             },
             children: [],
         }, {

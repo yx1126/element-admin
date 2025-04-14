@@ -4,6 +4,7 @@ import BaseComponents from "element-plus/es/component";
 import Plugin from "element-plus/es/plugin";
 import ElButton from "./components/ElButton";
 import ElLink from "./components/ElLink";
+import ElTag from "./components/ElTag";
 import ElList from "./components/List";
 import ElCardV2 from "./components/CardV2";
 import ElThing from "./components/Thing";
@@ -12,6 +13,7 @@ const Exclude: Record<`El${string}`, Component> = {
     ElButton,
     ElLink,
     ElButtonGroup,
+    ElTag,
 };
 
 const Components = BaseComponents.filter(comp => !Object.keys(Exclude).includes((comp as any).name));
