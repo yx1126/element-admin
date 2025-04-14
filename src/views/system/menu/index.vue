@@ -1,6 +1,7 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import type { MenuItem } from "#/menu";
 import { getMenuTree } from "@/api/system/menu";
+import MenuForm from "./components/MenuForm.vue";
 
 defineOptions({
     name: "Menu",
@@ -9,6 +10,11 @@ defineOptions({
 const queryForm = ref({
     title: "",
     status: "",
+});
+
+const dialog = useDialog(MenuForm, {
+    title: data => data?.form?.id ? "编辑菜单" : "新增菜单",
+    width: 600,
 });
 
 const columns = defineColumns<MenuItem>([{
@@ -77,13 +83,13 @@ function onSearch() {
                 :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus">新增</el-button>
+                    <el-button type="primary" icon="ElePlus" @click="dialog.open">新增</el-button>
                 </template>
                 <template #icon="{ row }">
                     <Icon v-if="row.icon" :icon="row.icon" size="25" />
                 </template>
-                <template #operate>
-                    <table-action />
+                <template #operate="{ row }">
+                    <table-action @click="dialog.open(row)" />
                 </template>
             </base-table>
         </table-layout>

@@ -19,9 +19,9 @@ export interface UseRequest<T, R extends (...args: any) => any> {
     query: (...querys: Parameters<R>) => Promise<void>;
 }
 
-export function useRequest<T, D extends any[] = any>(options: RequestOptions<T, D>): UseRequest<T, RequestOptions<T, D>["request"]>;
-export function useRequest<T, D extends any[]>(request: Request<T, D>, defaultValue: T): UseRequest<T, Request<T, D>>;
-export function useRequest<T, D extends any[]>(request: Request<T, D>, defaultValue: T, immediate: boolean): UseRequest<T, Request<T, D>>;
+export function useRequest<T, D extends any[] = any[]>(options: RequestOptions<T, D>): UseRequest<T, RequestOptions<T, D>["request"]>;
+export function useRequest<T, D extends any[] = any[]>(request: Request<T, D>, defaultValue: T): UseRequest<T, Request<T, D>>;
+export function useRequest<T, D extends any[] = any[]>(request: Request<T, D>, defaultValue: T, immediate: boolean): UseRequest<T, Request<T, D>>;
 export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | Request<T, D>, defaultValue?: T, immediate?: boolean) {
     const defOptions = isFn(options)
         ? { request: options, default: defaultValue, immediate: immediate ?? true } as RequestOptions<T, D>

@@ -40,7 +40,9 @@ declare global {
         [K in keyof T]: UnRef<T[K]>
     };
 
-    export type Slotsable<T extends string, D = never> = {
-        [K in T]?: D extends never ? () => VNode[] : (data: D) => VNode[];
+    export type Slotsable<T extends string> = {
+        [K in T]?: () => VNode[];
     };
+
+    export type EventOn<T extends string> = `on${Capitalize<T>}`;
 }

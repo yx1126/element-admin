@@ -33,9 +33,9 @@ export type TableColumnFormat = TableColumn & {
     deep: number;
 };
 
-export interface TableActionItem {
-    action: string;
-    icon: string | Component;
+export interface TableActionItem<T extends string = any> {
+    action: T;
+    icon?: string | Component;
     append?: "before";
     type?: LinkProps["type"] | ButtonProps["type"];
     text?: string;

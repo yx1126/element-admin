@@ -11,7 +11,9 @@ export default defineComponent({
         type: { type: String as PropType<"link" | "button">, default: "link" },
         gap: [Number, String],
         showDefaults: { type: Boolean, default: true },
+        align: { type: String as PropType<"left" | "center" | "right">, default: "center" },
     },
+    emits: ["click"],
     slots: Object as SlotsType<{
         default?: () => VNode[];
         before?: () => VNode[];
@@ -40,14 +42,14 @@ export default defineComponent({
         });
 
         function onClick(item: TableActionItem) {
-            emit(item.action);
+            emit("click", item);
         }
 
         return () => {
-            const { size, type, gap } = props;
+            const { size, type, gap, align } = props;
             return (
                 <div
-                    class="table-action"
+                    class={`table-action ${align ? "table-action--" + align : ""}`}
                     style={{
                         "--table-action-size": parseUnit(size),
                         "--table-action-gap": parseUnit(gap || type === "button" ? 12 : 10),
@@ -79,6 +81,15 @@ export default defineComponent({
     --el-font-size-base: var(--table-action-size);
     & > * {
         margin: 0;
+    }
+    &.table-action--left {
+        justify-content: flex-start;
+    }
+    &.table-action--center {
+        justify-content: center;
+    }
+    &.table-action--right {
+        justify-content: flex-end;
     }
 }
 </style>
