@@ -9,7 +9,7 @@ export interface RouteMeta {
 }
 
 export interface MenuItem extends Writable<RouteMeta> {
-    id: string;
+    id: number;
     parentId?: number;
     name: string;
     type: MenuType;

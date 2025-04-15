@@ -97,7 +97,10 @@ a {
 .el-form {
     &.search-form {
         .el-input {
-            width: 160px;
+            --el-input-width: 160px;
+        }
+        .el-select {
+            --el-select-width: 160px;
         }
     }
     &.form-flex {

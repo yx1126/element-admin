@@ -62,7 +62,7 @@ export class Http {
         return this.service.interceptors;
     }
 
-    requset<T = any>(params: AxiosRequestConfig) {
+    request<T = any>(params: AxiosRequestConfig) {
         return this.service.request<T>(params);
     }
 
@@ -128,8 +128,8 @@ export class Http {
         return this.service.put<T>(url, data, { headers });
     }
 
-    delete<T>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
-        return this.service.delete<T>(url, { params, headers });
+    delete<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+        return this.service.delete<T>(url, { data, headers });
     }
 }
 

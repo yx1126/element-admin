@@ -6,11 +6,11 @@ export default defineComponent({
         disableTransitions: { type: Boolean, default: true },
     },
     emits: ["click"],
-    setup(props, { slots }) {
+    setup(props, { emit, slots }) {
         return () => {
             const { disableTransitions } = props;
             return (
-                <ElTag disableTransitions={disableTransitions}>{{ ...slots }}</ElTag>
+                <ElTag disableTransitions={disableTransitions} onClick={() => emit("click")}>{{ ...slots }}</ElTag>
             );
         };
     },

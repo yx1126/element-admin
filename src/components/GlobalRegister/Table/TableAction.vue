@@ -2,11 +2,12 @@
 import type { PropType, SlotsType, VNode } from "vue";
 import type { TableActionItem } from "./table";
 import { parseUnit } from "@/utils/unit";
+import { isArray } from "@/utils/validata";
 
 export default defineComponent({
     name: "TableAction",
     props: {
-        actions: { type: Array as PropType<TableActionItem[]>, default: () => [] },
+        actions: { type: [Array, Object] as PropType<TableActionItem[] | TableActionItem>, default: () => [] },
         size: { type: [Number, String], default: 16 },
         type: { type: String as PropType<"link" | "button">, default: "link" },
         gap: [Number, String],
@@ -31,7 +32,7 @@ export default defineComponent({
         const actions = computed(() => {
             const before: TableActionItem[] = [];
             const after: TableActionItem[] = [];
-            props.actions.forEach(item => {
+            (isArray<TableActionItem[]>(props.actions) ? props.actions : [props.actions]).forEach(item => {
                 if(!item.append) {
                     after.push(item);
                 } else if(item.append === "before") {

@@ -187,7 +187,7 @@ export function useTable<
         const selections = row && !(row instanceof MouseEvent) ? (isArray<Data[]>(row) ? row : [row]) : state.selections;
         if(selections.length) {
             const ids = selections.map(getRowKey);
-            msgBox.confirm($t("delete.confirm")).then(async () => {
+            msgBox.confirm($t("delete.confirm"), { type: "warning" }).then(async () => {
                 try {
                     await deleteRequest(ids);
                     message.success($t("delete.success"));

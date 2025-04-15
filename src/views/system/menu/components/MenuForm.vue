@@ -71,7 +71,7 @@ const rules: FormRules = {
 onDialogOpen(data => {
     query();
     if(data) {
-        form.value = { ...data };
+        form.value = { ...form.value, ...data };
     }
 });
 
@@ -93,6 +93,7 @@ onDialogSubmit(async close => {
                 :data="treeData"
                 value-key="id"
                 check-strictly
+                filterable
                 :default-expanded-keys="[form.parentId]"
                 :placeholder="$t('select', [t('lastMneu')])"
                 :props="{ label: 'title' }"

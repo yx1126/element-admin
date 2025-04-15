@@ -58,7 +58,7 @@ const Configs: ConfigOptions = createConfig({
             autoInsertSpace: false,
         },
         message: {
-            duration: 1500,
+            duration: 2000,
         },
     },
     /**
@@ -70,10 +70,17 @@ const Configs: ConfigOptions = createConfig({
         const isIndexSelection = ["index", "selection"].includes(column.type!);
         return {
             ...column,
+            align: column.align ?? "center",
             width: isIndexSelection ? 80 : undefined,
             minWidth: isIndexSelection ? undefined : 100,
-            // 操作不显示tooltip
-            showOverflowTooltip: (column.slotName === "operate" || column.label === "操作") ? false : column.showOverflowTooltip,
+            showOverflowTooltip: (
+                column.slotName === "operate"
+                || column.label === "操作"
+                || column.slotName
+                || ["selection", "index", "expand"].includes(column.type!)
+            )
+                ? false
+                : column.showOverflowTooltip ?? true,
         };
     },
     /**
