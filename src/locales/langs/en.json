@@ -18,5 +18,8 @@
     "delete": {
         "confirm": "Confirm to delete the selected data?",
         "success": "Deletion successful!"
+    },
+    "valid": {
+        "not-null": "{0} cannot be empty"
     }
 }

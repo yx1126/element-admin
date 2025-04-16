@@ -8,8 +8,7 @@ defineOptions({
 type TabsName = "base" | "safety";
 
 const user = useUserStore();
-const { t } = useI18n();
-const { t: $t } = useI18n({ useScope: "global" });
+const { t } = useLocal();
 const pwdMitt = useMitt("updatePwd");
 const formRef = useTemplateRef("formRef");
 
@@ -17,10 +16,10 @@ const tabsActive = ref<TabsName>("base");
 const form = ref(getForm());
 
 const rules: FormRules = {
-    username: { required: true, message: () => `${$t("input", { value: t("username2") })}！`, trigger: "blur" },
-    nickName: { required: true, message: () => `${$t("input", { value: t("nickname2") })}！`, trigger: "blur" },
-    sex: { required: true, message: () => `${$t("select", { value: t("sex") })}！`, trigger: "change" },
-    email: { required: true, message: () => `${$t("input", { value: t("email2") })}！`, trigger: "blur" },
+    username: Require(t("username2")),
+    nickName: Require(t("nickname2")),
+    sex: Require(t("sex"), "change"),
+    email: Require(t("email2")),
 };
 
 function getForm() {

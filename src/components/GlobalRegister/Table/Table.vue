@@ -20,7 +20,7 @@ export default defineComponent({
     } & Record<string, (data: TableSlot) => VNode[]>>,
     setup(props, { attrs, slots, emit }) {
         const ns = useNamespace("table", ref("base"));
-        const { t } = useI18n();
+        const { t } = useLocal();
         const rotation = ref("");
 
         const {

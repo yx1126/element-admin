@@ -8,8 +8,7 @@ defineOptions({
     name: "TableSet",
 });
 
-const { t } = useI18n();
-const { t: $t } = useI18n({ useScope: "global" });
+const { t, $t } = useLocal();
 
 const {
     columns,

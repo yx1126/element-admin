@@ -18,5 +18,8 @@
     "delete": {
         "confirm": "确定删除选中的数据?",
         "success": "删除成功！"
+    },
+    "valid": {
+        "not-null": "{0}不能为空"
     }
 }

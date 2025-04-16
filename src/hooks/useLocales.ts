@@ -1,4 +1,5 @@
 import type { Lang } from "#/stores";
+import { useI18n } from "vue-i18n";
 
 function setHtmlLang(value: Lang) {
     document.documentElement.setAttribute("lang", value);
@@ -6,6 +7,40 @@ function setHtmlLang(value: Lang) {
 
 interface LocalesOptions {
     immediate?: boolean;
+}
+
+type I18nBack = ReturnType<typeof useI18n>;
+
+interface LocalBack extends I18nBack {
+    $t: I18nBack["t"];
+    ti: I18nBack["t"];
+    ts: I18nBack["t"];
+    tv: I18nBack["t"];
+}
+
+export function useLocal(): LocalBack {
+    const i18n = useI18n();
+    const { t } = useI18n({ useScope: "global" });
+
+    function ti(...args: Parameters<I18nBack["t"]>) {
+        return t("input", [i18n.t(...args)]);
+    }
+
+    function ts(...args: Parameters<I18nBack["t"]>) {
+        return t("select", [i18n.t(...args)]);
+    }
+
+    function tv(...args: Parameters<I18nBack["t"]>) {
+        return t("valid.not-null", [i18n.t(...args)]);
+    }
+
+    return {
+        ...i18n as any,
+        $t: t,
+        ti,
+        ts,
+        tv,
+    };
 }
 
 export function useLocales(options?: LocalesOptions) {

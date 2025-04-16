@@ -32,7 +32,7 @@ const { disabled: formDisabled, validate } = useElForm();
 const popoverRef = useTemplateRef("popoverRef");
 const eleIconRef = useTemplateRef("eleIconRef");
 const localIconRef = useTemplateRef("localIconRef");
-const { t } = useI18n();
+const { t } = useLocal();
 
 const hovering = ref(false);
 const searchKey = ref("");

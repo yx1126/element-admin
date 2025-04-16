@@ -18,8 +18,7 @@ const router = useRouter();
 const keepMitt = useMitt("keepAlive");
 
 const msgBox = useMessageBox();
-const { t } = useI18n();
-const { t: $t } = useI18n({ useScope: "global" });
+const { t, $t } = useLocal();
 
 useWindowResize(moveToCurrentTag, { lazy: 200 });
 

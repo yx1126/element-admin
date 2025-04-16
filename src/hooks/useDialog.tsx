@@ -101,7 +101,7 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
     } = Object.assign({}, options);
 
     const app = useApp();
-    const { t: $t } = useI18n({ useScope: "global" });
+    const { $t } = useLocal();
 
     let divWrapper: Nullable<HTMLDivElement> = null;
     let instance: Nullable<VNode> = null;
@@ -210,7 +210,12 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
             const { $attrs, actions, EventMap, onClick } = this;
             return (
                 <ElConfigProvider>
-                    <ElDialog v-model={visivle.value} {...$attrs} {...EventMap}>
+                    <ElDialog
+                        v-model={visivle.value}
+                        {...$attrs}
+                        {...EventMap}
+                        title={isFn(title) ? title(formData.value) : title}
+                    >
                         {{
                             default: () => h(Component),
                             header: renderHeader,
@@ -248,7 +253,6 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
                 draggable: true,
                 destroyOnClose: true,
                 ...otherDialogProps,
-                title: isFn(title) ? title(formData.value) : title,
             });
             instance.appContext = context || app.appContext;
             render(instance, divWrapper);

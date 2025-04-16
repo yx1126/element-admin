@@ -14,7 +14,7 @@ const { height } = defineProps<{
 
 defineSlots<Slotsable<"default">>();
 
-const { t } = useI18n();
+const { t } = useLocal();
 const router = useRouter();
 const user = useUserStore();
 const set = useSetStore();

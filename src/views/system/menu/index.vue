@@ -10,7 +10,7 @@ defineOptions({
 
 const msgBox = useMessageBox();
 const message = useMessage();
-const { t: $t } = useI18n({ useScope: "global" });
+const { $t } = useLocal();
 
 const queryForm = ref({
     title: "",
@@ -27,7 +27,7 @@ const { data, loading, query } = useRequest<MenuItem[]>({
 });
 
 const dialog = useDialog(MenuForm, {
-    title: data => data?.form?.id ? "编辑菜单" : "新增菜单",
+    title: data => data?.id ? "编辑菜单" : "新增菜单",
     width: 600,
     onSubmit: onSearch,
 });

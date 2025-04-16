@@ -67,7 +67,7 @@ export function useTable<
 >(options: TableOptions<Data, Query>) {
     const msgBox = useMessageBox();
     const message = useMessage();
-    const { t: $t } = useI18n({ useScope: "global" });
+    const { $t } = useLocal();
 
     const formRef = useTemplateRef<Nullable<FormInstance>>(options.formRef!);
 

@@ -5,7 +5,7 @@ defineOptions({
     name: "About",
 });
 
-const { t } = useI18n();
+const { t } = useLocal();
 </script>
 
 <template>

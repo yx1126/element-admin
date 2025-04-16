@@ -14,7 +14,7 @@ defineOptions({
 const set = useSetStore();
 const { lang } = useLocales();
 const { currentZIndex } = useZIndex();
-const { t } = useI18n();
+const { t } = useLocal();
 const { theme, themeColor } = useTheme();
 const mitt = useMitt("toggleSetting");
 
@@ -202,7 +202,8 @@ function onReset() {
             justify-content: space-between;
             gap: 10px;
             .input {
-                width: 120px;
+                min-width: 120px;
+                --el-select-width: 120px;
             }
         }
     }

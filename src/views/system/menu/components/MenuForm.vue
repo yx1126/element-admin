@@ -8,9 +8,6 @@ defineOptions({
     name: "MenuForm",
 });
 
-const { t } = useI18n();
-const { t: $t } = useI18n({ useScope: "global" });
-
 const { data: treeData, query } = useRequest({
     request: getMenuSelectTree,
     default: [],
@@ -55,17 +52,17 @@ const {
 });
 
 const rules: FormRules = {
-    path: Required("路由地址"),
-    title: Required((_, value, cb) => {
+    path: Require("路由地址"),
+    title: Validator((_, value, cb) => {
         if(!value) {
-            cb(new Error($t("input", [form.value.type === 3 ? "按钮名称" : "菜单名称"])));
+            cb(new Error(form.value.type === 3 ? "按钮名称" : "菜单名称"));
         } else {
             cb();
         }
     }),
-    name: Required("组件名称"),
-    component: Required("组件路径"),
-    link: Required("超链接"),
+    name: Require("组件名称"),
+    component: Require("组件路径"),
+    link: Require("超链接"),
 };
 
 onDialogOpen(data => {
@@ -87,7 +84,7 @@ onDialogSubmit(async close => {
 
 <template>
     <el-form ref="formRef" v-loading="loading" :rules="rules" class="column-2" :model="form" label-width="80px">
-        <el-form-item class="full" prop="parentId" :label="t('lastMneu')">
+        <el-form-item class="full" prop="parentId" label="上级菜单">
             <el-tree-select
                 v-model="form.parentId"
                 :data="treeData"
@@ -95,7 +92,7 @@ onDialogSubmit(async close => {
                 check-strictly
                 filterable
                 :default-expanded-keys="[form.parentId]"
-                :placeholder="$t('select', [t('lastMneu')])"
+                placeholder="请选择上级菜单"
                 :props="{ label: 'title' }"
             />
         </el-form-item>
@@ -151,10 +148,3 @@ onDialogSubmit(async close => {
         </el-form-item>
     </el-form>
 </template>
-
-<i18n lang="yaml">
-zh:
-  lastMneu: 上级菜单
-en:
-  lastMneu: Previous menu
-</i18n>

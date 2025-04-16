@@ -8,7 +8,7 @@ defineOptions({
 });
 
 const user = useUserStore();
-const { t } = useI18n();
+const { t } = useLocal();
 
 const underwayList = ref([
     { title: "ElementPlus", icon: "element-plus", desc: "基于 Vue 3，面向设计师和开发者的组件库", group: "NaiveUI", time: "9小时前" },

@@ -9,7 +9,7 @@ const { code } = defineProps<{
 
 defineSlots<Slotsable<"default">>();
 
-const { t } = useI18n();
+const { t } = useLocal();
 const message = useMessage();
 const set = useSetStore();
 const shiki = useShiKi();

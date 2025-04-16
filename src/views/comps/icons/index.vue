@@ -10,7 +10,7 @@ defineOptions({
 });
 
 const message = useMessage();
-const { t } = useI18n();
+const { t } = useLocal();
 
 const selectIcon = ref("");
 const iconName = ref("");

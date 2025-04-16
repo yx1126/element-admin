@@ -13,7 +13,7 @@ export default defineComponent({
     emits: ["search", "reset"],
     slots: Object as SlotsType<Slotsable<"default" | "form" | "form-extra">>,
     setup(props, { emit, slots }) {
-        const { t: $t } = useI18n({ useScope: "global" });
+        const { t: $t } = useLocal();
 
         const formRef = ref<Nullable<FormInstance>>(null);
 

@@ -40,7 +40,6 @@ export default defineConfig(() => {
                 imports: [
                     "vue",
                     "vue-router",
-                    "vue-i18n",
                     ...Object.keys(IMPORT_FNS).map(key => ({
                         [key]: IMPORT_FNS[key],
                     })),

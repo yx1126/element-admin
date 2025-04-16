@@ -4,7 +4,7 @@ defineOptions({
     name: "403",
 });
 const router = useRouter();
-const { t } = useI18n();
+const { t } = useLocal();
 const errGif = ErrGif + "?" + +new Date();
 
 function back() {

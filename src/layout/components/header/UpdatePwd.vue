@@ -7,8 +7,7 @@ defineOptions({
 
 const formRef = useTemplateRef("formRef");
 const message = useMessage();
-const { t } = useI18n();
-const { t: $t } = useI18n({ useScope: "global" });
+const { t, ti } = useLocal();
 
 const visible = ref(false);
 
@@ -19,16 +18,17 @@ const form = ref({
 });
 
 const rules: FormRules = {
-    password: [Required($t("input", { value: t("oldPwd") }))],
-    newPwd: [Required($t("input", { value: t("newPwd") }))],
-    confirmPwd: [
-        Required(t("conifrm2")),
-        {
-            message: () => t("notSame"),
-            trigger: "blur",
-            validator: (_, value) => value === form.value.newPwd,
-        },
-    ],
+    password: [Require(() => ti("oldPwd"))],
+    newPwd: [Require(() => ti("newPwd"))],
+    confirmPwd: [{
+        required: true,
+        trigger: "blur",
+        message: () => t("conifrm2"),
+    }, {
+        message: () => t("notSame"),
+        trigger: "blur",
+        validator: (_, value) => value === form.value.newPwd,
+    }],
 };
 
 function open() {
@@ -95,8 +95,8 @@ zh:
   notSame: 两次密码输入不一致
 en:
   title: Change Password
-  oldPwd: Old Password
-  newPwd: New Password
+  oldPwd: old Password
+  newPwd: new Password
   conifrm: Confirm Password
   conifrm2: Please enter your new password again
   notSame: The two passwords you entered do not match

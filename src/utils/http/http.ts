@@ -102,7 +102,7 @@ export class Http {
         return this.service.post<T>(url, data, { headers });
     }
 
-    postForm<T>(url: string, data?: Record<string, any>, headers?: RawAxiosRequestHeaders) {
+    postForm<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         const form = new FormData();
         if(data) {
             Object.keys(data).forEach(key => {
@@ -117,7 +117,7 @@ export class Http {
         });
     }
 
-    download<T = Blob, R = AxiosResponse<T>>(url: string, data?: Record<string, any>, headers?: RawAxiosRequestHeaders) {
+    download<T = Blob, R = AxiosResponse<T>>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.post<T, R>(url, data, {
             responseType: "blob",
             ...headers,

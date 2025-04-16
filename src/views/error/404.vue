@@ -2,7 +2,7 @@
 defineOptions({
     name: "404",
 });
-const { t } = useI18n();
+const { t } = useLocal();
 </script>
 
 <template>
