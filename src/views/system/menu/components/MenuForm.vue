@@ -52,17 +52,28 @@ const {
 });
 
 const rules: FormRules = {
-    path: Require("路由地址"),
+    path: Require("请输入路由地址"),
     title: Validator((_, value, cb) => {
         if(!value) {
-            cb(new Error(form.value.type === 3 ? "按钮名称" : "菜单名称"));
+            cb(new Error(form.value.type === 3 ? "请输入按钮名称" : "请输入菜单名称"));
         } else {
             cb();
         }
     }),
-    name: Require("组件名称"),
-    component: Require("组件路径"),
-    link: Require("超链接"),
+    name: [
+        Require("请输入组件名称"),
+        Validator((_, value: string, cb) => {
+            if(!(/^[a-zA-Z0-9]+$/.test(value))) {
+                cb(new Error("请输入字母、数字"));
+            } else if(value.charAt(0).toUpperCase() !== value.charAt(0)) {
+                cb(new Error("首字母必须大写"));
+            } else {
+                cb();
+            }
+        }),
+    ],
+    component: Require("请输入组件路径"),
+    link: Require("请输入超链接"),
 };
 
 onDialogOpen(data => {
@@ -80,6 +91,14 @@ onDialogSubmit(async close => {
     await onSubmit();
     close();
 });
+
+function onPathChange(path: string) {
+    let name = path.split("/").at(-1);
+    if(name) {
+        name = name.replace(/-\w/g, match => match.replace("-", "").toUpperCase());
+        form.value.name = name.charAt(0).toUpperCase() + name.slice(1);
+    }
+}
 </script>
 
 <template>
@@ -105,7 +124,7 @@ onDialogSubmit(async close => {
             </el-radio-group>
         </el-form-item>
         <el-form-item v-if="form.type !== 3" prop="path" label="路由地址">
-            <el-input v-model="form.path" placeholder="请输入路由地址" />
+            <el-input v-model="form.path" placeholder="请输入路由地址" @change="onPathChange" />
         </el-form-item>
         <el-form-item prop="title" :label="form.type === 3 ? '按钮名称' : '菜单名称'">
             <el-input v-model="form.title" :placeholder="`请输入${form.type === 3 ? '按钮名称' : '菜单名称'}`" />

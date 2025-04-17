@@ -40,13 +40,18 @@ const columns = defineColumns<MenuItem>([{
     prop: "title",
     align: "left",
 }, {
+    label: "组件名称",
+    prop: "name",
+}, {
     label: "类型",
     prop: "type",
     slotName: "type",
+    width: 100,
 }, {
     label: "图标",
     prop: "icon",
     slotName: "icon",
+    width: 80,
 }, {
     label: "权限标识",
     prop: "permission",
@@ -57,12 +62,29 @@ const columns = defineColumns<MenuItem>([{
     label: "组件路径",
     prop: "component",
 }, {
+    label: "排序",
+    prop: "sort",
+    width: 80,
+}, {
+    label: "显示/隐藏",
+    prop: "visible",
+    slotName: "visible",
+    width: 100,
+}, {
     label: "状态",
     prop: "status",
     slotName: "status",
+    width: 80,
+}, {
+    label: "更新人",
+    prop: "updateBy",
+}, {
+    label: "更新时间",
+    prop: "updatedAt",
+    width: 180,
 }, {
     label: "操作",
-    width: 180,
+    width: 120,
     fixed: "right",
     slotName: "operate",
 }]);
@@ -132,13 +154,17 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                     <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">展开/折叠</el-button>
                 </template>
                 <template #icon="{ row }">
-                    <Icon v-if="row.icon" :icon="row.icon" size="25" />
+                    <Icon v-if="row.icon" :icon="row.icon" size="20" />
                 </template>
                 <template #type="{ row }">
                     <el-tag v-if="row.type === 0">目录</el-tag>
                     <el-tag v-else-if="row.type === 1" type="success">菜单</el-tag>
                     <el-tag v-else-if="row.type === 2" type="warning">链接</el-tag>
                     <el-tag v-else-if="row.type === 3" type="info">按钮</el-tag>
+                </template>
+                <template #visible="{ row }">
+                    <el-tag v-if="row.visible == 1">显示</el-tag>
+                    <el-tag v-else type="danger">隐藏</el-tag>
                 </template>
                 <template #status="{ row }">
                     <el-tag :type="row.status == 0 ? 'danger' : 'primary'">{{ row.status == 0 ? '禁用' : '启用' }}</el-tag>

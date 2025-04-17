@@ -1,7 +1,7 @@
 import type { MenuItem } from "#/menu";
 
 export const menuList: MenuItem[] = [{
-    id: "1",
+    id: 1,
     type: 0,
     path: "/dashboard",
     name: "Dashboard",
@@ -10,7 +10,7 @@ export const menuList: MenuItem[] = [{
     visible: "1",
     sort: 1,
     children: [{
-        id: "1-1",
+        id: 11,
         type: 1,
         path: "/console",
         name: "Console",
@@ -21,7 +21,7 @@ export const menuList: MenuItem[] = [{
         component: "/dashboard/console",
         children: [],
     }, {
-        id: "1-2",
+        id: 12,
         type: 1,
         path: "/workbench",
         name: "Workbench",
@@ -33,7 +33,7 @@ export const menuList: MenuItem[] = [{
         children: [],
     }],
 }, {
-    id: "2",
+    id: 2,
     type: 0,
     path: "/comps",
     name: "Comps",
@@ -42,7 +42,7 @@ export const menuList: MenuItem[] = [{
     visible: "1",
     sort: 1,
     children: [{
-        id: "2-1",
+        id: 21,
         type: 1,
         path: "/icons",
         name: "Icons",
@@ -54,7 +54,7 @@ export const menuList: MenuItem[] = [{
         children: [],
     }],
 }, {
-    id: "3",
+    id: 3,
     type: 0,
     path: "/error",
     name: "Error",
@@ -63,7 +63,7 @@ export const menuList: MenuItem[] = [{
     visible: "1",
     sort: 2,
     children: [{
-        id: "3-1",
+        id: 31,
         type: 1,
         path: "404",
         name: "404",
@@ -75,7 +75,7 @@ export const menuList: MenuItem[] = [{
         component: "/error/404",
         children: [],
     }, {
-        id: "3-2",
+        id: 32,
         type: 1,
         path: "403",
         name: "403",
@@ -87,7 +87,7 @@ export const menuList: MenuItem[] = [{
         children: [],
     }],
 }, {
-    id: "8",
+    id: 8,
     type: 0,
     path: "/system",
     name: "System",
@@ -96,7 +96,7 @@ export const menuList: MenuItem[] = [{
     visible: "1",
     sort: 3,
     children: [{
-        id: "8-1",
+        id: 81,
         type: 1,
         path: "/user",
         name: "User",
@@ -108,7 +108,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/user",
         children: [],
     }, {
-        id: "8-2",
+        id: 82,
         type: 1,
         path: "/role",
         name: "Role",
@@ -120,7 +120,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/role",
         children: [],
     }, {
-        id: "8-3",
+        id: 83,
         type: 1,
         path: "/menu",
         name: "Menu",
@@ -132,7 +132,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/menu",
         children: [],
     }, {
-        id: "8-4",
+        id: 84,
         type: 1,
         path: "/dept",
         name: "Dept",
@@ -144,7 +144,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/dept",
         children: [],
     }, {
-        id: "8-5",
+        id: 85,
         type: 1,
         path: "/post",
         name: "Post",
@@ -156,7 +156,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/post",
         children: [],
     }, {
-        id: "8-6",
+        id: 86,
         type: 1,
         path: "/dict",
         name: "Dict",
@@ -168,7 +168,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/dict",
         children: [],
     }, {
-        id: "8-7",
+        id: 87,
         type: 1,
         path: "/notice",
         name: "Notice",
@@ -180,7 +180,7 @@ export const menuList: MenuItem[] = [{
         component: "/system/notice",
         children: [],
     }, {
-        id: "8-8",
+        id: 88,
         type: 0,
         path: "/log",
         name: "Log",
@@ -189,7 +189,7 @@ export const menuList: MenuItem[] = [{
         visible: "1",
         sort: 2,
         children: [{
-            id: "8-8-1",
+            id: 881,
             type: 1,
             path: "/operate-log",
             name: "OperateLog",
@@ -201,7 +201,7 @@ export const menuList: MenuItem[] = [{
             component: "/system/log/operate-log",
             children: [],
         }, {
-            id: "8-8-2",
+            id: 882,
             type: 1,
             path: "/login-log",
             name: "LoginLog",
@@ -215,7 +215,7 @@ export const menuList: MenuItem[] = [{
         }],
     }],
 }, {
-    id: "9",
+    id: 9,
     type: 1,
     path: "/github",
     link: "https://github.com/yx1126",
@@ -226,7 +226,7 @@ export const menuList: MenuItem[] = [{
     sort: 3,
     children: [],
 }, {
-    id: "10",
+    id: 10,
     type: 0,
     path: "/iframe",
     name: "IFramePage",
@@ -235,7 +235,7 @@ export const menuList: MenuItem[] = [{
     icon: "EleLink",
     sort: 3,
     children: [{
-        id: "10-1",
+        id: 101,
         type: 3,
         path: "/element-plus",
         link: "https://element-plus.org/en-US/",
@@ -247,7 +247,7 @@ export const menuList: MenuItem[] = [{
         sort: 3,
         children: [],
     }, {
-        id: "10-2",
+        id: 102,
         type: 3,
         path: "/naive-ui",
         link: "https://www.naiveui.com/en-US/light",
@@ -260,7 +260,7 @@ export const menuList: MenuItem[] = [{
         children: [],
     }],
 }, {
-    id: "11",
+    id: 11,
     type: 1,
     path: "/about",
     name: "About",
