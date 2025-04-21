@@ -39,11 +39,21 @@ const searchKey = ref("");
 const iconType = ref<IconType>("element");
 
 const options = computed(() => {
+    let iconType: IconType = "element";
+    const eleIcons = search(searchKey.value, EleIconNames);
+    const localIcons = search(searchKey.value, LocalIconNames);
+    if(eleIcons.length > 0) {
+        iconType = "element";
+    } else if(localIcons.length > 0) {
+        iconType = "local";
+    }
     return {
-        eleIcons: search(searchKey.value, EleIconNames),
-        localIcons: search(searchKey.value, LocalIconNames),
+        iconType,
+        eleIcons,
+        localIcons,
     };
 });
+
 const showClear = computed(() => clearable && modelValue.value && !formDisabled.value && hovering.value);
 
 const popverAttrs = computed<PopoverProps>(() => {
@@ -62,6 +72,10 @@ watch(modelValue, (val, oldVal) => {
     if(val !== oldVal) {
         validate();
     }
+});
+
+watch(() => options.value.iconType, value => {
+    iconType.value = value;
 });
 
 function search(value?: string, list?: string[]) {

@@ -78,13 +78,13 @@ export function useTable<
             total: 0,
             currentPage: 1,
             pageSize: 10,
-            pageSizes: [10, 20, 50, 100],
+            pageSizes: [10, 20, 30, 50, 100],
             ...markRaw({
-                onSizeChange: (value: number) => {
+                "onUpdate:pageSize": (value: number) => {
                     state.paging.currentPage = value;
                     onSearch();
                 },
-                onCurrentChange: (value: number) => {
+                "onUpdate:currentPage": (value: number) => {
                     state.paging.pageSize = value;
                     onSearch();
                 },

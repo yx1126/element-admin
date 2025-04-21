@@ -8,7 +8,7 @@ export interface RouteMeta {
     readonly link?: string;
 }
 
-export interface MenuItem extends Writable<RouteMeta> {
+export interface MenuItem extends Writable<RouteMeta>, TableModels {
     id: number;
     parentId?: number;
     name: string;

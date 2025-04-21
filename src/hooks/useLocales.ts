@@ -18,8 +18,8 @@ interface LocalBack extends I18nBack {
     tv: I18nBack["t"];
 }
 
-export function useLocal(): LocalBack {
-    const i18n = useI18n();
+export function useLocal(...args: Parameters<typeof useI18n>): LocalBack {
+    const i18n = useI18n(...args);
     const { t } = useI18n({ useScope: "global" });
 
     function ti(...args: Parameters<I18nBack["t"]>) {

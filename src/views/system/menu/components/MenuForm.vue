@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MenuItem } from "#/menu";
 import { getMenuSelectTree, menuCreate, menuUpdate } from "@/api/system/menu";
 import IconSelect from "@/components/IconSelect";
-import type { FormRules } from "element-plus";
+import { MenuType } from "@/enums/menu";
+import type { MenuItem } from "#/menu";
 
 defineOptions({
     name: "MenuForm",
@@ -37,7 +37,7 @@ const {
         title: undefined,
         icon: undefined,
         isCache: "0",
-        isIframe: undefined,
+        isIframe: "0",
         link: undefined,
         parentId: 0,
         name: undefined,
@@ -51,7 +51,7 @@ const {
     }),
 });
 
-const rules: FormRules = {
+const rules = defineFormRules({
     path: Require("请输入路由地址"),
     title: Validator((_, value, cb) => {
         if(!value) {
@@ -74,7 +74,7 @@ const rules: FormRules = {
     ],
     component: Require("请输入组件路径"),
     link: Require("请输入超链接"),
-};
+});
 
 onDialogOpen(data => {
     query();
@@ -93,6 +93,7 @@ onDialogSubmit(async close => {
 });
 
 function onPathChange(path: string) {
+    if(form.value.type != MenuType.MENU) return;
     let name = path.split("/").at(-1);
     if(name) {
         name = name.replace(/-\w/g, match => match.replace("-", "").toUpperCase());
@@ -117,10 +118,10 @@ function onPathChange(path: string) {
         </el-form-item>
         <el-form-item class="full" prop="type" label="菜单类型">
             <el-radio-group v-model="form.type" @change="clearValidate()">
-                <el-radio :value="0">目录</el-radio>
-                <el-radio :value="1">菜单</el-radio>
-                <el-radio :value="2">链接</el-radio>
-                <el-radio :value="3">按钮</el-radio>
+                <el-radio :value="MenuType.FOLDER">目录</el-radio>
+                <el-radio :value="MenuType.MENU">菜单</el-radio>
+                <el-radio :value="MenuType.LINK">链接</el-radio>
+                <el-radio :value="MenuType.BUTTON">按钮</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item v-if="form.type !== 3" prop="path" label="路由地址">
@@ -153,7 +154,13 @@ function onPathChange(path: string) {
                 <el-radio value="0">隐藏</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="form.type == 2" prop="isCache" label="是否缓存">
+        <el-form-item v-if="form.type == 2" prop="isCache" label="是否内链">
+            <el-radio-group v-model="form.isIframe">
+                <el-radio value="1">是</el-radio>
+                <el-radio value="0">否</el-radio>
+            </el-radio-group>
+        </el-form-item>
+        <el-form-item v-if="form.type == 1" prop="isCache" label="是否缓存">
             <el-radio-group v-model="form.isCache">
                 <el-radio value="1">是</el-radio>
                 <el-radio value="0">否</el-radio>

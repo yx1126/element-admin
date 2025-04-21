@@ -5,7 +5,11 @@ import TableAction from "@/components/GlobalRegister/Table/TableAction.vue";
 import type { AppContext, Component, InjectionKey, Ref, VNode } from "vue";
 import type { TableActionItem } from "@/components/GlobalRegister/Table";
 
-export interface DialogOptions<Form extends object = any> extends Partial<Omit<Writable<DialogProps>, "modelValue" | "title">> {
+export interface DialogOptions<
+    Form extends object = any,
+    Comp extends Component = any,
+> extends Partial<Omit<Writable<DialogProps>, "modelValue" | "title">> {
+    component: Comp;
     context?: Nullable<AppContext>;
     title?: string | ((form: Form) => string);
     renderHeader?: () => VNode | VNode[];
@@ -84,8 +88,9 @@ function createLifeCycleList<T extends keyof DialogLifeCycle>(_key: T) {
     return ref([]) as DialogLifeCycle[T];
 }
 
-export function useDialog<T extends Component, Form extends object = any>(Component: T, options?: DialogOptions<Form>) {
+export function useDialog<Form extends object = any, Comp extends Component = any>(options: DialogOptions<Form, Comp>) {
     const {
+        component,
         title,
         context,
         showActions = true,
@@ -217,7 +222,7 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
                         title={isFn(title) ? title(formData.value) : title}
                     >
                         {{
-                            default: () => h(Component),
+                            default: () => h(component),
                             header: renderHeader,
                             footer: () => {
                                 if(renderFooter) return renderFooter();
@@ -242,10 +247,8 @@ export function useDialog<T extends Component, Form extends object = any>(Compon
 
     tryOnScopeDispose(destory);
 
-    function open(form?: Nullable<Form> | MouseEvent) {
-        if(!(form instanceof MouseEvent)) {
-            formData.value = form;
-        }
+    function open(form?: Partial<Nullable<Form>>) {
+        formData.value = form;
         createWrapper();
         if(!instance) {
             divWrapper = document.createElement("div");

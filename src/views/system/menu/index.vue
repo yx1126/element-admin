@@ -26,7 +26,8 @@ const { data, loading, query } = useRequest<MenuItem[]>({
     immediate: true,
 });
 
-const dialog = useDialog(MenuForm, {
+const dialog = useDialog<MenuItem>({
+    component: MenuForm,
     title: data => data?.id ? "编辑菜单" : "新增菜单",
     width: 600,
     onSubmit: onSearch,
@@ -150,7 +151,7 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open">新增</el-button>
+                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">新增</el-button>
                     <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">展开/折叠</el-button>
                 </template>
                 <template #icon="{ row }">

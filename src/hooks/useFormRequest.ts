@@ -1,4 +1,4 @@
-import type { FormInstance } from "element-plus";
+import type { FormInstance, FormRules } from "element-plus";
 import type { Ref } from "vue";
 import type { Result } from "#/axios";
 
@@ -32,6 +32,10 @@ export interface FormCallback<T extends object = any, D extends object = any> ex
     onSubmit: () => Promise<T>;
     queryInfo: (...args: Parameters<Required<FormOptions<T, D>["request"]>["info"]>) => Promise<void>;
     queryInfoByLocal: (data: T) => void;
+}
+
+export function defineFormRules(rules: FormRules) {
+    return rules;
 }
 
 export function useFormRequest<T extends object, D extends object = any>(config: FormOptions<T, D>): FormCallback<T, D> {
