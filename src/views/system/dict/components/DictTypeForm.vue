@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { dictTypeCreate, dictTypeUpdate } from "@/api/system/dictType";
+import { dictCreate, dictUpdate } from "@/api/system/dictType";
 import type { DictType } from "#/dict";
 
 defineOptions({
@@ -10,12 +10,11 @@ const {
     form,
     formRef,
     resetFields,
-    loading,
     onSubmit,
 } = useFormRequest<DictType>({
     request: {
-        add: dictTypeCreate,
-        edit: dictTypeUpdate,
+        add: dictCreate,
+        edit: dictUpdate,
     },
     form: () => ({
         id: undefined,
@@ -42,14 +41,19 @@ onDialogClosed(() => {
     resetFields();
 });
 
-onDialogSubmit(async close => {
-    await onSubmit();
-    close();
+onDialogSubmit(async (instance, close) => {
+    try {
+        instance.loading = true;
+        await onSubmit();
+        close();
+    } finally {
+        instance.loading = false;
+    }
 });
 </script>
 
 <template>
-    <el-form ref="formRef" v-loading="loading" :rules="rules" :model="form" label-width="80px">
+    <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
         <el-form-item prop="name" label="字典名称">
             <el-input v-model="form.name" placeholder="请输入字典名称" />
         </el-form-item>

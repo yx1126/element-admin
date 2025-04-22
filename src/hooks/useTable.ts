@@ -1,8 +1,8 @@
-import { isArray, isFn, isStr } from "@/utils/validata";
+import { isArray, isFn, isObject, isStr } from "@/utils/validata";
 import { Configs } from "@/config";
 import type { TableColumn } from "@/components/GlobalRegister/Table";
 import type { PageInfo, Result, TableResult } from "#/axios";
-import type { PaginationProps, TableProps, FormInstance } from "element-plus";
+import type { PaginationProps, TableProps, FormInstance, ElMessageBoxOptions } from "element-plus";
 
 type ColumnFormatter<Data = any> = (column: TableColumn<Data>, index: number) => TableColumn<Data>;
 
@@ -65,10 +65,11 @@ export function useTable<
     Data extends object = any,
     Query = any,
 >(options: TableOptions<Data, Query>) {
-    const msgBox = useMessageBox();
-    const message = useMessage();
-    const { $t } = useLocal();
-
+    const { onDelete } = useDataDelete({
+        request: options.deleteRequest!,
+        rowKey: options.rowKey,
+        onSuccess: onSearch,
+    });
     const formRef = useTemplateRef<Nullable<FormInstance>>(options.formRef!);
 
     const state: TableState<Data> = reactive({
@@ -181,26 +182,6 @@ export function useTable<
         state.paging.currentPage = 1;
     }
 
-    function onDelete(row: Data) {
-        const { deleteRequest } = options;
-        if(!deleteRequest) return;
-        const selections = row && !(row instanceof MouseEvent) ? (isArray<Data[]>(row) ? row : [row]) : state.selections;
-        if(selections.length) {
-            const ids = selections.map(getRowKey);
-            msgBox.confirm($t("delete.confirm"), { type: "warning" }).then(async () => {
-                try {
-                    await deleteRequest(ids);
-                    message.success($t("delete.success"));
-                    onSearch();
-                } catch (error) {
-                    console.error(error);
-                }
-            }).catch(error => {
-                console.error(error);
-            });
-        }
-    }
-
     return {
         ...toRefs(state),
         formRef,
@@ -212,5 +193,79 @@ export function useTable<
         indexMethod,
         getRowKey,
         onSelectionChange,
+    };
+}
+
+export interface DeleteOptions<Query = any> {
+    request: (ids: Query) => Promise<Result>;
+    rowKey?: TableProps<any>["rowKey"];
+    showLoading?: boolean;
+    onSuccess?: () => void;
+}
+
+export function useDataDelete<Query = any>(options: DeleteOptions<Query>) {
+    const { request, rowKey, onSuccess, showLoading = true } = options;
+
+    const { $t } = useLocal();
+    const msgBox = useMessageBox();
+    const message = useMessage();
+
+    function getRowKey(row: any): string {
+        const data: Record<string, any> = row;
+        if(isStr(rowKey)) {
+            return data[rowKey];
+        } if(isFn(rowKey)) {
+            return rowKey(row);
+        }
+        return data?.id;
+    }
+
+    function onDelete(id: string | number): void;
+    function onDelete(ids: string[] | number[]): void;
+    function onDelete<Data extends object>(row: Data): void;
+    function onDelete<Data extends object>(row: Data | string[] | number[] | string | number) {
+        if(!request) return;
+        const ids: any = isArray<any[]>(row) ? row : isObject(row) ? [getRowKey(row)] : [row];
+        const options: ElMessageBoxOptions = { type: "warning" };
+        if(showLoading) {
+            options.showInput = false;
+            options.beforeClose = async (action, instance, done) => {
+                if(action === "confirm") {
+                    try {
+                        instance.confirmButtonLoading = true;
+                        await request(ids);
+                        done();
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        instance.confirmButtonLoading = false;
+                    }
+                    return;
+                }
+                done();
+            };
+        }
+        if(ids.length) {
+            if(showLoading) {
+                msgBox.prompt($t("delete.confirm"), options).then(() => {
+                    message.success($t("delete.success"));
+                    onSuccess?.();
+                }).catch(() => {});
+            } else {
+                msgBox.confirm($t("delete.confirm"), options).then(async () => {
+                    try {
+                        await request(ids);
+                        message.success($t("delete.success"));
+                        onSuccess?.();
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }).catch(() => {});
+            }
+        }
+    }
+
+    return {
+        onDelete,
     };
 }

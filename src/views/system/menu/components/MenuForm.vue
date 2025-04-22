@@ -25,7 +25,6 @@ const {
     formRef,
     resetFields,
     clearValidate,
-    loading,
     onSubmit,
 } = useFormRequest<MenuItem>({
     request: {
@@ -87,9 +86,14 @@ onDialogClosed(() => {
     resetFields();
 });
 
-onDialogSubmit(async close => {
-    await onSubmit();
-    close();
+onDialogSubmit(async (instance, close) => {
+    try {
+        instance.loading = true;
+        await onSubmit();
+        close();
+    } finally {
+        instance.loading = false;
+    }
 });
 
 function onPathChange(path: string) {
@@ -103,7 +107,7 @@ function onPathChange(path: string) {
 </script>
 
 <template>
-    <el-form ref="formRef" v-loading="loading" :rules="rules" class="column-2" :model="form" label-width="80px">
+    <el-form ref="formRef" :rules="rules" class="column-2" :model="form" label-width="80px">
         <el-form-item class="full" prop="parentId" label="上级菜单">
             <el-tree-select
                 v-model="form.parentId"

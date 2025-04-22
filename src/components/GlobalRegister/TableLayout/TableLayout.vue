@@ -69,7 +69,7 @@ export default defineComponent({
                                 )
                         }
                     </el-card-v2>
-                    <el-card-v2 class="table-layout-main">
+                    <el-card-v2 class="table-layout-main layout-card">
                         {renderSlot(slots, "default")}
                     </el-card-v2>
                 </div>
@@ -83,6 +83,9 @@ export default defineComponent({
 .table {
     &-layout {
         color: #000;
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 1;
         &-main {
             margin-top: 10px;
         }

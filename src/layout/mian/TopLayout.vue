@@ -23,8 +23,8 @@ export default defineComponent((_, { slots }) => {
             <el-container class="layout-container" direction="vertical">
                 {isKeepHeader ? HeaderVNode : null}
                 {isKeepTags ? TagsVNode : null}
-                <el-main>
-                    <el-scrollbar>
+                <el-main class="layout-main">
+                    <el-scrollbar class="layout-scrollbar">
                         {isKeepHeader ? null : HeaderVNode}
                         {isKeepTags ? null : TagsVNode}
                         { renderSlot(slots, "default") }

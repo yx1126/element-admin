@@ -1,7 +1,6 @@
 import { isFn } from "@/utils/validata";
 import { tryOnScopeDispose } from "@vueuse/core";
 import { ElDialog, ElConfigProvider, type DialogProps } from "element-plus";
-import TableAction from "@/components/GlobalRegister/Table/TableAction.vue";
 import type { AppContext, Component, InjectionKey, Ref, VNode } from "vue";
 import type { TableActionItem } from "@/components/GlobalRegister/Table";
 
@@ -19,7 +18,6 @@ export interface DialogOptions<
     showConfirm?: boolean;
     confirmText?: string;
     showActions?: boolean;
-    onAction?: (item: TableActionItem) => void;
     onCancel?: () => void;
     onSubmit?: () => void;
 }
@@ -48,6 +46,10 @@ function destoryWrapper(instance?: Nullable<VNode>) {
     }
 }
 
+interface DialogSubmitState {
+    loading: boolean;
+}
+
 interface DialogLifeCycle {
     open: Ref<Array<(form: any) => void>>;
     opened: Ref<Array<(form: any) => void>>;
@@ -56,7 +58,7 @@ interface DialogLifeCycle {
     openAutoFocus: Ref<Array<() => void>>;
     closeAutoFocus: Ref<Array<() => void>>;
     cancel: Ref<Array<() => void>>;
-    submit: Ref<Array<(close: () => void, form: any) => void>>;
+    submit: Ref<Array<(instance: DialogSubmitState, done: () => void) => void>>;
 }
 
 const DialogContext = Symbol() as InjectionKey<DialogLifeCycle>;
@@ -111,14 +113,17 @@ export function useDialog<Form extends object = any, Comp extends Component = an
     let divWrapper: Nullable<HTMLDivElement> = null;
     let instance: Nullable<VNode> = null;
 
-    const visivle = ref(false);
+    const state = reactive({
+        loading: false,
+        visible: false,
+    });
 
     const formData = ref<Nullable<Form>>(null);
 
     const dialog = defineComponent({
         name: "DialogWrapper",
         inheritAttrs: false,
-        emits: ["open", "opened", "close", "closed", "open-auto-focus", "close-auto-focus", "action"],
+        emits: ["open", "opened", "close", "closed", "open-auto-focus", "close-auto-focus"],
         setup(_, { emit }) {
             const openLifeCycle = createLifeCycleList("open");
             const openedLifeCycle = createLifeCycleList("opened");
@@ -168,24 +173,23 @@ export function useDialog<Form extends object = any, Comp extends Component = an
             };
 
             function close(fn?: () => void) {
-                visivle.value = false;
+                state.visible = false;
                 fn && fn();
             }
 
-            function onClick(item: TableActionItem) {
-                if(item.action === "cancel") {
+            function onClick(action: "cancel" | "submit") {
+                if(action === "cancel") {
                     close();
                     onCancel?.();
                     cancelLifeCycle.value.forEach(fn => fn());
-                } else if(item.action === "submit") {
+                } else if(action === "submit") {
                     submitLifeCycle.value.forEach(fn => {
                         function done() {
                             close(() => onSubmit?.());
                         }
-                        fn(done, formData.value);
+                        fn(state, done);
                     });
                 }
-                emit("action", item);
             }
 
             const actions = computed(() => {
@@ -212,11 +216,11 @@ export function useDialog<Form extends object = any, Comp extends Component = an
             };
         },
         render() {
-            const { $attrs, actions, EventMap, onClick } = this;
+            const { $attrs, EventMap, onClick } = this;
             return (
                 <ElConfigProvider>
                     <ElDialog
-                        v-model={visivle.value}
+                        v-model={state.visible}
                         {...$attrs}
                         {...EventMap}
                         title={isFn(title) ? title(formData.value) : title}
@@ -228,14 +232,10 @@ export function useDialog<Form extends object = any, Comp extends Component = an
                                 if(renderFooter) return renderFooter();
                                 if(!showActions) return null;
                                 return (
-                                    <TableAction
-                                        type="button"
-                                        actions={actions}
-                                        showDefaults={false}
-                                        align="right"
-                                        size={14}
-                                        onClick={onClick}
-                                    />
+                                    <div class="dialog-footer">
+                                        <el-button onClick={() => onClick("cancel")}>{cancelText || $t("button.cancel")}</el-button>
+                                        <el-button type="primary" loading={state.loading} onClick={() => onClick("submit")}>{confirmText || $t("button.submit")}</el-button>
+                                    </div>
                                 );
                             },
                         }}
@@ -263,7 +263,7 @@ export function useDialog<Form extends object = any, Comp extends Component = an
             DialogInstance.push(instance);
         }
         nextTick(() => {
-            visivle.value = true;
+            state.visible = true;
         });
     }
 

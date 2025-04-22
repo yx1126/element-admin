@@ -8,10 +8,6 @@ defineOptions({
     name: "Menu",
 });
 
-const msgBox = useMessageBox();
-const message = useMessage();
-const { $t } = useLocal();
-
 const queryForm = ref({
     title: "",
     status: "",
@@ -24,6 +20,11 @@ const { data, loading, query } = useRequest<MenuItem[]>({
     request: getMenuTree,
     default: [],
     immediate: true,
+});
+
+const { onDelete } = useDataDelete({
+    request: menuDelete,
+    onSuccess: onSearch,
 });
 
 const dialog = useDialog<MenuItem>({
@@ -109,23 +110,13 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
         dialog.open(row);
     } else if(item.action === "delete") {
         if(!row.id) return;
-        msgBox.confirm($t("delete.confirm"), { type: "warning" }).then(async () => {
-            try {
-                await menuDelete([row.id]);
-                message.success($t("delete.success"));
-                onSearch();
-            } catch (error) {
-                console.error(error);
-            }
-        }).catch(error => {
-            console.error(error);
-        });
+        onDelete(row.id);
     }
 }
 </script>
 
 <template>
-    <div class="menu">
+    <div class="menu layout-page">
         <table-layout :model="queryForm" @search="onSearch">
             <template #form>
                 <el-form-item prop="title" label="菜单名称">
@@ -151,7 +142,7 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">新增</el-button>
+                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
                     <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">展开/折叠</el-button>
                 </template>
                 <template #icon="{ row }">

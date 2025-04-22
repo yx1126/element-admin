@@ -105,8 +105,8 @@ export default defineComponent((_, { slots }) => {
                         { !isMenuFixed ? AsideChild : null}
                         <el-container direction="vertical">
                             {isKeepTags ? TagsVNode : null}
-                            <el-main>
-                                <el-scrollbar>
+                            <el-main class="layout-main">
+                                <el-scrollbar class="layout-scrollbar">
                                     {isKeepTags ? null : TagsVNode}
                                     { renderSlot(slots, "default") }
                                 </el-scrollbar>

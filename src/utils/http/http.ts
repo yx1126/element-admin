@@ -82,27 +82,27 @@ export class Http {
         return this.service.getUri(config);
     }
 
-    head<T>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
+    head<T = any>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.head<T>(url, { params, headers });
     }
 
-    options<T>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
+    options<T = any>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.options<T>(url, { params, headers });
     }
 
-    patch<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    patch<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.patch<T>(url, data, { headers });
     }
 
-    get<T>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
+    get<T = any>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.get<T>(url, { params, headers });
     }
 
-    post<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    post<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.post<T>(url, data, { headers });
     }
 
-    postForm<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    postForm<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         const form = new FormData();
         if(data) {
             Object.keys(data).forEach(key => {
@@ -124,11 +124,11 @@ export class Http {
         });
     }
 
-    put<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    put<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.put<T>(url, data, { headers });
     }
 
-    delete<T>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    delete<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
         return this.service.delete<T>(url, { data, headers });
     }
 }

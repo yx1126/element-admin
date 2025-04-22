@@ -95,7 +95,7 @@ export default defineComponent({
                             </div>
                         )
                         : null}
-                    <el-table v-show={!isEmpty.value} v-loading={loading} {...attrs}>
+                    <el-table class={ns.e("main")} v-show={!isEmpty.value} v-loading={loading} {...attrs}>
                         {{
                             default: () => renderColumns(columns.value),
                             append: slots.append ? () => renderSlot(slots, "append") : undefined,
@@ -120,6 +120,7 @@ export default defineComponent({
 .base-table {
     display: flex;
     flex-direction: column;
+    flex-shrink: 1;
     &__tool {
         height: 34px;
         margin-bottom: 10px;
