@@ -3,7 +3,7 @@
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Preivew
-[element-admin](yx1126.github.io/element-admin/)
+[element-admin](https://yx1126.github.io/naive-admin)
 
 ## Project Setup
 
