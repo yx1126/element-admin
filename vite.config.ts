@@ -6,7 +6,7 @@ import Uoncss from "unocss/vite";
 import AutoImport from "unplugin-auto-import/vite";
 // import AutoComponents from "unplugin-vue-components/vite";
 // import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import VitePluginSvgIcon from "./scripts/build-icons";
 // import VueDevTools from "vite-plugin-vue-devtools";
 import pkg from "./package.json";
@@ -20,8 +20,13 @@ const IMPORT_FNS: Record<string, string[]> = {
 };
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+    const env = loadEnv(mode, process.cwd());
     return {
+        base: env.VITE_PUBLIC_PATH,
+        build: {
+            outDir: "docs",
+        },
         resolve: {
             alias: {
                 "@": resolve("./src"),

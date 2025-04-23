@@ -1,0 +1,1 @@
+import{d as a,a0 as r,r as i,c as l,o as c,O as o,a as u,w as p}from"./index-XoUNSFcm.js";const _={class:""},x=a({__name:"index",setup(d){const t=r();function n(){t.replace("/")}return(m,e)=>{const s=i("el-button");return c(),l("div",_,[e[1]||(e[1]=o(" login ")),u(s,{onClick:n},{default:p(()=>e[0]||(e[0]=[o("Login")])),_:1})])}}});export{x as default};

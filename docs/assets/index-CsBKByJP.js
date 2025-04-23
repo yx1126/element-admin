@@ -1,0 +1,1 @@
+import{d as o,a3 as s,a1 as r,a0 as u,a2 as p,a4 as i,a5 as c}from"./index-XoUNSFcm.js";const f=o({name:"Redirect",setup(){const t=r(),a=u(),n=p("keepAlive");i(()=>{const e=t.params.path;if(!(e!=null&&e.length)){a.replace("/");return}a.replace({path:`/${e.join("/")}`,query:t.query})}),c(()=>{n.emit("")})},render(){return s("span",{style:"display: none;"})}});export{f as default};

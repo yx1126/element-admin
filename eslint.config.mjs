@@ -30,6 +30,7 @@ export default defineEslint({
     rules: {
         "@stylistic/eol-last": "off",
     },
+    ignore: ["docs"],
     flatESLintConfig: [{
         files: ["**/*.vue"],
         rules: {
