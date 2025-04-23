@@ -29,7 +29,7 @@ export interface FormCallback<T extends object = any, D extends object = any> ex
     formRef: Ref<Nullable<FormInstance>>;
     form: Ref<Form<T>>;
     loading: Ref<boolean>;
-    onSubmit: () => Promise<T>;
+    onSubmit: () => Promise<void>;
     queryInfo: (...args: Parameters<Required<FormOptions<T, D>["request"]>["info"]>) => Promise<void>;
     queryInfoByLocal: (data: T) => void;
 }
@@ -66,13 +66,16 @@ export function useFormRequest<T extends object, D extends object = any>(config:
     }
 
     function onSubmit() {
-        return new Promise<T>((resolve, reject) => {
-            formRef.value?.validate(async valid => {
-                if(!valid) return;
+        return new Promise<void>((resolve, reject) => {
+            formRef.value?.validate(async (valid, errors) => {
+                if(!valid) {
+                    reject(errors);
+                    return;
+                }
                 try {
                     loading.value = true;
                     const form = beforeRequest ? await beforeRequest(dataForm.value) : dataForm.value;
-                    if(form.id) {
+                    if(form.id || (form.id === 0)) {
                         if(editRequest) await editRequest(form);
                     } else {
                         if(addRequest) await addRequest(form);

@@ -3,6 +3,7 @@ export interface DictType extends TableModels {
     name: string;
     type: string;
     status: "0" | "1";
+    nodeType: "0" | "1";
     remark: string;
 }
 
@@ -13,7 +14,6 @@ export interface DictData extends TableModels {
     label: string;
     value: string;
     type: string;
-    nodeType: string;
     cssClass: string;
     listClass: string;
     isDefault: "0" | "1";

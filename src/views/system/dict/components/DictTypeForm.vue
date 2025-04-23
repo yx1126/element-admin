@@ -20,6 +20,7 @@ const {
         id: undefined,
         name: undefined,
         type: undefined,
+        nodeType: "0",
         status: "1",
         remark: undefined,
     }),
@@ -28,7 +29,8 @@ const {
 const rules = defineFormRules({
     name: Require("请输入字典名称"),
     type: Require("请输入字典类型"),
-    status: Require("请选择字典状态"),
+    nodeType: Require("请选择节点类型", "change"),
+    status: Require("请选择字典状态", "change"),
 });
 
 onDialogOpen(data => {
@@ -60,10 +62,16 @@ onDialogSubmit(async (instance, close) => {
         <el-form-item prop="type" label="字典类型">
             <el-input v-model="form.type" placeholder="请输入字典类型" />
         </el-form-item>
+        <el-form-item prop="nodeType" label="节点类型">
+            <el-radio-group v-model="form.nodeType">
+                <el-radio value="0">文本</el-radio>
+                <el-radio value="1">标签</el-radio>
+            </el-radio-group>
+        </el-form-item>
         <el-form-item prop="status" label="状态">
             <el-radio-group v-model="form.status">
-                <el-radio value="0">禁用</el-radio>
                 <el-radio value="1">启用</el-radio>
+                <el-radio value="0">禁用</el-radio>
             </el-radio-group>
         </el-form-item>
         <el-form-item prop="remark" label="备注">
