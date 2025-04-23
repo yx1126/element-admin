@@ -50,7 +50,7 @@ const columns = defineColumns([{
     type: "index",
     label: "序号",
 }, {
-    label: "类型",
+    label: "字典类型",
     prop: "dictType",
 }, {
     label: "字典名称",
@@ -97,7 +97,7 @@ onBeforeMount(async () => {
 
 function onFilterNode(value: string, data: Record<string, any>) {
     if(!value) return true;
-    return data.name.includes(value);
+    return data.name.includes(value) || data.type.includes(value);
 }
 
 function onNodeClick(dict: DictType) {
