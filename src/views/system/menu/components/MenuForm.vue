@@ -25,6 +25,7 @@ const {
     formRef,
     resetFields,
     clearValidate,
+    queryInfoByLocal,
     onSubmit,
 } = useFormRequest<MenuItem>({
     request: {
@@ -78,7 +79,7 @@ const rules = defineFormRules({
 onDialogOpen(data => {
     query();
     if(data) {
-        form.value = { ...form.value, ...data };
+        queryInfoByLocal({ ...form.value, ...data });
     }
 });
 

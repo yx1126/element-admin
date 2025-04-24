@@ -5,6 +5,10 @@ export function dictList() {
     return http.get<DictType[]>("/system/dict");
 }
 
+export function dictAllList(dictType: string) {
+    return http.get<DictType[]>("/system/dict/data/" + dictType);
+}
+
 export function dictCreate(data: DictType) {
     return http.post("/system/dict", data);
 }

@@ -10,6 +10,7 @@ const {
     form,
     formRef,
     resetFields,
+    queryInfoByLocal,
     onSubmit,
 } = useFormRequest<DictData>({
     request: {
@@ -41,7 +42,7 @@ const rules = defineFormRules({
 
 onDialogOpen(data => {
     if(data) {
-        form.value = { ...form.value, ...data };
+        queryInfoByLocal({ ...form.value, ...data });
     }
 });
 

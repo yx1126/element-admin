@@ -31,7 +31,7 @@ export interface FormCallback<T extends object = any, D extends object = any> ex
     loading: Ref<boolean>;
     onSubmit: () => Promise<void>;
     queryInfo: (...args: Parameters<Required<FormOptions<T, D>["request"]>["info"]>) => Promise<void>;
-    queryInfoByLocal: (data: T) => void;
+    queryInfoByLocal: (data: Partial<T>) => void;
 }
 
 export function defineFormRules(rules: FormRules) {
@@ -61,8 +61,8 @@ export function useFormRequest<T extends object, D extends object = any>(config:
         }
     }
 
-    function queryInfoByLocal(data: T) {
-        dataForm.value = formatter ? formatter(data as any) : data;
+    function queryInfoByLocal(data: Partial<T>) {
+        dataForm.value = formatter ? formatter(data as any) : data as T;
     }
 
     function onSubmit() {
@@ -99,7 +99,7 @@ export function useFormRequest<T extends object, D extends object = any>(config:
         queryInfo,
         queryInfoByLocal,
         onSubmit,
-        ...Methods.reduce<FormFunctions>((pre, method) => {
+        ...Methods.reduce((pre, method) => {
             pre[method] = ((...args: any) => {
                 if(formRef.value && formRef.value[method]) {
                     if(method === "resetFields") {
