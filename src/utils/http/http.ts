@@ -3,7 +3,6 @@ import axios, {
     type AxiosInstance,
     type AxiosRequestConfig,
     type AxiosResponse,
-    type RawAxiosRequestHeaders,
     type InternalAxiosRequestConfig,
     type AxiosInterceptorManager,
 } from "axios";
@@ -82,27 +81,27 @@ export class Http {
         return this.service.getUri(config);
     }
 
-    head<T = any>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
+    head<T = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.head<T>(url, { params, headers });
     }
 
-    options<T = any>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
+    options<T = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.options<T>(url, { params, headers });
     }
 
-    patch<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    patch<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.patch<T>(url, data, { headers });
     }
 
-    get<T = any>(url: string, params?: any, headers?: RawAxiosRequestHeaders) {
+    get<T = any>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.get<T>(url, { params, headers });
     }
 
-    post<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    post<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.post<T>(url, data, { headers });
     }
 
-    postForm<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    postForm<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         const form = new FormData();
         if(data) {
             Object.keys(data).forEach(key => {
@@ -117,18 +116,18 @@ export class Http {
         });
     }
 
-    download<T = Blob, R = AxiosResponse<T>>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    download<T = Blob, R = AxiosResponse<T>>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.post<T, R>(url, data, {
             responseType: "blob",
             ...headers,
         });
     }
 
-    put<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    put<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.put<T>(url, data, { headers });
     }
 
-    delete<T = any>(url: string, data?: any, headers?: RawAxiosRequestHeaders) {
+    delete<T = any>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.delete<T>(url, { data, headers });
     }
 }
