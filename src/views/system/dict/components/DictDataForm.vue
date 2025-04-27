@@ -71,6 +71,7 @@ onDialogSubmit(async (instance, close) => {
         </el-form-item>
         <el-form-item prop="type" label="标签类型">
             <el-select v-model="form.type" placeholder="请选择标签类型">
+                <el-option value="default" label="default" />
                 <el-option value="primary" label="primary" />
                 <el-option value="success" label="success" />
                 <el-option value="info" label="info" />

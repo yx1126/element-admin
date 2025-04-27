@@ -7,7 +7,7 @@ export interface DictType extends TableModels {
     remark: string;
 }
 
-export interface DictData extends TableModels {
+export interface DictData extends TableModels, Pick<DictType, "nodeType"> {
     id: number;
     dictId: number;
     sort: number;
@@ -19,4 +19,5 @@ export interface DictData extends TableModels {
     isDefault: "0" | "1";
     status: "0" | "1";
     remark: string;
+    dictType: DictType["type"];
 }

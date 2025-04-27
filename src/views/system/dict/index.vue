@@ -26,7 +26,10 @@ const dictTypeDialog = useDialog({
     component: DictTypeForm,
     title: data => `${data?.id ? "编辑" : "新增"}字典`,
     width: 500,
-    onSubmit: onQueryDictType,
+    onSubmit: () => {
+        onQueryDictType();
+        onSearch();
+    },
 });
 const dictDataDialog = useDialog({
     component: DictDataForm,
@@ -55,16 +58,17 @@ const columns = defineColumns([{
 }, {
     label: "字典名称",
     prop: "label",
+    slotName: "label",
 }, {
     label: "字典值",
     prop: "value",
 }, {
-    label: "节点类型",
-    prop: "nodeType",
-    slotName: "nodeType",
-}, {
     label: "排序",
     prop: "sort",
+}, {
+    label: "状态",
+    prop: "status",
+    slotName: "status",
 }, {
     label: "描述",
     prop: "remark",
@@ -169,9 +173,24 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                 <template #action>
                     <el-button type="primary" icon="ElePlus" @click="dictDataDialog.open({ dictId })">{{ $t("button.add") }}</el-button>
                 </template>
-                <template #nodeType="{row}">
-                    <span v-if="row.nodeType == 0">文本</span>
-                    <el-tag v-else-if="row.nodeType == 1" :type="row.type">标签</el-tag>
+                <template #label="{row}">
+                    <DictLabel
+                        :value="row.nodeType"
+                        :options="[{
+                            label:row.label,
+                            value: '0',
+                            nodeType: '0',
+                            type: row.type
+                        },{
+                            label:row.label,
+                            value: '1',
+                            nodeType: '1',
+                            type: row.type
+                        }]"
+                    />
+                </template>
+                <template #status="{row}">
+                    <DictLabel :value="row.status" type="status" />
                 </template>
                 <template #operate="{row}">
                     <table-action @click="onTaleActionClick($event, row)" />

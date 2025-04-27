@@ -6,7 +6,7 @@ export function dictList() {
 }
 
 export function dictAllList(dictType: string) {
-    return http.get<DictType[]>("/system/dict/data/" + dictType);
+    return http.get<DictData[]>("/system/dict/data/" + dictType);
 }
 
 export function dictCreate(data: DictType) {

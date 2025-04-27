@@ -149,10 +149,7 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                     <Icon v-if="row.icon" :icon="row.icon" size="20" />
                 </template>
                 <template #type="{ row }">
-                    <el-tag v-if="row.type === 0">目录</el-tag>
-                    <el-tag v-else-if="row.type === 1" type="success">菜单</el-tag>
-                    <el-tag v-else-if="row.type === 2" type="warning">链接</el-tag>
-                    <el-tag v-else-if="row.type === 3" type="info">按钮</el-tag>
+                    <DictLabel :value="row.type" type="menu_type" />
                 </template>
                 <template #visible="{ row }">
                     <el-tag v-if="row.visible == 1">显示</el-tag>

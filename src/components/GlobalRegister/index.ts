@@ -2,6 +2,7 @@ import { withInstall } from "@/utils/withInstall";
 import Icon, { ElIcon } from "./Icon";
 import TableLayout from "./TableLayout";
 import BaseTable from "./Table";
+import Dict from "./Dict";
 
 /**
  * 全局注册
@@ -12,4 +13,5 @@ export default withInstall(app => {
     app.use(ElIcon);
     app.use(TableLayout);
     app.use(BaseTable);
+    app.use(Dict);
 });
