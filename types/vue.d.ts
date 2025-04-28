@@ -2,13 +2,13 @@ export {};
 
 declare module "vue" {
     export interface ComponentCustomProperties {
-        vCopy: typeof import("../src/directive/copy")["default"];
-        vDrag: typeof import("../src/directive/drag")["default"];
+        VCopy: typeof import("../src/directive/copy")["default"];
+        VCopy: typeof import("../src/directive/drag")["default"];
     }
 
     export interface GlobalDirectives {
-        vCopy: typeof import("../src/directive/copy")["default"];
-        vDrag: typeof import("../src/directive/drag")["default"];
+        VCopy: typeof import("../src/directive/copy")["default"];
+        VDrag: typeof import("../src/directive/drag")["default"];
     }
 
     export interface GlobalComponents {
