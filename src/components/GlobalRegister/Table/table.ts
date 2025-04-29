@@ -22,7 +22,7 @@ export type TableColumn<T = any> = BaseTableColumn & {
     fixed?: "left" | "right" | boolean;
     slotName?: string;
     children?: TableColumn<T>[];
-    render?(data: TableSlot<T>): Empty<VNode[]>;
+    render?(data: TableSlot<T>): Empty<VNode | VNode[]>;
     renderHeader?(data: Omit<TableSlot<T>, "row">): Empty<VNode[]>;
     renderFilterIcon? (data: { filterOpened: boolean }): Empty<VNode[]>;
 };
@@ -57,12 +57,18 @@ export const tableContextKey = Symbol() as InjectionKey<TableContext>;
 export const FixedLeft: TableColumn["fixed"][] = [true, "left"];
 export const FixedRight: TableColumn["fixed"][] = ["right"];
 
+function getRandomId(): Noable<string> {
+    if("crypto" in window) {
+        return crypto.randomUUID?.();
+    }
+}
+
 function formatColumns(columns?: TableColumn[], index?: number, deep = 0): TableColumnFormat[] {
     if(!columns?.length) return [];
     const { index: indexList, selection, left, middle, right } = columns.reduce<Record<string, TableColumnFormat[]>>((pre, column, i) => {
         if(deep !== 0 && ["selection", "index", "expand"].includes(column.type || "default")) return pre;
         const item = {
-            id: "crypto" in window ? crypto.randomUUID() : index !== null && index !== undefined ? `${index}-${i}` : `${i}`,
+            id: getRandomId() || (index !== null && index !== undefined ? `${index}-${i}` : `${i}`),
             ...column,
             checked: true,
             children: formatColumns(column.children, i, deep + 1),

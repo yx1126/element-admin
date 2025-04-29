@@ -63,19 +63,20 @@ const Configs: ConfigOptions = createConfig({
     },
     /**
      * `defineColumns`表格列默认属性
-     * @see {@link file://./hooks/useTable.ts#L13}
+     * @see {@link file://./hooks/useTable.ts#L50}
      */
     tableColumn: column => {
         // 序号列、多选列
         const isIndexSelection = ["index", "selection"].includes(column.type!);
+        const isOperate = column.slotName === "operate" || column.label === "操作";
         return {
             ...column,
             align: column.align ?? "center",
             width: isIndexSelection ? 80 : undefined,
             minWidth: isIndexSelection ? undefined : 100,
+            fixed: column.fixed ?? isIndexSelection ? "left" : isOperate ? "right" : undefined,
             showOverflowTooltip: (
-                column.slotName === "operate"
-                || column.label === "操作"
+                isOperate
                 || column.slotName
                 || ["selection", "index", "expand"].includes(column.type!)
             )

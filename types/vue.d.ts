@@ -23,5 +23,6 @@ declare module "vue" {
         BaseTable: typeof import("../src/components/GlobalRegister/Table/Table.vue")["default"];
         TableAction: typeof import("../src/components/GlobalRegister/Table/TableAction.vue")["default"];
         DictLabel: typeof import("../src/components/GlobalRegister/Dict/DictLabel.vue")["default"];
+        Pagination: typeof import("element-plus")["ElPagination"];
     }
 }

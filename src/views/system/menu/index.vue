@@ -47,8 +47,8 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "类型",
     prop: "type",
-    slotName: "type",
     width: 100,
+    dictType: "menu_type",
 }, {
     label: "图标",
     prop: "icon",
@@ -75,8 +75,8 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "状态",
     prop: "status",
-    slotName: "status",
     width: 80,
+    dictType: "status",
 }, {
     label: "更新人",
     prop: "updateBy",
@@ -87,7 +87,6 @@ const columns = defineColumns<MenuItem>([{
 }, {
     label: "操作",
     width: 120,
-    fixed: "right",
     slotName: "operate",
 }]);
 
@@ -148,15 +147,9 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                 <template #icon="{ row }">
                     <Icon v-if="row.icon" :icon="row.icon" size="20" />
                 </template>
-                <template #type="{ row }">
-                    <DictLabel :value="row.type" type="menu_type" />
-                </template>
                 <template #visible="{ row }">
                     <el-tag v-if="row.visible == 1">显示</el-tag>
                     <el-tag v-else type="danger">隐藏</el-tag>
-                </template>
-                <template #status="{ row }">
-                    <el-tag :type="row.status == 0 ? 'danger' : 'primary'">{{ row.status == 0 ? '禁用' : '启用' }}</el-tag>
                 </template>
                 <template #operate="{ row }">
                     <table-action :actions="{action: 'add', icon: 'ElePlus', append: 'before', type: 'primary'}" @click="onTaleActionClick($event, row)" />

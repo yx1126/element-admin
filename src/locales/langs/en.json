@@ -9,6 +9,7 @@
         "add": "Add",
         "edit": "Edit",
         "delete": "Delete",
+        "deletes": "Batch deletion",
         "confirm": "Confirm",
         "cancel": "Cancel",
         "submit": "Submit",

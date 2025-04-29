@@ -1,8 +1,10 @@
 import { isArray, isFn, isObject, isStr } from "@/utils/validata";
 import { Configs } from "@/config";
+import DictLabel from "@/components/GlobalRegister/Dict/DictLabel.vue";
 import type { TableColumn } from "@/components/GlobalRegister/Table";
 import type { PageInfo, Result, TableResult } from "#/axios";
 import type { PaginationProps, TableProps, FormInstance, ElMessageBoxOptions } from "element-plus";
+import type { DictLabelProps } from "#/system";
 
 type ColumnFormatter<Data = any> = (column: TableColumn<Data>, index: number) => TableColumn<Data>;
 
@@ -18,10 +20,12 @@ export interface FormatterOptions {
     indexMethod: (index: number) => number;
 }
 
+type DeleteRequest = ((ids: string[]) => Promise<Result>) | ((ids: number[]) => Promise<Result>);
+
 interface TableOptions<Data extends object, Query = any> {
     request: (data: Query) => Promise<TableResult<Data[]>>;
     paging?: Pagination;
-    deleteRequest?: (id: string | string[]) => Promise<Result>;
+    deleteRequest?: DeleteRequest;
     query?: () => Partial<Query>;
     rowKey?: TableProps<Data>["rowKey"];
     tableAttrs?: Partial<Omit<TableProps<Data>, "data" | "rowKey">>;
@@ -32,6 +36,7 @@ interface TableOptions<Data extends object, Query = any> {
     immediate?: boolean;
     formRef?: string;
 }
+
 export interface TableState<Data extends object, Query = any> {
     loading: boolean;
     paging: Pagination & {
@@ -44,9 +49,16 @@ export interface TableState<Data extends object, Query = any> {
     query: Query;
 }
 
-export function defineColumns<Data = any>(columns: TableColumn<Data>[], ...props: (TableColumn<Data> | ColumnFormatter<Data>)[]) {
+export interface TableDictColumn<Data extends object = any> extends TableColumn<Data> {
+    dictType?: string | DictLabelProps;
+}
+
+export function defineColumns<Data extends object = any>(columns: TableDictColumn<Data>[], ...props: (TableColumn<Data> | ColumnFormatter<Data>)[]) {
     const { tableColumn } = Configs;
     return columns.map((c, i) => {
+        if(c.dictType) {
+            c = defineDictColumn(c);
+        }
         const defaultColumns = isFn(tableColumn) ? tableColumn(c) : tableColumn;
         if(props.length <= 0) return extend(defaultColumns, c);
         return props.reduce((column, prop) => {
@@ -54,6 +66,23 @@ export function defineColumns<Data = any>(columns: TableColumn<Data>[], ...props
             return extend(column, prop, c);
         }, defaultColumns);
     });
+}
+defineColumns.dateTime = 180;
+
+export function defineDictColumn<Data extends object = any>(column: TableDictColumn<Data>): TableColumn<Data>;
+export function defineDictColumn<Data extends object = any>(column: TableDictColumn<Data>): TableColumn<Data>;
+export function defineDictColumn<Data extends object = any>(column: TableDictColumn<Data>): TableColumn<Data> {
+    const { dictType, ...other } = column;
+    return {
+        ...other,
+        render: ({ row }) => {
+            const defProps = isStr(dictType) ? { type: dictType } : dictType;
+            const key = column.prop || defProps?.valueKey;
+            if(!key) return null;
+            const value = (row as any)[key];
+            return h(DictLabel, { ...defProps, value });
+        },
+    };
 }
 
 function formatFn<Data, F extends ((data: any) => Data)>(data: Data, fn?: F): Data {
@@ -79,6 +108,7 @@ export function useTable<
             currentPage: 1,
             pageSize: 10,
             pageSizes: [10, 20, 30, 50, 100],
+            background: true,
             ...markRaw({
                 "onUpdate:pageSize": (value: number) => {
                     state.paging.currentPage = value;
@@ -96,16 +126,17 @@ export function useTable<
 
     const tableAttrs = computed<Omit<TableProps<Data>, "data">>(() => {
         return {
+            size: "large",
+            border: true,
             ...options.tableAttrs,
             rowKey: options.rowKey,
-            border: true,
             loading: state.loading,
             onSelectionChange,
         };
     });
 
     onBeforeMount(() => {
-        if(options.immediate) {
+        if(options.immediate ?? true) {
             onSearch();
         }
     });
@@ -199,14 +230,14 @@ export function useTable<
     };
 }
 
-export interface DeleteOptions<Query = any> {
-    request: (ids: Query) => Promise<Result>;
+export interface DeleteOptions {
+    request: DeleteRequest;
     rowKey?: TableProps<any>["rowKey"];
     showLoading?: boolean;
     onSuccess?: () => void;
 }
 
-export function useDataDelete<Query = any>(options: DeleteOptions<Query>) {
+export function useDataDelete(options: DeleteOptions) {
     const { request, rowKey, onSuccess, showLoading = true } = options;
 
     const { $t } = useLocal();

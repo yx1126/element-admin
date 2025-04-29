@@ -34,7 +34,7 @@ export interface FormCallback<T extends object = any, D extends object = any> ex
     queryInfoByLocal: (data: Partial<T>) => void;
 }
 
-export function defineFormRules(rules: FormRules) {
+export function defineFormRules<T extends object = any>(rules: FormRules<Extract<keyof T, string>>): FormRules<Extract<keyof T, string>> {
     return rules;
 }
 

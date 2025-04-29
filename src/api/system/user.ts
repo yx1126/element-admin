@@ -1,0 +1,19 @@
+import http from "@/utils/http";
+import type { PageInfo } from "#/axios";
+import type { UserInfo } from "#/system";
+
+export function getUserList<T extends object>(params?: T) {
+    return http.get<PageInfo<UserInfo[]>>("/system/user", params);
+}
+
+export function userCreate(data: UserInfo) {
+    return http.post("/system/user", data);
+}
+
+export function userUpdate(data: UserInfo) {
+    return http.put("/system/user", data);
+}
+
+export function userDelete(ids: number[]) {
+    return http.delete("/system/user", ids);
+}

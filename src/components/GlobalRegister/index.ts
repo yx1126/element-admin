@@ -3,6 +3,7 @@ import Icon, { ElIcon } from "./Icon";
 import TableLayout from "./TableLayout";
 import BaseTable from "./Table";
 import Dict from "./Dict";
+import Pagination from "./Pagination";
 
 /**
  * 全局注册
@@ -14,4 +15,5 @@ export default withInstall(app => {
     app.use(TableLayout);
     app.use(BaseTable);
     app.use(Dict);
+    app.use(Pagination);
 });
