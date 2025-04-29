@@ -1,4 +1,4 @@
-import type { MenuItem } from "#/menu";
+import type { MenuItem } from "#/system";
 
 export const menuList: MenuItem[] = [{
     id: 1,

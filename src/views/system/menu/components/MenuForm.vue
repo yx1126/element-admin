@@ -2,7 +2,7 @@
 import { getMenuSelectTree, menuCreate, menuUpdate } from "@/api/system/menu";
 import IconSelect from "@/components/IconSelect";
 import { MenuType } from "@/enums/menu";
-import type { MenuItem } from "#/menu";
+import type { MenuItem } from "#/system";
 
 defineOptions({
     name: "MenuForm",

@@ -27,6 +27,10 @@ export default defineEslint({
             ],
         },
     },
+    rules: {
+        // 自定义块问题
+        "@stylistic/eol-last": "off",
+    },
     flatESLintConfig: [{
         files: ["**/*.vue"],
         rules: {

@@ -1,5 +1,5 @@
 import type { RouteMeta } from "vue-router";
-import type { MenuItem } from "./menu";
+import type { MenuItem } from "./system";
 
 export type NavTheme = "light" | "inverted" | "dark";
 

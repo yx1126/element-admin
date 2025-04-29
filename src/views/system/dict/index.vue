@@ -3,7 +3,7 @@ import LazyInput from "@/components/LazyInput";
 import { dictList, dictDelete, dictDataList, dictDataDelete } from "@/api/system/dictType";
 import DictTypeForm from "./components/DictTypeForm.vue";
 import DictDataForm from "./components/DictDataForm.vue";
-import type { DictType, DictData } from "#/dict";
+import type { DictType, DictData } from "#/system";
 import type { TableActionItem } from "@/components/GlobalRegister/Table";
 
 defineOptions({

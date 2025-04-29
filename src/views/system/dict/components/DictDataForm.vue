@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { dictDataCreate, dictDataUpdate } from "@/api/system/dictType";
-import type { DictData } from "#/dict";
+import type { DictData } from "#/system";
 
 defineOptions({
     name: "DictDataForm",

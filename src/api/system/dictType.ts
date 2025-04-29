@@ -1,4 +1,4 @@
-import type { DictType, DictData } from "#/dict";
+import type { DictType, DictData } from "#/system";
 import http from "@/utils/http";
 
 export function dictList() {

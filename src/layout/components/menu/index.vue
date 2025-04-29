@@ -5,7 +5,7 @@ import { Configs } from "@/config";
 import { parseUnit } from "@/utils/unit";
 import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
-import type { MenuItem as MenuItemType } from "#/menu";
+import type { MenuItem as MenuItemType } from "#/system";
 
 const { width, theme, type, options } = defineProps<{
     collapse?: boolean;

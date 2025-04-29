@@ -42,7 +42,6 @@ export interface TableState<Data extends object, Query = any> {
     data: Data[];
     selections: Data[];
     query: Query;
-    tableAttrs: Omit<TableProps<Data>, "data">;
 }
 
 export function defineColumns<Data = any>(columns: TableColumn<Data>[], ...props: (TableColumn<Data> | ColumnFormatter<Data>)[]) {
@@ -93,13 +92,16 @@ export function useTable<
         }, options.paging),
         data: [],
         selections: [],
-        tableAttrs: {
+    });
+
+    const tableAttrs = computed<Omit<TableProps<Data>, "data">>(() => {
+        return {
+            ...options.tableAttrs,
             rowKey: options.rowKey,
             border: true,
-            ...markRaw({
-                onSelectionChange,
-            }),
-        },
+            loading: state.loading,
+            onSelectionChange,
+        };
     });
 
     onBeforeMount(() => {
@@ -184,6 +186,7 @@ export function useTable<
 
     return {
         ...toRefs(state),
+        tableAttrs,
         formRef,
         onSearch,
         onReset,

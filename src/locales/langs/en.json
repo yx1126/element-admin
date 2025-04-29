@@ -1,7 +1,8 @@
 {
     "input": "Please input {0}",
     "select": "Please select {0}",
-    "tip": "Tip",
+    "tip": "Prompt",
+    "sys-tip": "System prompts",
     "button": {
         "search": "Search",
         "reset": "Reset",

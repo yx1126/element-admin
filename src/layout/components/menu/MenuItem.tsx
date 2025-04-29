@@ -1,5 +1,5 @@
 import { Icon } from "@/components/GlobalRegister/Icon";
-import type { MenuItem as MenuItemType } from "#/menu";
+import type { MenuItem as MenuItemType } from "#/system";
 
 export function useIsHideAside() {
     const route = useRoute();

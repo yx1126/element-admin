@@ -1,6 +1,6 @@
 <script lang="tsx">
 import { getDictData } from "@/utils/dict";
-import type { DictData } from "#/dict";
+import type { DictData } from "#/system";
 import type { PropType, SlotsType, VNode } from "vue";
 
 export default defineComponent({

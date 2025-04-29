@@ -1,4 +1,4 @@
-import type { MenuItem } from "#/menu";
+import type { MenuItem } from "#/system";
 import http from "@/utils/http";
 
 export function getMenuTree<T extends object>(params?: T) {

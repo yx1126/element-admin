@@ -11,7 +11,7 @@ import { useZIndex } from "element-plus";
 import { Transition } from "vue";
 import { parseIcon } from "@/utils/route";
 import type { NavTheme } from "#/stores";
-import type { MenuItem } from "#/menu";
+import type { MenuItem } from "#/system";
 
 export default defineComponent((_, { slots }) => {
     const set = useSetStore();

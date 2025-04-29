@@ -1,5 +1,5 @@
 import { dictAllList } from "@/api/system/dictType";
-import type { DictData } from "#/dict";
+import type { DictData } from "#/system";
 
 const dictRequestMap = new Map<string, Array<(data: DictData[]) => void>>();
 

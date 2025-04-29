@@ -1,5 +1,5 @@
 <script setup lang="tsx">
-import type { MenuItem } from "#/menu";
+import type { MenuItem } from "#/system";
 import { getMenuTree, menuDelete } from "@/api/system/menu";
 import MenuForm from "./components/MenuForm.vue";
 import type { TableActionItem } from "@/components/GlobalRegister/Table";

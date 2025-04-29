@@ -1,7 +1,7 @@
 import { isArray, isLink } from "./validata";
 import { ParentLayout } from "@/router/layout";
 import type { LocationQueryValue, RouteRecordRaw } from "vue-router";
-import type { MenuItem } from "#/menu";
+import type { MenuItem } from "#/system";
 
 /**
  * 自动导入所有目录下index.vue,index.tsx

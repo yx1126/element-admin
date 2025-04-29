@@ -1,122 +1,104 @@
-import { isObject, isStr, isUndefined } from "@/utils/validata";
+import { isStr } from "@/utils/validata";
 import type {
     ElMessageBoxOptions,
-    ElMessageBoxShortcutMethod,
-    MessageHandler,
     MessageOptions,
-    NotificationHandle,
     NotificationOptions,
-    NotificationProps,
     messageType,
+    MessageParams,
+    NotificationParamsTyped,
 } from "element-plus";
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
-import type { AppContext, VNode } from "vue";
+import i18n from "@/locales";
+import { isVNode, type AppContext } from "vue";
 
 const assign = Object.assign;
 
-const defaultMessageBox: ElMessageBoxOptions = {};
-
-const defaultNotify: Partial<NotificationOptions> = {};
-
-// Message
-type Options = Omit<MessageOptions, "message">;
-const msgType = ["success", "info", "warn", "error"] as const;
-type MessageType = typeof msgType[number];
-type MessageReturn = Record<MessageType, {
-    (message: string | VNode | (() => VNode)): MessageHandler;
-    (message: string | VNode | (() => VNode), options: Options): MessageHandler;
-    (message: string | VNode | (() => VNode), options: Options, appContext: Nullable<AppContext>): MessageHandler;
-}>;
-
-// MessageBox
-const msgBoxType = [...msgType, "alert", "confirm", "prompt"] as const;
-type MessageBoxType = typeof msgBoxType[number];
-type MessageBoxReturn = Record<MessageBoxType, ElMessageBoxShortcutMethod>;
-
-// Notification
-export type NotifyOptions = Partial<Writable<Omit<NotificationProps, "title" | "message" | "type">>>;
-const notifyType = ["alert", ...msgType] as const;
-type NotifyType = typeof notifyType[number];
-type NotifyReturn = Record<NotifyType, {
-    (message: string | VNode): NotificationHandle;
-    (message: string | VNode, title: string): NotificationHandle;
-    (message: string | VNode, options: NotifyOptions): NotificationHandle;
-    (message: string | VNode, title: string, appContext: Nullable<AppContext>): NotificationHandle;
-    (message: string | VNode, options: NotifyOptions, appContext: Nullable<AppContext>): NotificationHandle;
-}>;
-
-function transformType(type: MessageType): messageType {
-    return ({
-        warn: "warning",
-    } as any)[type] || type;
+function getOptions<T, O>(option: T, opt?: O) {
+    if(isStr(option) || isVNode(option)) {
+        return assign(opt || {}, {
+            message: option,
+        });
+    }
+    return assign(opt || {}, option);
 }
 
-export function useMessage(options?: MessageOptions, appContext?: Nullable<AppContext>): MessageReturn {
-    const defOptions = options;
+export function useMessage(options?: MessageOptions, appContext?: Nullable<AppContext>) {
+    const def = options;
     const ctx = appContext;
-    const result: any = {};
-    msgType.forEach(key => {
-        result[key] = (message: string | VNode | (() => VNode), options?: Options, appContext?: Nullable<AppContext>) => {
-            return ElMessage[transformType(key)]({
-                ...defOptions,
-                ...options,
-                message,
-            }, appContext ?? ctx);
-        };
-    });
-    return result;
+    return {
+        success: (options?: MessageParams, appContext?: null | AppContext) => {
+            return ElMessage.success(getOptions(options, def), appContext ?? ctx);
+        },
+        warning: (options?: MessageParams, appContext?: null | AppContext) => {
+            return ElMessage.warning(getOptions(options, def), appContext ?? ctx);
+        },
+        info: (options?: MessageParams, appContext?: null | AppContext) => {
+            return ElMessage.info(getOptions(options, def), appContext ?? ctx);
+        },
+        error: (options?: MessageParams, appContext?: null | AppContext) => {
+            return ElMessage.error(getOptions(options, def), appContext ?? ctx);
+        },
+        closeAll: (type?: messageType) => ElMessage.closeAll(type),
+    };
 }
 
-export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullable<AppContext>): MessageBoxReturn {
-    const defOptions = Object.assign(defaultMessageBox, options);
+export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullable<AppContext>) {
+    const def = options;
     const ctx = appContext;
-    const result: any = {};
-    msgBoxType.forEach(key => {
-        result[key] = (message: string | VNode | (() => VNode), title: string | ElMessageBoxOptions, options?: ElMessageBoxOptions, appContext?: Nullable<AppContext>) => {
-            if(isObject(title)) {
-                options = title;
-                title = "系统提示";
-            } else if(isUndefined(title)) {
-                title = "系统提示";
-            }
-            const opt = Object.assign(defOptions, options);
-            if(["alert", "confirm", "prompt"].includes(key)) {
-                return (ElMessageBox as any)[key](message, title, opt, appContext ?? ctx);
-            }
-            return ElMessageBox.alert(message, title, {
-                ...opt,
-                type: transformType(key as MessageType),
+    return {
+        alert: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), getOptions(options, def), appContext ?? ctx);
+        },
+        confirm: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.confirm(message, title || i18n.global.t("sys-tip"), getOptions(options, def), appContext ?? ctx);
+        },
+        prompt: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.prompt(message, title || i18n.global.t("sys-tip"), getOptions(options, def), appContext ?? ctx);
+        },
+        success: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
+                ...getOptions(options, def),
+                type: "success",
             }, appContext ?? ctx);
-        };
-    });
-    return result;
+        },
+        warning: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
+                ...getOptions(options, def),
+                type: "warning",
+            }, appContext ?? ctx);
+        },
+        info: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
+                ...getOptions(options, def),
+                type: "info",
+            }, appContext ?? ctx);
+        },
+        error: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
+                ...getOptions(options, def),
+                type: "error",
+            }, appContext ?? ctx);
+        },
+        close: () => ElMessageBox.close(),
+    };
 }
 
-export function useNotification(options?: NotifyOptions, appContext?: Nullable<AppContext>) {
-    const opt: NotifyOptions = Object.assign(defaultNotify, options);
+export function useNotification(options?: NotificationOptions, appContext?: Nullable<AppContext>) {
+    const def = options;
     const ctx = appContext;
-    const result: any = {};
-    notifyType.forEach(key => {
-        result[key] = (message: string | VNode, options?: NotifyOptions | string, appContext?: Nullable<AppContext>) => {
-            let title = "";
-            if(isStr(options)) {
-                title = options;
-                options = {};
-            }
-            if(key === "alert") {
-                return (ElNotification as Function)({
-                    ...assign({}, options, opt),
-                    title,
-                    message,
-                }, appContext ?? ctx);
-            }
-            const type = transformType(key);
-            return (ElNotification[type] as Function)({
-                title: title || type.substring(0, 1).toUpperCase() + type.substring(1),
-                ...assign({}, options, opt),
-                message,
-            }, appContext ?? ctx);
-        };
-    });
-    return result as NotifyReturn;
+    return {
+        success: (options?: NotificationParamsTyped, appContext?: null | AppContext) => {
+            return ElNotification.success(getOptions(options, def), appContext ?? ctx);
+        },
+        warning: (options?: NotificationParamsTyped, appContext?: null | AppContext) => {
+            return ElNotification.warning(getOptions(options, def), appContext ?? ctx);
+        },
+        info: (options?: NotificationParamsTyped, appContext?: null | AppContext) => {
+            return ElNotification.info(getOptions(options, def), appContext ?? ctx);
+        },
+        error: (options?: NotificationParamsTyped, appContext?: null | AppContext) => {
+            return ElNotification.error(getOptions(options, def), appContext ?? ctx);
+        },
+        closeAll: () => ElNotification.closeAll(),
+    };
 }

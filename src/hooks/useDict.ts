@@ -1,5 +1,5 @@
 import { getDictData } from "@/utils/dict";
-import type { DictData } from "#/dict";
+import type { DictData } from "#/system";
 
 function makeMap<T>(value: string | string[]) {
     const list = typeof value === "string" ? value.split(",") : value;
