@@ -17,3 +17,7 @@ export function userUpdate(data: UserInfo) {
 export function userDelete(ids: number[]) {
     return http.delete("/system/user", ids);
 }
+
+export function userResetPwd(id: number) {
+    return http.put(`/system/user/reset/${id}`);
+}

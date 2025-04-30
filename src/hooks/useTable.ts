@@ -67,10 +67,7 @@ export function defineColumns<Data extends object = any>(columns: TableDictColum
         }, defaultColumns);
     });
 }
-defineColumns.dateTime = 180;
 
-export function defineDictColumn<Data extends object = any>(column: TableDictColumn<Data>): TableColumn<Data>;
-export function defineDictColumn<Data extends object = any>(column: TableDictColumn<Data>): TableColumn<Data>;
 export function defineDictColumn<Data extends object = any>(column: TableDictColumn<Data>): TableColumn<Data> {
     const { dictType, ...other } = column;
     return {
@@ -107,15 +104,15 @@ export function useTable<
             total: 0,
             currentPage: 1,
             pageSize: 10,
-            pageSizes: [10, 20, 30, 50, 100],
-            background: true,
             ...markRaw({
+                pageSizes: [10, 20, 30, 50, 100],
+                background: true,
                 "onUpdate:pageSize": (value: number) => {
-                    state.paging.currentPage = value;
+                    state.paging.pageSize = value;
                     onSearch();
                 },
                 "onUpdate:currentPage": (value: number) => {
-                    state.paging.pageSize = value;
+                    state.paging.currentPage = value;
                     onSearch();
                 },
             }),
@@ -181,7 +178,7 @@ export function useTable<
             if(state.paging.total > data.total) {
                 updatePage(data.total);
             }
-            state.data = formatter ? formatter(data.data, { indexMethod }) : data.data;
+            state.data = formatter ? formatter(data.list, { indexMethod }) : data.list;
             state.paging.total = data.total;
             if(afterRequest) {
                 afterRequest(state);

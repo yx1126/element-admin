@@ -14,10 +14,10 @@ export default defineComponent({
         showDefaults: { type: Boolean, default: true },
         align: { type: String as PropType<"left" | "center" | "right">, default: "center" },
     },
-    emits: ["click"],
     slots: Object as SlotsType<{
         default?: () => VNode[];
         before?: () => VNode[];
+        after?: () => VNode[];
     }>,
     setup(props, { emit, slots }) {
         const middle: TableActionItem[] = [{
@@ -43,7 +43,11 @@ export default defineComponent({
         });
 
         function onClick(item: TableActionItem) {
+            // eslint-disable-next-line vue/require-explicit-emits
             emit("click", item);
+            if(item.action) {
+                emit(item.action, item);
+            }
         }
 
         return () => {
@@ -57,13 +61,17 @@ export default defineComponent({
                     }}
                 >
                     {renderSlot(slots, "before")}
-                    {actions.value.map(item => {
-                        if(type === "button") {
-                            return <el-button type={item.type} icon={item.icon} onClick={() => onClick(item)}>{item.text}</el-button>;
-                        }
-                        return <el-link type={item.type} icon={item.icon} onClick={() => onClick(item)}>{item.text}</el-link>;
-                    })}
-                    {renderSlot(slots, "default")}
+                    {
+                        renderSlot(slots, "default", {}, () => {
+                            return actions.value.map(item => {
+                                if(type === "button") {
+                                    return <el-button type={item.type} icon={item.icon} onClick={() => onClick(item)}>{item.text}</el-button>;
+                                }
+                                return <el-link type={item.type} icon={item.icon} onClick={() => onClick(item)}>{item.text}</el-link>;
+                            });
+                        })
+                    }
+                    {renderSlot(slots, "after")}
                 </div>
             );
         };

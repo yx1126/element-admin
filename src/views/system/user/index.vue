@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { getUserList, userDelete } from "@/api/system/user";
+import { getUserList, userDelete, userResetPwd } from "@/api/system/user";
 import type { UserInfo } from "#/system";
-import type { TableActionItem } from "@/components/GlobalRegister/Table";
 import UserForm from "./components/UserForm.vue";
 
 defineOptions({
     name: "User",
 });
+
+const message = useMessage();
+const msgbox = useMessageBox();
 
 const {
     query: queryForm,
@@ -30,6 +32,7 @@ const dialog = useDialog({
     component: UserForm,
     title: data => `${data?.id ? "编辑" : "新增"}用户`,
     width: 500,
+    onSubmit: onSearch,
 });
 
 const columns = defineColumns([{
@@ -54,22 +57,24 @@ const columns = defineColumns([{
     prop: "status",
     dictType: "status",
 }, {
+    label: "备注",
+    prop: "remark",
+}, {
     label: "创建时间",
     prop: "createdAt",
-    width: defineColumns.dateTime,
 }, {
     label: "操作",
     width: 120,
     slotName: "operate",
 }]);
 
-function onTaleActionClick(item: TableActionItem, row: UserInfo) {
-    if(item.action === "edit") {
-        dialog.open(row);
-    } else if(item.action === "delete") {
-        if(!row.id) return;
-        onDelete(row.id);
-    }
+function onResetPwd(row: UserInfo) {
+    // ElMessageBox.confirm(`确定要重置用户“${row.userName}”的密码吗？`, "测试", { title: undefined });
+    msgbox.confirm(`确定要重置用户“${row.userName}”的密码吗？`).then(() => {
+        userResetPwd(row.id!).then(() => {
+            message.success("重置成功");
+        });
+    });
 }
 </script>
 
@@ -77,8 +82,16 @@ function onTaleActionClick(item: TableActionItem, row: UserInfo) {
     <div class="user layout-page">
         <table-layout :model="queryForm" @search="onSearch">
             <template #form>
-                <el-form-item prop="title" label="用户名">
-                    <el-input v-model="queryForm.title" placeholder="请输入用户名" clearable />
+                <el-form-item prop="userName" label="用户名">
+                    <el-input v-model="queryForm.userName" placeholder="请输入用户名" clearable />
+                </el-form-item>
+                <el-form-item prop="nickName" label="用户昵称">
+                    <el-input v-model="queryForm.nickName" placeholder="请输入用户昵称" clearable />
+                </el-form-item>
+                <el-form-item prop="deptId" label="部门">
+                    <el-select v-model="queryForm.deptId" placeholder="请选择部门" clearable>
+                        <!-- <el-option value="0" label="禁用" /> -->
+                    </el-select>
                 </el-form-item>
                 <el-form-item prop="status" label="状态">
                     <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
@@ -98,7 +111,11 @@ function onTaleActionClick(item: TableActionItem, row: UserInfo) {
                     <el-button type="danger" icon="EleDelete">{{ $t("button.deletes") }}</el-button>
                 </template>
                 <template #operate="{ row }">
-                    <table-action @click="onTaleActionClick($event, row)" />
+                    <table-action @edit="dialog.open(row)" @delete="onDelete(row.id)">
+                        <template #before>
+                            <el-link type="primary" icon="EleRefresh" @click="onResetPwd(row)" />
+                        </template>
+                    </table-action>
                 </template>
             </base-table>
             <pagination class="mt-10px" v-bind="paging" />

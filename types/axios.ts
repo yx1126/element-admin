@@ -3,7 +3,7 @@ import "axios";
 export interface PageInfo<T = any> {
     readonly page: number;
     readonly size: number;
-    readonly data: T;
+    readonly list: T;
     readonly total: number;
 }
 

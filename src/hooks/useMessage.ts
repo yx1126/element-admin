@@ -1,4 +1,4 @@
-import { isStr } from "@/utils/validata";
+import { isObject, isStr } from "@/utils/validata";
 import type {
     ElMessageBoxOptions,
     MessageOptions,
@@ -42,40 +42,50 @@ export function useMessage(options?: MessageOptions, appContext?: Nullable<AppCo
     };
 }
 
+function getMsgBox(title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions) {
+    return {
+        ...options,
+        title: isObject(title) ? (title as any)?.title : title || options?.title || i18n.global.t("tip"),
+    };
+}
+
 export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullable<AppContext>) {
     const def = options;
     const ctx = appContext;
     return {
-        alert: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), getOptions(options, def), appContext ?? ctx);
+        alert: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, getMsgBox(title, getOptions(options, def)), appContext ?? ctx);
         },
-        confirm: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.confirm(message, title || i18n.global.t("sys-tip"), getOptions(options, def), appContext ?? ctx);
-        },
-        prompt: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.prompt(message, title || i18n.global.t("sys-tip"), getOptions(options, def), appContext ?? ctx);
-        },
-        success: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
-                ...getOptions(options, def),
-                type: "success",
-            }, appContext ?? ctx);
-        },
-        warning: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
-                ...getOptions(options, def),
+        confirm: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.confirm(message, {
+                ...getMsgBox(title, getOptions(options, def)),
                 type: "warning",
             }, appContext ?? ctx);
         },
-        info: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
-                ...getOptions(options, def),
+        prompt: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.prompt(message, getMsgBox(title, getOptions(options, def)), appContext ?? ctx);
+        },
+        success: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, {
+                ...getMsgBox(title, getOptions(options, def)),
+                type: "success",
+            }, appContext ?? ctx);
+        },
+        warning: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, {
+                ...getMsgBox(title, getOptions(options, def)),
+                type: "warning",
+            }, appContext ?? ctx);
+        },
+        info: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, {
+                ...getMsgBox(title, getOptions(options, def)),
                 type: "info",
             }, appContext ?? ctx);
         },
-        error: (message: ElMessageBoxOptions["message"], title: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
-            return ElMessageBox.alert(message, title || i18n.global.t("sys-tip"), {
-                ...getOptions(options, def),
+        error: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
+            return ElMessageBox.alert(message, {
+                ...getMsgBox(title, getOptions(options, def)),
                 type: "error",
             }, appContext ?? ctx);
         },

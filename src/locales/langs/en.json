@@ -1,15 +1,15 @@
 {
     "input": "Please input {0}",
     "select": "Please select {0}",
-    "tip": "Prompt",
-    "sys-tip": "System prompts",
+    "tip": "Tip",
+    "sys-tip": "System Message",
     "button": {
         "search": "Search",
         "reset": "Reset",
         "add": "Add",
         "edit": "Edit",
         "delete": "Delete",
-        "deletes": "Batch deletion",
+        "deletes": "Batch Delete",
         "confirm": "Confirm",
         "cancel": "Cancel",
         "submit": "Submit",
