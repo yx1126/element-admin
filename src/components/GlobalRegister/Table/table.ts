@@ -15,7 +15,7 @@ export interface TableSlot<T = any> {
     $index: number;
 }
 
-export type TableColumn<T = any> = BaseTableColumn & {
+export type TableColumn<T = any> = Omit<BaseTableColumn, "selectable"> & {
     type?: "default" | "selection" | "index" | "expand";
     align?: "left" | "center" | "right";
     headerAlign?: "left" | "center" | "right";
@@ -25,6 +25,8 @@ export type TableColumn<T = any> = BaseTableColumn & {
     render?(data: TableSlot<T>): Empty<VNode | VNode[]>;
     renderHeader?(data: Omit<TableSlot<T>, "row">): Empty<VNode[]>;
     renderFilterIcon? (data: { filterOpened: boolean }): Empty<VNode[]>;
+    // 补全类型
+    selectable?: ((row: T, index: number) => boolean) | undefined;
 };
 
 export type TableColumnFormat = TableColumn & {

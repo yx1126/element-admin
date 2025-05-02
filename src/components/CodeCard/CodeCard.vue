@@ -49,12 +49,12 @@ function onCopySuccess() {
         <template #extra>
             <div class="flex items-center gap-x-10px">
                 <el-tooltip :content="t('copy-code')" placement="top">
-                    <el-link :underline="false">
+                    <el-link>
                         <Icon v-copy="code" v-copy:success="onCopySuccess" icon="copy" size="16" />
                     </el-link>
                 </el-tooltip>
                 <el-tooltip :content="t(show ? 'expand' : 'unexpand')" placement="top">
-                    <el-link :underline="false">
+                    <el-link>
                         <Icon icon="code" size="16" @click="show = !show" />
                     </el-link>
                 </el-tooltip>

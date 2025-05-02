@@ -59,6 +59,7 @@ const Configs: ConfigOptions = createConfig({
         },
         message: {
             duration: 2000,
+            grouping: true,
         },
     },
     /**

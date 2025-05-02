@@ -159,7 +159,7 @@ function onPathChange(path: string) {
                 <el-radio value="0">隐藏</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="form.type == 2" prop="isCache" label="是否内链">
+        <el-form-item v-if="form.type == 2" prop="isIframe" label="是否内链">
             <el-radio-group v-model="form.isIframe">
                 <el-radio value="1">是</el-radio>
                 <el-radio value="0">否</el-radio>
@@ -171,7 +171,7 @@ function onPathChange(path: string) {
                 <el-radio value="0">否</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item v-if="form.type != 3" prop="visible" label="启用/禁用">
+        <el-form-item v-if="form.type != 3" prop="status" label="状态">
             <el-radio-group v-model="form.status">
                 <el-radio value="1">启用</el-radio>
                 <el-radio value="0">禁用</el-radio>

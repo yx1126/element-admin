@@ -66,3 +66,15 @@ export interface UserInfo extends TableModels {
     status: NumFlag;
     remark: string;
 }
+
+export interface Dept extends TableModels {
+    parentId: number;
+    name: string;
+    sort: number;
+    leaderId?: number;
+    leaderName?: string;
+    phone?: string;
+    email?: string;
+    status: NumFlag;
+    children: Dept[];
+}

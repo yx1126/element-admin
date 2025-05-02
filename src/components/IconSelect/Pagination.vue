@@ -4,17 +4,19 @@ defineOptions({
 });
 
 const page = defineModel("page", { default: 0 });
-const size = defineModel("size", { default: 0 });
+const pageSize = defineModel("pageSize", { default: 0 });
 
 const {
     total = 0,
+    size = "default",
 } = defineProps<{
     total?: number;
+    size?: "" | "default" | "small" | "large";
 }>();
 
 const input = ref(1);
 
-const pageMax = computed(() => Math.ceil(total / size.value));
+const pageMax = computed(() => Math.ceil(total / pageSize.value));
 
 watch(page, val => {
     input.value = val;
@@ -46,15 +48,16 @@ function onInput() {
         <el-button
             class="button"
             icon="EleArrowLeft"
-            size="default"
+            :size
             :disabled="page <= 1"
+            :delay="0"
             @click="onClick('pre')"
         />
         <div class="jumper">
             <el-input
                 v-model="input"
                 class="input"
-                size="default"
+                :size
                 :min="1"
                 :max="pageMax"
                 @blur="onInput"
@@ -66,8 +69,9 @@ function onInput() {
         <el-button
             class="button"
             icon="EleArrowRight"
-            size="default"
+            :size
             :disabled="page >= pageMax"
+            :delay="0"
             @click="onClick('next')"
         />
     </div>

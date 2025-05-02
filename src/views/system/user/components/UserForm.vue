@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { userCreate, userUpdate } from "@/api/system/user";
+import { getDeptSelectTree } from "@/api/system/dept";
 import type { UserInfo } from "#/system";
 
 defineOptions({
     name: "UserForm",
+});
+
+const { data: deptTreeList, queryOnce: onQueryDeptTree } = useRequest({
+    request: getDeptSelectTree,
+    default: [],
 });
 
 const {
@@ -35,9 +41,11 @@ const rules = defineFormRules<UserInfo>({
     userName: Require("请输入用户名"),
     nickName: Require("请输入用户昵称"),
     phone: Require("请输入手机号"),
+    deptId: Require("请选择部门", "change"),
 });
 
 onDialogOpen(data => {
+    onQueryDeptTree();
     if(data) {
         queryInfoByLocal({ ...form.value, ...data });
     }
@@ -76,11 +84,6 @@ onDialogSubmit(async (instance, close) => {
             <el-input v-model="form.email" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item prop="sex" label="性别">
-            <!-- <el-select v-model="form.sex" placeholder="请选择性别">
-                <el-option value="2" label="未知" />
-                <el-option value="0" label="男" />
-                <el-option value="1" label="女" />
-                </el-select> -->
             <el-radio-group v-model="form.sex">
                 <el-radio value="2">未知</el-radio>
                 <el-radio value="0">男</el-radio>
@@ -88,9 +91,16 @@ onDialogSubmit(async (instance, close) => {
             </el-radio-group>
         </el-form-item>
         <el-form-item prop="deptId" label="部门">
-            <el-select v-model="form.deptId" placeholder="请选择部门">
-                <!-- <el-option value="2" label="未知" /> -->
-            </el-select>
+            <el-tree-select
+                v-model="form.deptId"
+                :data="deptTreeList"
+                value-key="id"
+                check-strictly
+                filterable
+                :default-expanded-keys="[form.deptId].filter(Boolean)"
+                placeholder="请选择部门"
+                :props="{ label: 'name' }"
+            />
         </el-form-item>
         <el-form-item prop="status" label="状态">
             <el-radio-group v-model="form.status">

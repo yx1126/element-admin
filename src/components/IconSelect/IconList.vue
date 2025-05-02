@@ -73,7 +73,7 @@ defineExpose({
             <div class="icon">{{ iconName }}</div>
             <Pagination
                 v-model:page="page"
-                :size="size"
+                :page-size="size"
                 :total="options.length || 0"
             />
         </div>

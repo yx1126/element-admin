@@ -45,7 +45,8 @@ export function useMessage(options?: MessageOptions, appContext?: Nullable<AppCo
 function getMsgBox(title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions) {
     return {
         ...options,
-        title: isObject(title) ? (title as any)?.title : title || options?.title || i18n.global.t("tip"),
+        ...(isObject(title) ? title : {}),
+        title: (isObject(title) ? (title as any)?.title : title) || options?.title || i18n.global.t("tip"),
     };
 }
 

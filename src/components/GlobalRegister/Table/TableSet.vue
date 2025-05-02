@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // import Node from "element-plus/es/components/tree/src/model/node";
 // import type { AllowDropType } from "element-plus";
-import { VerticalLeftOutlined, VerticalRightOutlined, SettingOutlined } from "@vicons/antd";
+import { VerticalLeftOutlined, VerticalRightOutlined } from "@vicons/antd";
 import { tableContextKey, type TableColumnFormat } from "./table";
 
 defineOptions({
@@ -45,7 +45,7 @@ function onFixedClick(item: TableColumnFormat, value: TableColumnFormat["fixed"]
         popper-style="padding: 0;"
     >
         <template #reference>
-            <icon cursor><setting-outlined /></icon>
+            <slot />
         </template>
         <div class="table-set">
             <div class="table-set__header">

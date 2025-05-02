@@ -23,5 +23,8 @@
     },
     "valid": {
         "not-null": "{0} cannot be empty"
+    },
+    "please": {
+        "select-one": "Please select at least one data"
     }
 }

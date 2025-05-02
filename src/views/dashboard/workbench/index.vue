@@ -100,12 +100,12 @@ const underwayList = ref([
                 </el-card>
                 <el-card class="mt-[12px]" :header="t('card4-title')" shadow="never">
                     <div class="grid grid-cols-4 gap-13px">
-                        <el-link type="primary" :underline="false">操作一</el-link>
-                        <el-link type="primary" :underline="false">操作二</el-link>
-                        <el-link type="primary" :underline="false">操作三</el-link>
-                        <el-link type="primary" :underline="false">操作四</el-link>
-                        <el-link type="primary" :underline="false">操作五</el-link>
-                        <el-link type="primary" :underline="false">操作六</el-link>
+                        <el-link type="primary">操作一</el-link>
+                        <el-link type="primary">操作二</el-link>
+                        <el-link type="primary">操作三</el-link>
+                        <el-link type="primary">操作四</el-link>
+                        <el-link type="primary">操作五</el-link>
+                        <el-link type="primary">操作六</el-link>
                     </div>
                 </el-card>
                 <el-card class="mt-[12px]" shadow="never">

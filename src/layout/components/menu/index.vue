@@ -20,6 +20,7 @@ const emit = defineEmits<{
     menuItemHover: [MenuItemType, number, MouseEvent];
 }>();
 
+const menuRef = useTemplateRef("menuRef");
 const router = useRouter();
 const route = useRoute();
 const user = useUserStore();
@@ -62,6 +63,10 @@ const themeType = computed(() => theme ?? set.navMode);
 function onMenuSelect(index: string, menu: MenuItemType) {
     if(isLink(menu.link) && menu.isIframe === "0") {
         window.open(menu.link);
+        nextTick(() => {
+            // @ts-ignore
+            menuRef.value?.updateActiveIndex(defaultActive.value);
+        });
         return;
     }
     router.push(index);
@@ -79,6 +84,7 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
 
 <template>
     <el-menu
+        ref="menuRef"
         class="menu"
         :class="[
             themeType ? `menu-theme-${themeType}`: '',

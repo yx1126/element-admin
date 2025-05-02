@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { getUserList, userDelete, userResetPwd } from "@/api/system/user";
-import type { UserInfo } from "#/system";
+import { getDeptSelectTree } from "@/api/system/dept";
 import UserForm from "./components/UserForm.vue";
+import type { UserInfo } from "#/system";
 
 defineOptions({
     name: "User",
@@ -9,6 +10,12 @@ defineOptions({
 
 const message = useMessage();
 const msgbox = useMessageBox();
+
+const { data: deptTreeList } = useRequest({
+    request: getDeptSelectTree,
+    default: [],
+    immediate: true,
+});
 
 const {
     query: queryForm,
@@ -33,10 +40,12 @@ const dialog = useDialog({
     title: data => `${data?.id ? "编辑" : "新增"}用户`,
     width: 500,
     onSubmit: onSearch,
+    destroyOnClose: false,
 });
 
-const columns = defineColumns([{
+const columns = defineColumns<UserInfo>([{
     type: "selection",
+    selectable: row => row?.id !== 1,
 }, {
     type: "index",
     label: "序号",
@@ -51,7 +60,7 @@ const columns = defineColumns([{
     prop: "phone",
 }, {
     label: "所属部门",
-    prop: "depeName",
+    prop: "deptName",
 }, {
     label: "状态",
     prop: "status",
@@ -69,7 +78,6 @@ const columns = defineColumns([{
 }]);
 
 function onResetPwd(row: UserInfo) {
-    // ElMessageBox.confirm(`确定要重置用户“${row.userName}”的密码吗？`, "测试", { title: undefined });
     msgbox.confirm(`确定要重置用户“${row.userName}”的密码吗？`).then(() => {
         userResetPwd(row.id!).then(() => {
             message.success("重置成功");
@@ -89,14 +97,21 @@ function onResetPwd(row: UserInfo) {
                     <el-input v-model="queryForm.nickName" placeholder="请输入用户昵称" clearable />
                 </el-form-item>
                 <el-form-item prop="deptId" label="部门">
-                    <el-select v-model="queryForm.deptId" placeholder="请选择部门" clearable>
-                        <!-- <el-option value="0" label="禁用" /> -->
-                    </el-select>
+                    <el-tree-select
+                        v-model="queryForm.deptId"
+                        :data="deptTreeList"
+                        value-key="id"
+                        check-strictly
+                        filterable
+                        clearable
+                        placeholder="请选择部门"
+                        :props="{ label: 'name' }"
+                    />
                 </el-form-item>
                 <el-form-item prop="status" label="状态">
                     <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
-                        <el-option value="0" label="禁用" />
                         <el-option value="1" label="启用" />
+                        <el-option value="0" label="禁用" />
                     </el-select>
                 </el-form-item>
             </template>
@@ -108,13 +123,13 @@ function onResetPwd(row: UserInfo) {
             >
                 <template #action>
                     <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="danger" icon="EleDelete">{{ $t("button.deletes") }}</el-button>
+                    <el-button type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
                 </template>
                 <template #operate="{ row }">
-                    <table-action @edit="dialog.open(row)" @delete="onDelete(row.id)">
-                        <template #before>
-                            <el-link type="primary" icon="EleRefresh" @click="onResetPwd(row)" />
-                        </template>
+                    <table-action>
+                        <el-link type="primary" icon="EleRefresh" @click="onResetPwd(row)" />
+                        <el-link type="primary" icon="EleEdit" @click="dialog.open(row)" />
+                        <el-link v-if="row.id !== 1" type="danger" icon="EleDelete" @click="onDelete(row.id)" />
                     </table-action>
                 </template>
             </base-table>

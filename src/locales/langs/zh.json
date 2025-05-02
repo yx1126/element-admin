@@ -23,5 +23,8 @@
     },
     "valid": {
         "not-null": "{0}不能为空"
+    },
+    "please": {
+        "select-one": "请至少选择一条数据"
     }
 }

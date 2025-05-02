@@ -1,5 +1,5 @@
 import { isFn } from "@/utils/validata";
-import { debounce } from "lodash-es";
+import { debounce, type DebouncedFunc } from "lodash-es";
 import type { Result } from "#/axios";
 import type { Ref } from "vue";
 
@@ -17,6 +17,8 @@ export interface UseRequest<T, R extends (...args: any) => any> {
     loading: Ref<boolean>;
     data: Ref<T>;
     query: (...querys: Parameters<R>) => Promise<void>;
+    queryOnce: (...querys: Parameters<R>) => Promise<void>;
+    queryLazy: DebouncedFunc<(...querys: Parameters<R>) => Promise<void>>;
 }
 
 export function useRequest<T, D extends any[] = any[]>(options: RequestOptions<T, D>): UseRequest<T, RequestOptions<T, D>["request"]>;
@@ -43,10 +45,10 @@ export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | R
         }
     });
 
-    async function queryOnce(...query: any) {
+    async function queryOnce(...args: any) {
         if(isFirst.value) {
             isFirst.value = false;
-            await query(...query);
+            await query(...args);
         }
     }
 

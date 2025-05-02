@@ -1,5 +1,6 @@
 <script lang="tsx">
 import { useNamespace } from "element-plus";
+import { SettingOutlined } from "@vicons/antd";
 import { tableContextKey, useColumns, type TableColumn, type TableColumnFormat, type TableSlot } from "./table";
 import TableSet from "./TableSet.vue";
 import type { SlotsType, VNode } from "vue";
@@ -22,6 +23,7 @@ export default defineComponent({
         const ns = useNamespace("table", ref("base"));
         const { t } = useLocal();
         const rotation = ref("");
+        const isStripe = ref(false);
 
         const {
             columns,
@@ -89,13 +91,20 @@ export default defineComponent({
                                 <div class={ns.e("action")}>{renderSlot(slots, "action")}</div>
                                 <div class={ns.e("extra")}>
                                     {renderSlot(slots, "extra")}
-                                    <icon class={rotation.value} cursor icon="EleRefreshRight" onClick={onRefresh} />
-                                    <TableSet />
+                                    <el-tooltip content={t("stripe")} placement="top">
+                                        <el-switch v-model={isStripe.value} size="small" />
+                                    </el-tooltip>
+                                    <el-tooltip content={t("refresh")} placement="top">
+                                        <icon class={rotation.value} cursor icon="EleRefreshRight" onClick={onRefresh} />
+                                    </el-tooltip>
+                                    <TableSet>
+                                        <icon cursor><SettingOutlined /></icon>
+                                    </TableSet>
                                 </div>
                             </div>
                         )
                         : null}
-                    <el-table class={ns.e("main")} v-show={!isEmpty.value} v-loading={loading} {...attrs}>
+                    <el-table class={ns.e("main")} v-show={!isEmpty.value} v-loading={loading} {...attrs} stripe={isStripe.value}>
                         {{
                             default: () => renderColumns(columns.value),
                             append: slots.append ? () => renderSlot(slots, "append") : undefined,
@@ -168,7 +177,11 @@ export default defineComponent({
 zh:
   confirmSet: 确认要重置吗？
   empty-column: 暂无列数据
+  refresh: 刷新
+  stripe: 斑马纹
 en:
   confirmSet: Are you sure you want to reset?
   empty-column: No Column Data
+  refresh: Refresh
+  stripe: Stripe
 </i18n>

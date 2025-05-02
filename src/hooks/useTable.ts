@@ -90,7 +90,8 @@ export function useTable<
     Data extends object = any,
     Query = any,
 >(options: TableOptions<Data, Query>) {
-    const { onDelete } = useDataDelete({
+    const { $t } = useLocal();
+    const { onDelete: onBaseDelete } = useDataDelete({
         request: options.deleteRequest!,
         rowKey: options.rowKey,
         onSuccess: onSearch,
@@ -212,6 +213,22 @@ export function useTable<
         state.paging.currentPage = 1;
     }
 
+    function onDelete(row?: Data | string | number) {
+        if(!row) {
+            if(state.selections.length <= 0) {
+                useMessage().warning($t("please.select-one"));
+                return;
+            }
+            onBaseDelete(state.selections.map(getRowKey));
+        } else {
+            if(isObject(row)) {
+                onBaseDelete(getRowKey(row));
+            } else {
+                onBaseDelete(row);
+            }
+        }
+    }
+
     return {
         ...toRefs(state),
         tableAttrs,
@@ -251,12 +268,12 @@ export function useDataDelete(options: DeleteOptions) {
         return data?.id;
     }
 
-    function onDelete(id: string | number): void;
-    function onDelete(ids: string[] | number[]): void;
-    function onDelete<Data extends object>(row: Data): void;
-    function onDelete<Data extends object>(row: Data | string[] | number[] | string | number) {
-        if(!request) return;
-        const ids: any = isArray<any[]>(row) ? row : isObject(row) ? [getRowKey(row)] : [row];
+    function onDelete(id?: string | number): void;
+    function onDelete(ids?: string[] | number[]): void;
+    function onDelete<Data extends object>(row?: Data): void;
+    function onDelete<Data extends object>(row?: Data | string[] | number[] | string | number) {
+        if(!request || !row) return;
+        const ids: any = (isArray<any[]>(row) ? row : isObject(row) ? [getRowKey(row)] : [row]).filter(Boolean);
         const options: ElMessageBoxOptions = { type: "warning" };
         if(showLoading) {
             options.showInput = false;

@@ -38,7 +38,7 @@ export const menuList: MenuItem[] = [{
     path: "/comps",
     name: "Comps",
     title: "组件示例",
-    icon: "dashboard",
+    icon: "component",
     visible: "1",
     sort: 1,
     children: [{
@@ -223,6 +223,7 @@ export const menuList: MenuItem[] = [{
     title: "外连接",
     visible: "1",
     icon: "EleLink",
+    isIframe: "0",
     sort: 3,
     children: [],
 }, {
