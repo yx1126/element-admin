@@ -17,15 +17,42 @@ const { data: treeData, loading: treeLoad, query: onQueryDictType } = useRequest
     default: [],
 });
 
-const { data: tableData, loading, query: onQueryDictData } = useRequest<DictData[]>({
+const { onDelete } = useDataDelete({
+    request: dictDelete,
+    onSuccess: onQueryDictType,
+});
+
+const keyword = ref("");
+const dictId = ref<Nullable<DictType["id"]>>(null);
+
+const {
+    query: queryForm,
+    data: tableData,
+    tableAttrs,
+    paging,
+    onSearch,
+    onRefresh,
+    onDelete: onDictDataDelete,
+} = useTable({
     request: dictDataList,
-    default: [],
+    deleteRequest: dictDataDelete,
+    beforeRequest: data => {
+        return {
+            ...data,
+            id: dictId.value,
+        };
+    },
+    query: () => ({
+        label: undefined,
+        status: undefined,
+    }),
+    immediate: false,
 });
 
 const dictTypeDialog = useDialog({
     component: DictTypeForm,
     title: data => `${data?.id ? "编辑" : "新增"}字典`,
-    width: 500,
+    width: 450,
     onSubmit: () => {
         onQueryDictType();
         onSearch();
@@ -34,20 +61,9 @@ const dictTypeDialog = useDialog({
 const dictDataDialog = useDialog({
     component: DictDataForm,
     title: data => `${data?.id ? "编辑" : "新增"}字典`,
-    width: 500,
+    width: 450,
     onSubmit: onSearch,
 });
-const { onDelete } = useDataDelete({
-    request: dictDelete,
-    onSuccess: onQueryDictType,
-});
-const { onDelete: onDictDataDelete } = useDataDelete({
-    request: dictDataDelete,
-    onSuccess: onSearch,
-});
-
-const keyword = ref("");
-const dictId = ref<Nullable<DictType["id"]>>(null);
 
 const columns = defineColumns([{
     type: "index",
@@ -70,7 +86,7 @@ const columns = defineColumns([{
     prop: "status",
     slotName: "status",
 }, {
-    label: "描述",
+    label: "备注",
     prop: "remark",
 }, {
     label: "创建时间",
@@ -107,11 +123,7 @@ function onFilterNode(value: string, data: Record<string, any>) {
 function onNodeClick(dict: DictType) {
     if(dictId.value === dict.id) return;
     dictId.value = dict.id;
-    onSearch();
-}
-
-function onSearch() {
-    onQueryDictData({ id: dictId.value });
+    onRefresh();
 }
 
 function onTaleActionClick(item: TableActionItem, row: DictData) {
@@ -125,7 +137,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
 
 <template>
     <div class="dict flex gap-10px">
-        <el-card-v2 class="w-450px" header="字典">
+        <el-card-v2 class="w-400px" header="字典">
             <template #extra>
                 <el-button icon="EleRefresh" size="small" @click="onQueryDictType" />
                 <el-button type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />
@@ -159,11 +171,21 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                 </div>
             </div>
         </el-card-v2>
-        <el-card-v2 class="flex-1">
+        <table-layout class="flex-1" :model="queryForm" @search="onSearch">
+            <template #form>
+                <el-form-item prop="label" label="字典名称">
+                    <el-input v-model="queryForm.label" placeholder="请输入字典名称" clearable />
+                </el-form-item>
+                <el-form-item prop="status" label="状态">
+                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
+                        <el-option value="1" label="启用" />
+                        <el-option value="0" label="禁用" />
+                    </el-select>
+                </el-form-item>
+            </template>
             <base-table
-                v-if="dictId"
+                v-bind="tableAttrs"
                 :columns="columns"
-                :loading="loading"
                 :data="tableData"
                 row-key="id"
                 border
@@ -196,7 +218,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                     <table-action @click="onTaleActionClick($event, row)" />
                 </template>
             </base-table>
-            <el-empty v-else description="请选择左侧字段类型" />
-        </el-card-v2>
+            <pagination class="mt-10px" v-bind="paging" />
+        </table-layout>
     </div>
 </template>

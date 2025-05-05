@@ -1,3 +1,4 @@
+import type { PageInfo } from "#/axios";
 import type { DictType, DictData } from "#/system";
 import http from "@/utils/http";
 
@@ -21,8 +22,8 @@ export function dictDelete(ids: number[]) {
     return http.delete("/system/dict", ids);
 }
 
-export function dictDataList(params: Pick<DictType, "id">) {
-    return http.get<DictData[]>("/system/dict/data", params);
+export function dictDataList<T extends object>(params: T) {
+    return http.get<PageInfo<DictData[]>>("/system/dict/data", params);
 }
 
 export function dictDataCreate(data: DictData) {

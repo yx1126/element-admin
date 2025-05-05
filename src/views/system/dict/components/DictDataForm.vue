@@ -23,7 +23,7 @@ const {
         sort: undefined,
         label: undefined,
         value: undefined,
-        type: "primary",
+        type: "default",
         cssClass: undefined,
         listClass: undefined,
         isDefault: "0",

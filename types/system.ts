@@ -78,3 +78,11 @@ export interface Dept extends TableModels {
     status: NumFlag;
     children: Dept[];
 }
+
+export interface Post extends TableModels {
+    code: string;
+    name: string;
+    sort: number;
+    status: NumFlag;
+    remark: string;
+}

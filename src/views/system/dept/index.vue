@@ -43,13 +43,13 @@ const columns = defineColumns<Dept>([{
     align: "left",
 }, {
     label: "部门负责人",
-    prop: "leaderName",
+    prop: "leader.nickName",
 }, {
     label: "联系电话",
-    prop: "phone",
+    prop: "leader.phone",
 }, {
     label: "邮箱",
-    prop: "email",
+    prop: "leader.email",
 }, {
     label: "状态",
     prop: "status",

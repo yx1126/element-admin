@@ -5,8 +5,12 @@ export function getDeptTree<T extends object>(params?: T) {
     return http.get<Dept[]>("/system/dept", params);
 }
 
-export function getDeptSelectTree<T extends object>(params?: T) {
-    return http.get<Dept[]>("/system/dept/selectTree", params);
+export function getDeptAllList() {
+    return http.get<Dept[]>("/system/dept/all");
+}
+
+export function getDeptSelectTree() {
+    return http.get<Dept[]>("/system/dept/selectTree");
 }
 
 export function deptCreate(data: Dept) {

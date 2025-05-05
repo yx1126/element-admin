@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { userCreate, userUpdate } from "@/api/system/user";
-import { getDeptSelectTree } from "@/api/system/dept";
+import { getDeptAllList } from "@/api/system/dept";
 import type { UserInfo } from "#/system";
 
 defineOptions({
@@ -8,7 +8,7 @@ defineOptions({
 });
 
 const { data: deptTreeList, queryOnce: onQueryDeptTree } = useRequest({
-    request: getDeptSelectTree,
+    request: getDeptAllList,
     default: [],
 });
 
