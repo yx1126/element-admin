@@ -18,8 +18,9 @@ const {
     request: getPostList,
     deleteRequest: postDelete,
     query: () => ({
-        name: undefined,
-        code: undefined,
+        name: "",
+        code: "",
+        status: "",
     }),
 });
 
@@ -33,7 +34,6 @@ const dialog = useDialog({
 
 const columns = defineColumns<Post>([{
     type: "selection",
-    selectable: row => row?.id !== 1,
 }, {
     type: "index",
     label: "序号",

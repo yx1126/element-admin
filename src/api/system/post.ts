@@ -7,11 +7,7 @@ export function getPostList<T extends object>(params?: T) {
 }
 
 export function getPostAllList() {
-    return http.get<PageInfo<Post[]>>("/system/post/all");
-}
-
-export function getPostSelectList() {
-    return http.get<PageInfo<Post[]>>("/system/post/select");
+    return http.get<Post[]>("/system/post/all");
 }
 
 export function postCreate(data: Post) {

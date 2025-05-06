@@ -53,6 +53,7 @@ export interface DictLabelProps {
 
 export interface UserInfo extends TableModels {
     deptId: number;
+    postIds: number[];
     userName: string;
     nickName: string;
     userType: string;

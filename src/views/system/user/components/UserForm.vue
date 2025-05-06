@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { userCreate, userUpdate } from "@/api/system/user";
 import { getDeptAllList } from "@/api/system/dept";
+import { getPostAllList } from "@/api/system/post";
 import type { UserInfo } from "#/system";
 
 defineOptions({
@@ -9,6 +10,11 @@ defineOptions({
 
 const { data: deptTreeList, queryOnce: onQueryDeptTree } = useRequest({
     request: getDeptAllList,
+    default: [],
+});
+
+const { data: postList, queryOnce: onQueryPostList } = useRequest({
+    request: getPostAllList,
     default: [],
 });
 
@@ -26,6 +32,7 @@ const {
     form: () => ({
         id: undefined,
         deptId: undefined,
+        postIds: [],
         userName: undefined,
         nickName: undefined,
         email: undefined,
@@ -46,6 +53,7 @@ const rules = defineFormRules<UserInfo>({
 
 onDialogOpen(data => {
     onQueryDeptTree();
+    onQueryPostList();
     if(data) {
         queryInfoByLocal({ ...form.value, ...data });
     }
@@ -101,6 +109,13 @@ onDialogSubmit(async (instance, close) => {
                 placeholder="请选择部门"
                 :props="{ label: 'name' }"
             />
+        </el-form-item>
+        <el-form-item prop="postIds" label="岗位">
+            <el-select v-model="form.postIds" placeholder="请选择岗位" multiple clearable>
+                <template v-for="post in postList" :key="post.id">
+                    <el-option :value="post.id!" :label="post.name" />
+                </template>
+            </el-select>
         </el-form-item>
         <el-form-item prop="status" label="状态">
             <el-radio-group v-model="form.status">

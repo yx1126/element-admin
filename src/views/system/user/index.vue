@@ -28,10 +28,10 @@ const {
     request: getUserList,
     deleteRequest: userDelete,
     query: () => ({
-        userName: undefined,
-        nickName: undefined,
-        deptId: undefined,
-        status: undefined,
+        userName: "",
+        nickName: "",
+        deptId: "",
+        status: "",
     }),
 });
 

@@ -5,6 +5,7 @@ import type { TableColumn } from "@/components/GlobalRegister/Table";
 import type { PageInfo, Result, TableResult } from "#/axios";
 import type { PaginationProps, TableProps, FormInstance, ElMessageBoxOptions } from "element-plus";
 import type { DictLabelProps } from "#/system";
+import type { ComputedRef, ShallowRef, ToRefs } from "vue";
 
 type ColumnFormatter<Data = any> = (column: TableColumn<Data>, index: number) => TableColumn<Data>;
 
@@ -22,14 +23,14 @@ export interface FormatterOptions {
 
 type DeleteRequest = ((ids: string[]) => Promise<Result>) | ((ids: number[]) => Promise<Result>);
 
-interface TableOptions<Data extends object, Query = any> {
+interface TableOptions<Data extends object, Query extends object = any> {
     request: (data: Query) => Promise<TableResult<Data[]>>;
     paging?: Pagination;
     deleteRequest?: DeleteRequest;
     query?: () => Partial<Query>;
     rowKey?: TableProps<Data>["rowKey"];
     tableAttrs?: Partial<Omit<TableProps<Data>, "data" | "rowKey">>;
-    beforeRequest?: (data: Query & Pick<PageInfo, "page" | "size">) => any;
+    beforeRequest?: (data: LooseQuery<Query> & Pick<PageInfo, "page" | "size">) => any;
     afterRequest?: (data: TableState<Data, Query>) => void;
     formatter?: (data: any[], options: FormatterOptions) => Data[];
     beforeReset?: () => void;
@@ -37,7 +38,13 @@ interface TableOptions<Data extends object, Query = any> {
     formRef?: string;
 }
 
-export interface TableState<Data extends object, Query = any> {
+type LooseQuery<T extends object> = {
+    [K in keyof T]?: T[K] extends undefined | null
+        ? any : T[K] extends [infer _V]
+            ? any[] : T[K] extends object ? LooseQuery<T[K]> : T[K]
+};
+
+export interface TableState<Data extends object, Query extends object = any> {
     loading: boolean;
     paging: Pagination & {
         total: number;
@@ -46,7 +53,20 @@ export interface TableState<Data extends object, Query = any> {
     };
     data: Data[];
     selections: Data[];
-    query: Query;
+    query: LooseQuery<Query>;
+}
+
+export interface TableBack<Data extends object, Query extends object> extends ToRefs<TableState<Data, Query>> {
+    tableAttrs: ComputedRef<Omit<TableProps<Data>, "data">>;
+    formRef: Readonly<ShallowRef<Nullable<FormInstance>>>;
+    onSearch: () => Promise<void>;
+    onReset: () => Promise<void>;
+    onClear: () => void;
+    onRefresh: (refresh?: any) => Promise<void>;
+    onDelete: (row?: Data | string | number) => void;
+    indexMethod: FormatterOptions["indexMethod"];
+    getRowKey: (row: Data) => string;
+    onSelectionChange: (selections: Data[]) => void;
 }
 
 export interface TableDictColumn<Data extends object = any> extends TableColumn<Data> {
@@ -82,14 +102,10 @@ export function defineDictColumn<Data extends object = any>(column: TableDictCol
     };
 }
 
-function formatFn<Data, F extends ((data: any) => Data)>(data: Data, fn?: F): Data {
-    return isFn(fn) ? fn(data) : data;
-}
-
 export function useTable<
     Data extends object = any,
-    Query = any,
->(options: TableOptions<Data, Query>) {
+    Query extends object = any,
+>(options: TableOptions<Data, Query>): TableBack<Data, Query> {
     const { $t } = useLocal();
     const { onDelete: onBaseDelete } = useDataDelete({
         request: options.deleteRequest!,
@@ -98,9 +114,9 @@ export function useTable<
     });
     const formRef = useTemplateRef<Nullable<FormInstance>>(options.formRef!);
 
-    const state: TableState<Data> = reactive({
+    const state: TableState<Data, Query> = reactive({
         loading: false,
-        query: options.query ? options.query() : {},
+        query: (options.query ? options.query() : {}) as any,
         paging: extend({
             total: 0,
             currentPage: 1,
@@ -173,7 +189,8 @@ export function useTable<
                 page: state.paging.currentPage,
                 size: state.paging.pageSize,
             };
-            const res = await request(formatFn(querForm, beforeRequest));
+            const query = isFn(beforeRequest) ? beforeRequest(querForm) : querForm;
+            const res = await request(query);
             // 分页问题
             const data = res.data as PageInfo<Data[]>;
             if(state.paging.total > data.total) {

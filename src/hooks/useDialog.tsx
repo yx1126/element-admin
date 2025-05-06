@@ -84,7 +84,7 @@ export const onDialogClosed = createLifeCycle("closed");
 export const onDialogOpenAutoFocus = createLifeCycle("openAutoFocus");
 export const onDialogCloseAutoFocus = createLifeCycle("closeAutoFocus");
 export const onDialogSubmit = createLifeCycle("submit");
-export const onDialogCloseCancel = createLifeCycle("cancel");
+export const onDialogCancel = createLifeCycle("cancel");
 
 function createLifeCycleList<T extends keyof DialogLifeCycle>(_key: T) {
     return ref([]) as DialogLifeCycle[T];
