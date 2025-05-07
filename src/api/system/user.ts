@@ -10,6 +10,10 @@ export function getUserAllList<T extends object>(params?: T) {
     return http.get<UserInfo[]>("/system/user/all", params);
 }
 
+export function getUserInfo(id: number) {
+    return http.get("/system/user/" + id);
+}
+
 export function userCreate(data: UserInfo) {
     return http.post("/system/user", data);
 }

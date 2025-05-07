@@ -15,7 +15,7 @@ type Form<T extends object> = {
 
 export interface FormOptions<T extends object = any, D extends object = T> {
     request: {
-        info?: (id: string) => Promise<Result<Form<T>>>;
+        info?: (id: number) => Promise<Result<Form<T>>>;
         add?: (data: T) => Promise<Result>;
         edit?: (data: T) => Promise<Result>;
     };
@@ -29,6 +29,7 @@ export interface FormCallback<T extends object = any, D extends object = any> ex
     formRef: Ref<Nullable<FormInstance>>;
     form: Ref<Form<T>>;
     loading: Ref<boolean>;
+    formLoading: Ref<boolean>;
     onSubmit: () => Promise<void>;
     queryInfo: (...args: Parameters<Required<FormOptions<T, D>["request"]>["info"]>) => Promise<void>;
     queryInfoByLocal: (data: Partial<T>) => void;
@@ -47,16 +48,17 @@ export function useFormRequest<T extends object, D extends object = any>(config:
 
     const dataForm = ref(getForm()) as Ref<T>;
     const loading = ref(false);
+    const formLoading = ref(false);
 
     async function queryInfo(...args: Parameters<Required<FormOptions<T, D>["request"]>["info"]>) {
         if(getInfo) {
             try {
-                loading.value = true;
+                formLoading.value = true;
                 const res = await getInfo(...args);
                 const result: T = extend({}, res.data);
                 dataForm.value = formatter ? formatter(result as any) : result;
             } finally {
-                loading.value = false;
+                formLoading.value = false;
             }
         }
     }
@@ -96,6 +98,7 @@ export function useFormRequest<T extends object, D extends object = any>(config:
         formRef,
         form: dataForm,
         loading,
+        formLoading,
         queryInfo,
         queryInfoByLocal,
         onSubmit,

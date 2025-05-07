@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { userCreate, userUpdate } from "@/api/system/user";
+import { getUserInfo, userCreate, userUpdate } from "@/api/system/user";
 import { getDeptAllList } from "@/api/system/dept";
 import { getPostAllList } from "@/api/system/post";
 import type { UserInfo } from "#/system";
@@ -22,12 +22,14 @@ const {
     form,
     formRef,
     resetFields,
-    queryInfoByLocal,
+    queryInfo,
+    formLoading,
     onSubmit,
 } = useFormRequest<UserInfo>({
     request: {
         add: userCreate,
         edit: userUpdate,
+        info: getUserInfo,
     },
     form: () => ({
         id: undefined,
@@ -55,7 +57,7 @@ onDialogOpen(data => {
     onQueryDeptTree();
     onQueryPostList();
     if(data) {
-        queryInfoByLocal({ ...form.value, ...data });
+        queryInfo(data?.id);
     }
 });
 
@@ -75,15 +77,12 @@ onDialogSubmit(async (instance, close) => {
 </script>
 
 <template>
-    <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
+    <el-form ref="formRef" v-loading="formLoading" :rules="rules" :model="form" label-width="80px">
         <el-form-item prop="userName" label="用户名">
-            <el-input v-model="form.userName" placeholder="请输入用户名" />
+            <el-input v-model="form.userName" :disabled="!!form.id" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item prop="nickName" label="用户昵称">
             <el-input v-model="form.nickName" placeholder="请输入用户昵称" />
-        </el-form-item>
-        <el-form-item prop="avatar" label="用户头像">
-            <el-input v-model="form.avatar" placeholder="请输入用户头像" />
         </el-form-item>
         <el-form-item prop="phone" label="手机号">
             <el-input v-model="form.phone" placeholder="请输入手机号" />
