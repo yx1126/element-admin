@@ -7,7 +7,7 @@ export function getRoleList<T extends object>(params?: T) {
 }
 
 export function getRoleAppList<T extends object>(params?: T) {
-    return http.get<PageInfo<Role[]>>("/system/role/all", params);
+    return http.get<Role[]>("/system/role/all", params);
 }
 
 export function getRoleInfo(id: number) {

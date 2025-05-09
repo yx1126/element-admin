@@ -2,6 +2,7 @@
 import { getUserInfo, userCreate, userUpdate } from "@/api/system/user";
 import { getDeptAllList } from "@/api/system/dept";
 import { getPostAllList } from "@/api/system/post";
+import { getRoleAppList } from "@/api/system/role";
 import type { UserInfo } from "#/system";
 
 defineOptions({
@@ -15,6 +16,11 @@ const { data: deptTreeList, queryOnce: onQueryDeptTree } = useRequest({
 
 const { data: postList, queryOnce: onQueryPostList } = useRequest({
     request: getPostAllList,
+    default: [],
+});
+
+const { data: roleList, queryOnce: onQueryRoleList } = useRequest({
+    request: getRoleAppList,
     default: [],
 });
 
@@ -56,6 +62,7 @@ const rules = defineFormRules<UserInfo>({
 onDialogOpen(data => {
     onQueryDeptTree();
     onQueryPostList();
+    onQueryRoleList();
     if(data) {
         queryInfo(data?.id);
     }
@@ -110,9 +117,16 @@ onDialogSubmit(async (instance, close) => {
             />
         </el-form-item>
         <el-form-item prop="postIds" label="岗位">
-            <el-select v-model="form.postIds" placeholder="请选择岗位" multiple clearable>
+            <el-select v-model="form.postIds" placeholder="请选择岗位" multiple collapse-tags clearable>
                 <template v-for="post in postList" :key="post.id">
                     <el-option :value="post.id!" :label="post.name" />
+                </template>
+            </el-select>
+        </el-form-item>
+        <el-form-item prop="roleIds" label="角色">
+            <el-select v-model="form.roleIds" placeholder="请选择角色" multiple collapse-tags clearable>
+                <template v-for="role in roleList" :key="role.id">
+                    <el-option :value="role.id!" :label="role.name" />
                 </template>
             </el-select>
         </el-form-item>
