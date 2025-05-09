@@ -26,5 +26,8 @@
     },
     "please": {
         "select-one": "Please select at least one data"
+    },
+    "checked": {
+        "select-all": "Select All"
     }
 }

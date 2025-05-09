@@ -87,3 +87,12 @@ export interface Post extends TableModels {
     status: NumFlag;
     remark: string;
 }
+
+export interface Role extends TableModels {
+    name: string;
+    key: string;
+    sort: number;
+    status: NumFlag;
+    remark: string;
+    menuIds: number[];
+}

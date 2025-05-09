@@ -26,5 +26,8 @@
     },
     "please": {
         "select-one": "请至少选择一条数据"
+    },
+    "checked": {
+        "select-all": "全选"
     }
 }

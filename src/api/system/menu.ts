@@ -5,6 +5,10 @@ export function getMenuTree<T extends object>(params?: T) {
     return http.get<MenuItem[]>("/system/menu", params);
 }
 
+export function getMenuAllTree<T extends object>(params?: T) {
+    return http.get<MenuItem[]>("/system/menu/all", params);
+}
+
 export function getMenuSelectTree<T extends object>(params?: T) {
     return http.get<MenuItem[]>("/system/menu/selectTree", params);
 }
