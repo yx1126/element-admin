@@ -31,12 +31,15 @@ function parsePath(data: MenuItem[]) {
  * 解析组件
  */
 function parseComponent(menu: MenuItem): RouteRecordRaw["component"] {
+    // iframe
     if(menu.type === MenuType.LINK) {
         return pages["/src/views/iframe/index.vue"];
     }
+    // 目录
     if(menu.type === MenuType.FOLDER) {
         return ParentLayout(menu.name);
     }
+    // 菜单
     if(menu.type === MenuType.MENU) {
         if(!menu.component) return;
         const compPath = ("/src/views/" + menu.component).replace(/\/\//g, "/");

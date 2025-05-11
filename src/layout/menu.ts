@@ -237,7 +237,7 @@ export const menuList: MenuItem[] = [{
     sort: 3,
     children: [{
         id: 101,
-        type: 3,
+        type: 2,
         path: "/element-plus",
         link: "https://element-plus.org/en-US/",
         name: "ElementPlus",
@@ -249,7 +249,7 @@ export const menuList: MenuItem[] = [{
         children: [],
     }, {
         id: 102,
-        type: 3,
+        type: 2,
         path: "/naive-ui",
         link: "https://www.naiveui.com/en-US/light",
         name: "NaiveUI",

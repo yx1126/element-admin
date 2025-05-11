@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import App from "@/App.vue";
-import i18n from "@/locales";
+import i18n, { loadI18n } from "@/locales";
 import router from "@/router";
 import pinia from "@/stores";
 import Directive from "@/directive";
@@ -20,6 +20,7 @@ app.use(pinia)
     .use(i18n)
     .use(GlobalRegister);
 
-router.isReady().then(() => {
+router.isReady().then(async () => {
+    await loadI18n();
     app.mount("#app");
 });
