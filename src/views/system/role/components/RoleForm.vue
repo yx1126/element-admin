@@ -96,7 +96,7 @@ function onCheckedChange() {
         <el-form-item prop="key" label="角色标识">
             <el-input v-model="form.key" placeholder="请输入角色标识" />
         </el-form-item>
-        <el-form-item prop="menuIds" label="上级菜单">
+        <el-form-item prop="menuIds" label="菜单权限">
             <el-tree-select
                 v-model="form.menuIds"
                 :data="menuTreeList"
