@@ -29,7 +29,16 @@ const {
 
 const rules = defineFormRules<Post>({
     name: Require("请输入岗位名称"),
-    code: Require("请输入岗位编号"),
+    code: [
+        Require("请输入岗位编号"),
+        RequiredValidator((_, value, cb) => {
+            if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
+                cb();
+            } else {
+                cb(new Error("请输入数字字母_-"));
+            }
+        }),
+    ],
 });
 
 onDialogOpen(data => {

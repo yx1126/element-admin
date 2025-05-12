@@ -48,7 +48,16 @@ const indeterminate = computed(() => {
 
 const rules = defineFormRules<Role>({
     name: Require("请输入角色名称"),
-    key: Require("请输入角色标识"),
+    key: [
+        Require("请输入角色标识"),
+        RequiredValidator((_, value, cb) => {
+            if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
+                cb();
+            } else {
+                cb(new Error("请输入数字字母_-"));
+            }
+        }),
+    ],
 });
 
 onDialogOpen(data => {
