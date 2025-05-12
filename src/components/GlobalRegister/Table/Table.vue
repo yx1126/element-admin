@@ -5,6 +5,7 @@ import { tableContextKey, useColumns, type TableColumn, type TableColumnFormat, 
 import TableSet from "./TableSet.vue";
 import type { SlotsType, VNode } from "vue";
 import { throttle } from "lodash-es";
+import { isFn } from "@/utils/validata";
 
 export default defineComponent({
     name: "BaseTable",
@@ -61,10 +62,10 @@ export default defineComponent({
 
         function renderColumns(columns: TableColumnFormat[]) {
             return columns.map(column => {
-                const { checked, children, slotName, render, renderHeader, renderFilterIcon, ...otherColumns } = column;
+                const { checked, children, slotName, render, renderHeader, renderFilterIcon, label, ...otherColumns } = column;
                 if(!checked) return null;
                 return (
-                    <el-table-column {...otherColumns}>
+                    <el-table-column label={isFn(label) ? label() : label} {...otherColumns}>
                         {{
                             default: (data: TableSlot) => {
                                 if(children?.length) {

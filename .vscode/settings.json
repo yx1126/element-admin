@@ -73,7 +73,8 @@
     "i18n-ally.displayLanguage": "zh",
     "i18n-ally.enabledFrameworks": [
         "vue-sfc",
-        "vue"
+        "vue",
+        "custom"
     ],
     "vue.server.hybridMode": true,
     "vue.complete.defineAssignment": true,

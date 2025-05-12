@@ -29,5 +29,17 @@
     },
     "checked": {
         "select-all": "Select All"
-    }
+    },
+    "status": {
+        "name": "status",
+        "enable": "enable",
+        "disable": "disable"
+    },
+    "form": {
+    },
+    "index": "index",
+    "remark": "remark",
+    "updatedAt": "updatedAt",
+    "createdAt": "createdAt",
+    "operate": "operate"
 }

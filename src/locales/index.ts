@@ -21,8 +21,17 @@ export const langList = [
 export async function loadI18n() {
     const zh = await import(`./langs/zh.json`);
     const en = await import(`./langs/en.json`);
-    i18n.global.setLocaleMessage("zh", zh.default);
-    i18n.global.setLocaleMessage("en", en.default);
+    const messages = {
+        zh: {
+            ...zh.default,
+        },
+        en: {
+            ...en.default,
+        },
+    };
+    Object.entries(messages).forEach(([key, message]) => {
+        i18n.global.setLocaleMessage(key, message);
+    });
 }
 
 export default i18n;

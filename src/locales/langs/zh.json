@@ -29,5 +29,17 @@
     },
     "checked": {
         "select-all": "全选"
-    }
+    },
+    "status": {
+        "name": "状态",
+        "enable": "启用",
+        "disable": "禁用"
+    },
+    "form": {
+    },
+    "index": "序号",
+    "remark": "备注",
+    "updatedAt": "创建时间",
+    "createdAt": "创建时间",
+    "operate": "操作"
 }

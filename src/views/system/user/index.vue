@@ -10,6 +10,7 @@ defineOptions({
 
 const message = useMessage();
 const msgbox = useMessageBox();
+const { t, $t, ti, ts } = useLocal();
 
 const { data: deptTreeList } = useRequest({
     request: getDeptSelectTree,
@@ -37,7 +38,7 @@ const {
 
 const dialog = useDialog({
     component: UserForm,
-    title: data => `${data?.id ? "编辑" : "新增"}用户`,
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("user"),
     width: 500,
     onSubmit: onSearch,
     destroyOnClose: false,
@@ -48,39 +49,39 @@ const columns = defineColumns<UserInfo>([{
     selectable: row => row?.id !== 1,
 }, {
     type: "index",
-    label: "序号",
+    label: () => $t("index"),
 }, {
-    label: "用户名",
+    label: () => t("username"),
     prop: "userName",
 }, {
-    label: "用户昵称",
+    label: () => t("nickname"),
     prop: "nickName",
 }, {
-    label: "手机号",
+    label: () => t("phone"),
     prop: "phone",
 }, {
-    label: "所属部门",
+    label: () => t("dept"),
     prop: "deptName",
 }, {
-    label: "状态",
+    label: () => $t("status.name"),
     prop: "status",
     dictType: "status",
 }, {
-    label: "备注",
+    label: () => $t("remark"),
     prop: "remark",
 }, {
-    label: "创建时间",
+    label: () => $t("createdAt"),
     prop: "createdAt",
 }, {
-    label: "操作",
+    label: () => $t("operate"),
     width: 120,
     slotName: "operate",
 }]);
 
 function onResetPwd(row: UserInfo) {
-    msgbox.confirm(`确定要重置用户“${row.userName}”的密码吗？`).then(() => {
+    msgbox.confirm(t("reset", [row.userName])).then(() => {
         userResetPwd(row.id!).then(() => {
-            message.success("重置成功");
+            message.success(t("resetSuccess"));
         });
     });
 }
@@ -90,13 +91,13 @@ function onResetPwd(row: UserInfo) {
     <div class="user layout-page">
         <table-layout :model="queryForm" @search="onSearch">
             <template #form>
-                <el-form-item prop="userName" label="用户名">
-                    <el-input v-model="queryForm.userName" placeholder="请输入用户名" clearable />
+                <el-form-item prop="userName" :label="t('username')">
+                    <el-input v-model="queryForm.userName" :placeholder="ti('username')" clearable />
                 </el-form-item>
-                <el-form-item prop="nickName" label="用户昵称">
-                    <el-input v-model="queryForm.nickName" placeholder="请输入用户昵称" clearable />
+                <el-form-item prop="nickName" :label="t('nickname')">
+                    <el-input v-model="queryForm.nickName" :placeholder="ti('nickname')" clearable />
                 </el-form-item>
-                <el-form-item prop="deptId" label="部门">
+                <el-form-item prop="deptId" :label="t('dept')">
                     <el-tree-select
                         v-model="queryForm.deptId"
                         :data="deptTreeList"
@@ -104,12 +105,12 @@ function onResetPwd(row: UserInfo) {
                         check-strictly
                         filterable
                         clearable
-                        placeholder="请选择部门"
+                        :placeholder="ts('dept')"
                         :props="{ label: 'name' }"
                     />
                 </el-form-item>
-                <el-form-item prop="status" label="状态">
-                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
+                <el-form-item prop="status" :label="$t('status.name')">
+                    <el-select v-model="queryForm.status" :placeholder="$t('select', [$t('status.name')])" clearable>
                         <el-option value="1" label="启用" />
                         <el-option value="0" label="禁用" />
                     </el-select>
@@ -137,3 +138,22 @@ function onResetPwd(row: UserInfo) {
         </table-layout>
     </div>
 </template>
+
+<i18n lang="yaml">
+zh:
+  user: 用户
+  username: 用户名
+  nickname: 用户昵称
+  dept: 部门
+  phone: 手机号
+  reset: 确定要重置用户“{0}”的密码吗？
+  resetSuccess: 重置成功
+en:
+  user: User
+  username: username
+  nickname: nickname
+  dept: dept
+  phone: phone
+  reset: Are you sure you want to reset the password of the user "{0}"?
+  resetSuccess: Reset successful
+</i18n>

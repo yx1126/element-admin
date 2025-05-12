@@ -9,27 +9,31 @@ interface LocalesOptions {
     immediate?: boolean;
 }
 
-type I18nBack = ReturnType<typeof useI18n>;
+export type I18nBack = ReturnType<typeof useI18n>;
 
 interface LocalBack extends I18nBack {
     $t: I18nBack["t"];
     ti: I18nBack["t"];
     ts: I18nBack["t"];
     tv: I18nBack["t"];
+    tp: I18nBack["t"];
 }
 
 export function useLocal(...args: Parameters<typeof useI18n>): LocalBack {
     const i18n = useI18n(...args);
     const { t } = useI18n({ useScope: "global" });
 
+    // input placeholder t
     function ti(...args: Parameters<I18nBack["t"]>) {
         return t("input", [i18n.t(...args)]);
     }
 
+    // select placeholder t
     function ts(...args: Parameters<I18nBack["t"]>) {
         return t("select", [i18n.t(...args)]);
     }
 
+    // form rules validator t
     function tv(...args: Parameters<I18nBack["t"]>) {
         return t("valid.not-null", [i18n.t(...args)]);
     }
