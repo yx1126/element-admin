@@ -140,7 +140,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
 
 <template>
     <div class="dict flex gap-10px">
-        <el-card-v2 class="w-400px" header="字典">
+        <el-card-v2 class="w-400px min-w-400px" header="字典">
             <template #extra>
                 <el-button icon="EleRefresh" size="small" @click="onQueryDictType" />
                 <el-button type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />

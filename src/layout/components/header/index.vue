@@ -68,6 +68,9 @@ function onDropDown(command: string) {
             <div class="header-item" @click="onToggle">
                 <Icon :icon="isFullScreen ? FullscreenExitOutlined : FullscreenOutlined" size="18" />
             </div>
+            <div class="header-item" @click="set.onNavModeChange">
+                <Icon :icon="set.navMode === 'dark' ? 'light' : 'dark'" />
+            </div>
             <lang-select class="h-[100%]" type="dropdown">
                 <div class="header-item">
                     <Icon icon="language" />

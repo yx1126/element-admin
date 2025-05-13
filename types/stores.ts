@@ -33,6 +33,7 @@ export interface SetState {
     isMenuFixed: boolean;
     isShowWatermark: boolean;
     isMainFull: boolean;
+    lastNavMode?: NavTheme;
 }
 
 export interface TagItem {

@@ -24,6 +24,7 @@ const defaultSetting: SetState = {
     isMenuFixed: false, // 是否固定侧边菜单
     isShowWatermark: true, // 是否显示水印
     isMainFull: false, // 是否显示侧边栏和标题
+    lastNavMode: undefined, // 记录上次navMode
 };
 
 export const useSetStore = defineStore("setting", () => {
@@ -55,8 +56,21 @@ export const useSetStore = defineStore("setting", () => {
         immediate: true,
     });
 
+    function onNavModeChange() {
+        if(state.navMode !== "dark") {
+            state.lastNavMode = state.navMode;
+            state.navMode = "dark";
+        } else {
+            if(state.lastNavMode) {
+                state.navMode = state.lastNavMode;
+            }
+            state.lastNavMode = undefined;
+        }
+    }
+
     return {
         ...toRefs(state),
+        onNavModeChange,
     };
 }, {
     persistedstate: {

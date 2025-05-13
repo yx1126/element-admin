@@ -24,16 +24,12 @@ interface StorageOptions<S> {
 
 type StorageOption<S> = BaseStorage | StorageOptions<S>[];
 
-type OmitRef<T extends object> = {
-    [K in keyof T]: T[K] extends { value: infer V } ? V : T[K]
-};
-
 interface StoreOption<S extends object> {
     enabled?: boolean;
     key?: string;
     paths?: Paths<S>;
     storage?: StorageOption<S>;
-    reset?: () => Partial<OmitRef<S>>;
+    reset?: () => any;
 }
 
 interface PiniaStateOptions {
