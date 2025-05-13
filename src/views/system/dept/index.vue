@@ -8,6 +8,8 @@ defineOptions({
     name: "Dept",
 });
 
+const { t, $t, ti, $ts } = useLocal();
+
 const queryForm = ref({
     name: "",
     status: "",
@@ -29,39 +31,39 @@ const { onDelete } = useDataDelete({
 
 const dialog = useDialog<Dept>({
     component: DeptForm,
-    title: data => data?.id ? "编辑部门" : "新增部门",
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("dept"),
     width: 500,
     onSubmit: onSearch,
 });
 
 const columns = defineColumns<Dept>([{
     type: "index",
-    label: "序号",
+    label: () => $t("index"),
 }, {
-    label: "部门名称",
+    label: () => t("deptName"),
     prop: "name",
     align: "left",
 }, {
-    label: "部门负责人",
+    label: () => t("leader"),
     prop: "leader.nickName",
 }, {
-    label: "联系电话",
+    label: () => t("phone"),
     prop: "leader.phone",
 }, {
-    label: "邮箱",
+    label: () => t("email"),
     prop: "leader.email",
 }, {
-    label: "状态",
+    label: () => $t("status.name"),
     prop: "status",
     dictType: "status",
 }, {
-    label: "更新人",
-    prop: "updateBy",
+    label: () => $t("updatedBy"),
+    prop: "updatedBy",
 }, {
-    label: "更新时间",
+    label: () => $t("updatedAt"),
     prop: "updatedAt",
 }, {
-    label: "操作",
+    label: () => $t("operate"),
     width: 120,
     slotName: "operate",
 }]);
@@ -94,13 +96,13 @@ function onTaleActionClick(item: TableActionItem, row: Dept) {
     <div class="menu layout-page">
         <table-layout :model="queryForm" @search="onSearch">
             <template #form>
-                <el-form-item prop="name" label="部门名称">
-                    <el-input v-model="queryForm.name" placeholder="请输入部门名称" clearable />
+                <el-form-item prop="name" :label="t('deptName')">
+                    <el-input v-model="queryForm.name" :placeholder="ti('deptName')" clearable />
                 </el-form-item>
-                <el-form-item prop="status" label="状态">
-                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
-                        <el-option value="0" label="禁用" />
-                        <el-option value="1" label="启用" />
+                <el-form-item prop="status" :label="$t('status.name')">
+                    <el-select v-model="queryForm.status" :placeholder="$ts('status.name')" clearable>
+                        <el-option value="1" :label="$t('status.enable')" />
+                        <el-option value="0" :label="$t('status.disable')" />
                     </el-select>
                 </el-form-item>
             </template>
@@ -118,7 +120,7 @@ function onTaleActionClick(item: TableActionItem, row: Dept) {
             >
                 <template #action>
                     <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">展开/折叠</el-button>
+                    <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">{{ $t("button.ExpandCollapse") }}</el-button>
                 </template>
                 <template #operate="{ row }">
                     <table-action :actions="{action: 'add', icon: 'ElePlus', append: 'before', type: 'primary'}" @click="onTaleActionClick($event, row)" />
@@ -127,3 +129,18 @@ function onTaleActionClick(item: TableActionItem, row: Dept) {
         </table-layout>
     </div>
 </template>
+
+<i18n lang="yaml">
+zh:
+  dept: 部门
+  deptName: 部门名称
+  leader: 部门负责人
+  phone: 联系电话
+  email: 邮箱
+en:
+  dept: dept
+  deptName: deptName
+  leader: leader
+  phone: phone
+  email: email
+</i18n>

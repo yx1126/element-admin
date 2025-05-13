@@ -7,6 +7,9 @@ defineOptions({
     name: "DeptForm",
 });
 
+const { t, $t, ts, ti } = useLocal();
+const { lang } = useLocales();
+
 const { data: treeData, query } = useRequest({
     request: getDeptSelectTree,
     default: [],
@@ -48,7 +51,7 @@ const {
 });
 
 const rules = defineFormRules({
-    name: Require("请输入部门名称"),
+    name: Require(() => ti("deptName")),
 });
 
 onDialogOpen(data => {
@@ -75,8 +78,8 @@ onDialogSubmit(async (instance, close) => {
 </script>
 
 <template>
-    <el-form ref="formRef" :rules="rules" :model="form" label-width="90px">
-        <el-form-item prop="parentId" label="上级菜单">
+    <el-form ref="formRef" :rules="rules" :model="form" :label-width="['en'].includes(lang) ? '100px' : '90px'">
+        <el-form-item prop="parentId" :label="t('parent')">
             <el-tree-select
                 v-model="form.parentId"
                 :data="treeData"
@@ -84,20 +87,20 @@ onDialogSubmit(async (instance, close) => {
                 check-strictly
                 filterable
                 :default-expanded-keys="[form.parentId]"
-                placeholder="请选择上级菜单"
+                :placeholder="ts('parent')"
                 :props="{ label: 'name' }"
             />
         </el-form-item>
-        <el-form-item prop="name" label="部门名称">
-            <el-input v-model="form.name" placeholder="请输入部门名称" />
+        <el-form-item prop="name" :label="t('deptName')">
+            <el-input v-model="form.name" :placeholder="ti('deptName')" />
         </el-form-item>
-        <el-form-item prop="leaderId" label="部门负责人">
+        <el-form-item prop="leaderId" :label="t('leader')">
             <el-select
                 v-model="form.leaderId"
                 :data="treeData"
                 clearable
                 filterable
-                placeholder="请选择部门负责人"
+                :placeholder="ts('leader')"
             >
                 <template v-for="item in userList" :key="item.id">
                     <el-option :value="item.id!" :label="item.userName">
@@ -109,14 +112,27 @@ onDialogSubmit(async (instance, close) => {
                 </template>
             </el-select>
         </el-form-item>
-        <el-form-item prop="sort" label="排序">
-            <el-input-number v-model="form.sort" placeholder="请输入排序" />
+        <el-form-item prop="sort" :label="t('sort')">
+            <el-input-number v-model="form.sort" :placeholder="ti('sort')" />
         </el-form-item>
-        <el-form-item prop="status" label="状态">
+        <el-form-item prop="status" :label="$t('status.name')">
             <el-radio-group v-model="form.status">
-                <el-radio value="1">启用</el-radio>
-                <el-radio value="0">禁用</el-radio>
+                <el-radio value="1">{{ $t("status.enable") }}</el-radio>
+                <el-radio value="0">{{ $t("status.disable") }}</el-radio>
             </el-radio-group>
         </el-form-item>
     </el-form>
 </template>
+
+<i18n lang="yaml">
+zh:
+  parent: 上级部门
+  deptName: 部门名称
+  leader: 部门负责人
+  sort: 排序
+en:
+  parent: parent dept
+  deptName: deptName
+  leader: leader
+  sort: 排序
+</i18n>

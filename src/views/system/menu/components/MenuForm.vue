@@ -206,7 +206,7 @@ zh:
   nameValid1: 请输入字母、数字
   nameValid2: 首字母必须大写
 en:
-  parent: previousMenu
+  parent: parent menu
   type: menuType
   folder: folder
   menu: menu
