@@ -10,6 +10,8 @@ defineOptions({
     name: "Dict",
 });
 
+const { t, ti, $t, $ts } = useLocal();
+
 const treeRef = useTemplateRef("treeRef");
 
 const { data: treeData, loading: treeLoad, query: onQueryDictType } = useRequest({
@@ -52,7 +54,7 @@ const {
 
 const dictTypeDialog = useDialog({
     component: DictTypeForm,
-    title: data => `${data?.id ? "编辑" : "新增"}字典`,
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("dict"),
     width: 450,
     onSubmit: () => {
         onQueryDictType();
@@ -61,40 +63,40 @@ const dictTypeDialog = useDialog({
 });
 const dictDataDialog = useDialog({
     component: DictDataForm,
-    title: data => `${data?.id ? "编辑" : "新增"}字典`,
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("dict"),
     width: 450,
     onSubmit: onSearch,
 });
 
 const columns = defineColumns([{
     type: "index",
-    label: "序号",
+    label: () => $t("index"),
 }, {
-    label: "字典类型",
+    label: () => t("dictType"),
     prop: "dictType",
 }, {
-    label: "字典名称",
+    label: () => t("dictName"),
     prop: "label",
     slotName: "label",
 }, {
-    label: "字典值",
+    label: () => t("dictValue"),
     prop: "value",
 }, {
-    label: "排序",
+    label: () => t("sort"),
     prop: "sort",
 }, {
-    label: "状态",
+    label: () => $t("status.name"),
     prop: "status",
     slotName: "status",
 }, {
-    label: "备注",
+    label: () => $t("remark"),
     prop: "remark",
 }, {
-    label: "创建时间",
+    label: () => $t("createdAt"),
     prop: "createdAt",
     width: 180,
 }, {
-    label: "操作",
+    label: () => $t("operate"),
     width: 120,
     slotName: "operate",
 }]);
@@ -144,7 +146,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                 <el-button type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />
             </template>
             <div class="flex flex-col gap-10px">
-                <lazy-input v-model.lazy="keyword" placeholder="请输入字典名称" clearable suffix-icon="EleSearch" />
+                <lazy-input v-model.lazy="keyword" :placeholder="t('dictName')" clearable suffix-icon="EleSearch" />
                 <div class="flex-shrink">
                     <el-tree
                         ref="treeRef"
@@ -174,13 +176,13 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
         </el-card-v2>
         <table-layout class="flex-1" :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
-                <el-form-item prop="label" label="字典名称">
-                    <el-input v-model="queryForm.label" placeholder="请输入字典名称" clearable />
+                <el-form-item prop="label" :label="t('dictName')">
+                    <el-input v-model="queryForm.label" :placeholder="ti('dictName')" clearable />
                 </el-form-item>
-                <el-form-item prop="status" label="状态">
-                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
-                        <el-option value="1" label="启用" />
-                        <el-option value="0" label="禁用" />
+                <el-form-item prop="status" :label="$t('status.name')">
+                    <el-select v-model="queryForm.status" :placeholder="$ts('status.name')" clearable>
+                        <el-option value="1" :label="$t('status.enable')" />
+                        <el-option value="0" :label="$t('status.disable')" />
                     </el-select>
                 </el-form-item>
             </template>
@@ -223,3 +225,18 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
         </table-layout>
     </div>
 </template>
+
+<i18n lang="yaml">
+zh:
+  dict: 字典
+  dictType: 字典类型
+  dictName: 字典名称
+  dictValue: 字典值
+  sort: 排序
+en:
+  dict: dict
+  dictType: dictType
+  dictName: dictName
+  dictValue: dictValue
+  sort: sort
+</i18n>
