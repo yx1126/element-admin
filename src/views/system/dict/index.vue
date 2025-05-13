@@ -174,7 +174,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                 </div>
             </div>
         </el-card-v2>
-        <table-layout class="flex-1" :model="queryForm" @search="onSearch" @reset="onReset">
+        <table-layout class="w-[calc(100%-410px)]" :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
                 <el-form-item prop="label" :label="t('dictName')">
                     <el-input v-model="queryForm.label" :placeholder="ti('dictName')" clearable />
