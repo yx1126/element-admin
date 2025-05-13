@@ -13,6 +13,7 @@ const {
     tableAttrs,
     paging,
     onSearch,
+    onReset,
     onDelete,
 } = useTable({
     request: getRoleList,
@@ -59,7 +60,7 @@ const columns = defineColumns<Role>([{
 
 <template>
     <div class="menu layout-page">
-        <table-layout :model="queryForm" @search="onSearch">
+        <table-layout :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
                 <el-form-item prop="name" label="角色名称">
                     <el-input v-model="queryForm.name" placeholder="请输入角色名称" clearable />

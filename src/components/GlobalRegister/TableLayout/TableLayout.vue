@@ -7,7 +7,6 @@ export default defineComponent({
     name: "TableLayout",
     props: {
         model: Object,
-        resetSearch: { type: Boolean, default: true },
         split: { type: Boolean, default: Configs.formSplit },
     },
     emits: ["search", "reset"],
@@ -24,9 +23,6 @@ export default defineComponent({
         function onReset() {
             formRef.value?.resetFields();
             emit("reset");
-            if(props.resetSearch) {
-                emit("search");
-            }
         }
         return () => {
             const { model, split } = props;

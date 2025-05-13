@@ -31,6 +31,7 @@ const {
     tableAttrs,
     paging,
     onSearch,
+    onReset,
     onRefresh,
     onDelete: onDictDataDelete,
 } = useTable({
@@ -171,7 +172,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                 </div>
             </div>
         </el-card-v2>
-        <table-layout class="flex-1" :model="queryForm" @search="onSearch">
+        <table-layout class="flex-1" :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
                 <el-form-item prop="label" label="字典名称">
                     <el-input v-model="queryForm.label" placeholder="请输入字典名称" clearable />

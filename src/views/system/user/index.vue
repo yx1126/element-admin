@@ -24,6 +24,7 @@ const {
     tableAttrs,
     paging,
     onSearch,
+    onReset,
     onDelete,
 } = useTable({
     request: getUserList,
@@ -89,7 +90,7 @@ function onResetPwd(row: UserInfo) {
 
 <template>
     <div class="user layout-page">
-        <table-layout :model="queryForm" @search="onSearch">
+        <table-layout :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
                 <el-form-item prop="userName" :label="t('username')">
                     <el-input v-model="queryForm.userName" :placeholder="ti('username')" clearable />

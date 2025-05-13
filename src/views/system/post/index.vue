@@ -13,6 +13,7 @@ const {
     tableAttrs,
     paging,
     onSearch,
+    onReset,
     onDelete,
 } = useTable({
     request: getPostList,
@@ -68,7 +69,7 @@ const columns = defineColumns<Post>([{
 
 <template>
     <div class="user layout-page">
-        <table-layout :model="queryForm" @search="onSearch">
+        <table-layout :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
                 <el-form-item prop="name" label="岗位名称">
                     <el-input v-model="queryForm.name" placeholder="请输入岗位名称" clearable />
