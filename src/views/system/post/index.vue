@@ -7,6 +7,8 @@ defineOptions({
     name: "Post",
 });
 
+const { t, ti, $t, $ts } = useLocal();
+
 const {
     query: queryForm,
     data,
@@ -27,7 +29,7 @@ const {
 
 const dialog = useDialog({
     component: PostForm,
-    title: data => `${data?.id ? "编辑" : "新增"}岗位`,
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("post"),
     width: 500,
     onSubmit: onSearch,
     destroyOnClose: false,
@@ -37,31 +39,31 @@ const columns = defineColumns<Post>([{
     type: "selection",
 }, {
     type: "index",
-    label: "序号",
+    label: () => $t("index"),
 }, {
-    label: "岗位名称",
+    label: () => t("postName"),
     prop: "name",
 }, {
-    label: "岗位编号",
+    label: () => t("code"),
     prop: "code",
 }, {
-    label: "排序",
+    label: () => t("sort"),
     prop: "sort",
 }, {
-    label: "状态",
+    label: () => $t("status.name"),
     prop: "status",
     dictType: "status",
 }, {
-    label: "备注",
+    label: () => $t("remark"),
     prop: "remark",
 }, {
-    label: "创建人",
+    label: () => $t("createdBy"),
     prop: "createdBy",
 }, {
-    label: "创建时间",
+    label: () => $t("createdAt"),
     prop: "createdAt",
 }, {
-    label: "操作",
+    label: () => $t("operate"),
     width: 120,
     slotName: "operate",
 }]);
@@ -71,16 +73,16 @@ const columns = defineColumns<Post>([{
     <div class="user layout-page">
         <table-layout :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
-                <el-form-item prop="name" label="岗位名称">
-                    <el-input v-model="queryForm.name" placeholder="请输入岗位名称" clearable />
+                <el-form-item prop="name" :label="t('postName')">
+                    <el-input v-model="queryForm.name" :placeholder="ti('postName')" clearable />
                 </el-form-item>
-                <el-form-item prop="code" label="岗位编号">
-                    <el-input v-model="queryForm.code" placeholder="请输入岗位编号" clearable />
+                <el-form-item prop="code" :label="t('code')">
+                    <el-input v-model="queryForm.code" :placeholder="ti('code')" clearable />
                 </el-form-item>
-                <el-form-item prop="status" label="状态">
-                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
-                        <el-option value="1" label="启用" />
-                        <el-option value="0" label="禁用" />
+                <el-form-item prop="status" :label="$t('status.name')">
+                    <el-select v-model="queryForm.status" :placeholder="$ts('status.name')" clearable>
+                        <el-option value="1" :label="$t('status.enable')" />
+                        <el-option value="0" :label="$t('status.disable')" />
                     </el-select>
                 </el-form-item>
             </template>
@@ -102,3 +104,16 @@ const columns = defineColumns<Post>([{
         </table-layout>
     </div>
 </template>
+
+<i18n lang="yaml">
+zh:
+  post: 岗位
+  postName: 岗位名称
+  code: 岗位编号
+  sort: 排序
+en:
+  post: post
+  postName: postName
+  code: code
+  sort: sort
+</i18n>

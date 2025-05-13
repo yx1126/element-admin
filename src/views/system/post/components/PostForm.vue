@@ -6,6 +6,9 @@ defineOptions({
     name: "UserForm",
 });
 
+const { t, ti, $t, $ti } = useLocal();
+const { lang } = useLocales();
+
 const {
     form,
     formRef,
@@ -28,14 +31,14 @@ const {
 });
 
 const rules = defineFormRules<Post>({
-    name: Require("请输入岗位名称"),
+    name: Require(() => ti("postName")),
     code: [
-        Require("请输入岗位编号"),
+        Require(() => ti("code")),
         RequiredValidator((_, value, cb) => {
             if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
                 cb();
             } else {
-                cb(new Error("请输入数字字母_-"));
+                cb(new Error(t("valid")));
             }
         }),
     ],
@@ -63,24 +66,37 @@ onDialogSubmit(async (instance, close) => {
 </script>
 
 <template>
-    <el-form ref="formRef" :rules="rules" :model="form" label-width="80px">
-        <el-form-item prop="name" label="岗位名称">
-            <el-input v-model="form.name" placeholder="请输入岗位名称" />
+    <el-form ref="formRef" :rules="rules" :model="form" :label-width="['en'].includes(lang) ? '90px' : '80px'">
+        <el-form-item prop="name" :label="t('postName')">
+            <el-input v-model="form.name" :placeholder="ti('postName')" />
         </el-form-item>
-        <el-form-item prop="code" label="岗位编号">
-            <el-input v-model="form.code" placeholder="请输入岗位编号" />
+        <el-form-item prop="code" :label="t('code')">
+            <el-input v-model="form.code" :placeholder="ti('code')" />
         </el-form-item>
-        <el-form-item prop="sort" label="排序">
-            <el-input-number v-model="form.sort" placeholder="请输入排序" />
+        <el-form-item prop="sort" :label="t('sort')">
+            <el-input-number v-model="form.sort" :placeholder="ti('sort')" />
         </el-form-item>
-        <el-form-item prop="status" label="状态">
+        <el-form-item prop="status" :label="$t('status.name')">
             <el-radio-group v-model="form.status">
-                <el-radio value="1">启用</el-radio>
-                <el-radio value="0">禁用</el-radio>
+                <el-radio value="1">{{ $t('status.enable') }}</el-radio>
+                <el-radio value="0">{{ $t("status.disable") }}</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item prop="remark" label="备注">
-            <el-input v-model="form.remark" type="textarea" :rows="3" placeholder="请输入备注" />
+        <el-form-item prop="remark" :label="$t('remark')">
+            <el-input v-model="form.remark" type="textarea" :rows="3" :placeholder="$ti('remark')" />
         </el-form-item>
     </el-form>
 </template>
+
+<i18n lang="yaml">
+zh:
+  postName: 岗位名称
+  code: 岗位编号
+  sort: 排序
+  valid: 请输入数字字母_-
+en:
+  postName: postName
+  code: code
+  sort: sort
+  valid: Please enter letters and numbers_-
+</i18n>
