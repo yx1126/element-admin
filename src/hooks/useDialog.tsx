@@ -7,7 +7,8 @@ import type { TableActionItem } from "@/components/GlobalRegister/Table";
 export interface DialogOptions<
     Form extends object = any,
     Comp extends Component = any,
-> extends Partial<Omit<Writable<DialogProps>, "modelValue" | "title">> {
+> extends Partial<Omit<Writable<DialogProps>, "modelValue" | "title" | "width">> {
+    width?: string | number | (() => string | number);
     component: Comp;
     context?: Nullable<AppContext>;
     title?: string | ((form: Form) => string);
@@ -92,6 +93,7 @@ function createLifeCycleList<T extends keyof DialogLifeCycle>(_key: T) {
 
 export function useDialog<Form extends object = any, Comp extends Component = any>(options: DialogOptions<Form, Comp>) {
     const {
+        width,
         component,
         title,
         context,
@@ -224,6 +226,7 @@ export function useDialog<Form extends object = any, Comp extends Component = an
                         {...$attrs}
                         {...EventMap}
                         title={isFn(title) ? title(formData.value) : title}
+                        width={isFn(width) ? width() : width}
                     >
                         {{
                             default: () => h(component),

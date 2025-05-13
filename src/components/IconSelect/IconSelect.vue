@@ -155,7 +155,7 @@ function getIconType(): IconType {
         </template>
         <div class="icon-select-wrapper">
             <div class="search">
-                <lazy-input v-model.lazy="searchKey" :prefix-icon="ElSearchIcon" placeholder="请输入图标名称" clearable />
+                <lazy-input v-model.lazy="searchKey" :prefix-icon="ElSearchIcon" :placeholder="t('input')" clearable />
             </div>
             <div class="tabs">
                 <el-tabs v-model="iconType">
@@ -188,6 +188,8 @@ function getIconType(): IconType {
 <i18n lang="yaml">
 zh:
   placeholder: 请选择图标
+  input: 请输入图标名称
 en:
   placeholder: Please select icon
+  input: Please enter icon name
 </i18n>

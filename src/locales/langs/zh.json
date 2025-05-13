@@ -15,7 +15,8 @@
         "submit": "提交",
         "save": "保存",
         "back": "返回",
-        "sure": "确认要{0}吗？"
+        "sure": "确认要{0}吗？",
+        "ExpandCollapse": "展开/折叠"
     },
     "delete": {
         "confirm": "确定删除选中的数据?",
@@ -34,6 +35,14 @@
         "name": "状态",
         "enable": "启用",
         "disable": "禁用"
+    },
+    "visible": {
+        "show": "显示",
+        "hide": "隐藏"
+    },
+    "flag": {
+        "yes": "是",
+        "no": "否"
     },
     "form": {
     },

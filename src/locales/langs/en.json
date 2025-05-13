@@ -15,7 +15,8 @@
         "submit": "Submit",
         "save": "Save",
         "back": "Back",
-        "sure": "Are you sure you want to {0}?"
+        "sure": "Are you sure you want to {0}?",
+        "ExpandCollapse": "Expand/Collapse"
     },
     "delete": {
         "confirm": "Confirm to delete the selected data?",
@@ -34,6 +35,14 @@
         "name": "status",
         "enable": "enable",
         "disable": "disable"
+    },
+    "visible": {
+        "show": "show",
+        "hide": "hide"
+    },
+    "flag": {
+        "yes": "yes",
+        "no": "no"
     },
     "form": {
     },

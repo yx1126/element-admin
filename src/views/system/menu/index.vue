@@ -8,6 +8,9 @@ defineOptions({
     name: "Menu",
 });
 
+const { t, $t, ti, $ts } = useLocal();
+const { lang } = useLocales();
+
 const queryForm = ref({
     title: "",
     status: "",
@@ -29,63 +32,63 @@ const { onDelete } = useDataDelete({
 
 const dialog = useDialog<MenuItem>({
     component: MenuForm,
-    title: data => data?.id ? "编辑菜单" : "新增菜单",
-    width: 600,
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("menu"),
+    width: () => ["en"].includes(lang.value) ? 800 : 600,
     onSubmit: onSearch,
 });
 
 const columns = defineColumns<MenuItem>([{
     type: "index",
-    label: "序号",
+    label: () => $t("index"),
 }, {
-    label: "菜单名称",
+    label: () => t("menuName"),
     prop: "title",
     align: "left",
 }, {
-    label: "组件名称",
+    label: () => t("componentName"),
     prop: "name",
 }, {
-    label: "类型",
+    label: () => t("type"),
     prop: "type",
     width: 100,
     dictType: "menu_type",
 }, {
-    label: "图标",
+    label: () => t("icon"),
     prop: "icon",
     slotName: "icon",
     width: 80,
 }, {
-    label: "权限标识",
+    label: () => t("permission"),
     prop: "permission",
 }, {
-    label: "访问路径",
+    label: () => t("path"),
     prop: "path",
 }, {
-    label: "组件路径",
+    label: () => t("component"),
     prop: "component",
 }, {
-    label: "排序",
+    label: () => t("sort"),
     prop: "sort",
     width: 80,
 }, {
-    label: "显示/隐藏",
+    label: () => t("visible"),
     prop: "visible",
     slotName: "visible",
     width: 100,
 }, {
-    label: "状态",
+    label: () => $t("status.name"),
     prop: "status",
     width: 80,
     dictType: "status",
 }, {
-    label: "更新人",
+    label: () => $t("updatedBy"),
     prop: "updateBy",
 }, {
-    label: "更新时间",
+    label: () => $t("updatedAt"),
     prop: "updatedAt",
     width: 180,
 }, {
-    label: "操作",
+    label: () => $t("operate"),
     width: 120,
     slotName: "operate",
 }]);
@@ -118,13 +121,13 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
     <div class="menu layout-page">
         <table-layout :model="queryForm" @search="onSearch">
             <template #form>
-                <el-form-item prop="title" label="菜单名称">
-                    <el-input v-model="queryForm.title" placeholder="请输入菜单名称" clearable />
+                <el-form-item prop="title" :label="t('menuName')">
+                    <el-input v-model="queryForm.title" :placeholder="ti('menuName')" clearable />
                 </el-form-item>
-                <el-form-item prop="status" label="状态">
-                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
-                        <el-option value="0" label="禁用" />
-                        <el-option value="1" label="启用" />
+                <el-form-item prop="status" :label="$t('status.name')">
+                    <el-select v-model="queryForm.status" :placeholder="$ts('status.name')" clearable>
+                        <el-option value="1" :label="$t('status.enable')" />
+                        <el-option value="0" :label="$t('status.disable')" />
                     </el-select>
                 </el-form-item>
             </template>
@@ -142,7 +145,7 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
             >
                 <template #action>
                     <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">展开/折叠</el-button>
+                    <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">{{ $t("button.ExpandCollapse") }}</el-button>
                 </template>
                 <template #icon="{ row }">
                     <Icon v-if="row.icon" :icon="row.icon" size="20" />
@@ -158,3 +161,28 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
         </table-layout>
     </div>
 </template>
+
+<i18n lang="yaml">
+zh:
+  menu: 菜单
+  menuName: 菜单名称
+  componentName: 组件名称
+  type: 类型
+  icon: 图标
+  permission: 权限标识
+  path: 路由地址
+  component: 组件路径
+  sort: 排序
+  visible: 显示/隐藏
+en:
+  menu: menu
+  menuName: menu name
+  componentName: componentName
+  type: type
+  icon: icon
+  permission: permission
+  path: path
+  component: componentPath
+  sort: sort
+  visible: visible
+</i18n>
