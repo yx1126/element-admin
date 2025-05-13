@@ -7,6 +7,8 @@ defineOptions({
     name: "Role",
 });
 
+const { t, $t, ti, $ts } = useLocal();
+
 const {
     query: queryForm,
     data,
@@ -27,32 +29,32 @@ const {
 
 const dialog = useDialog<Role>({
     component: DeptForm,
-    title: data => `${data?.id ? "编辑" : "新增"}部门`,
+    title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("role"),
     width: 500,
     onSubmit: onSearch,
 });
 
 const columns = defineColumns<Role>([{
     type: "index",
-    label: "序号",
+    label: () => $t("index"),
 }, {
-    label: "角色名称",
+    label: () => t("roleName"),
     prop: "name",
 }, {
-    label: "角色标识",
+    label: () => t("roleKey"),
     prop: "key",
 }, {
-    label: "状态",
+    label: () => $t("status.name"),
     prop: "status",
     dictType: "status",
 }, {
-    label: "更新人",
-    prop: "updateBy",
+    label: () => $t("updatedBy"),
+    prop: "updatedBy",
 }, {
-    label: "更新时间",
+    label: () => $t("updatedAt"),
     prop: "updatedAt",
 }, {
-    label: "操作",
+    label: () => $t("operate"),
     width: 120,
     slotName: "operate",
 }]);
@@ -62,16 +64,16 @@ const columns = defineColumns<Role>([{
     <div class="menu layout-page">
         <table-layout :model="queryForm" @search="onSearch" @reset="onReset">
             <template #form>
-                <el-form-item prop="name" label="角色名称">
-                    <el-input v-model="queryForm.name" placeholder="请输入角色名称" clearable />
+                <el-form-item prop="name" :label="t('roleName')">
+                    <el-input v-model="queryForm.name" :placeholder="ti('roleName')" clearable />
                 </el-form-item>
-                <el-form-item prop="key" label="角色标识">
-                    <el-input v-model="queryForm.key" placeholder="请输入角色标识" clearable />
+                <el-form-item prop="key" :label="t('roleKey')">
+                    <el-input v-model="queryForm.key" :placeholder="ti('roleKey')" clearable />
                 </el-form-item>
-                <el-form-item prop="status" label="状态">
-                    <el-select v-model="queryForm.status" placeholder="请选择状态" clearable>
-                        <el-option value="1" label="启用" />
-                        <el-option value="0" label="禁用" />
+                <el-form-item prop="status" :label="$t('status.name')">
+                    <el-select v-model="queryForm.status" :placeholder="$ts('status.name')" clearable>
+                        <el-option value="1" :label="$t('status.enable')" />
+                        <el-option value="0" :label="$t('status.disable')" />
                     </el-select>
                 </el-form-item>
             </template>
@@ -92,3 +94,16 @@ const columns = defineColumns<Role>([{
         </table-layout>
     </div>
 </template>
+
+<i18n lang="yaml">
+zh:
+  role: 角色
+  roleName: 角色名称
+  roleKey: 角色标识
+  updateBy: 更新人
+en:
+  role: role
+  roleName: roleName
+  roleKey: roleKey
+  updateBy: updateBy
+</i18n>

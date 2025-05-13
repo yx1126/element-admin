@@ -7,6 +7,9 @@ defineOptions({
     name: "RoleForm",
 });
 
+const { t, $t, ti, ts } = useLocal();
+const { lang } = useLocales();
+
 const { data: menuTreeList, queryOnce: onQueryMenuList } = useRequest({
     request: getMenuAllTree,
     default: [],
@@ -47,14 +50,14 @@ const indeterminate = computed(() => {
 });
 
 const rules = defineFormRules<Role>({
-    name: Require("请输入角色名称"),
+    name: Require(() => ti("roleName")),
     key: [
-        Require("请输入角色标识"),
+        Require(() => ti("roleKey")),
         RequiredValidator((_, value, cb) => {
             if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
                 cb();
             } else {
-                cb(new Error("请输入数字字母_-"));
+                cb(new Error(t("key")));
             }
         }),
     ],
@@ -98,14 +101,14 @@ function onCheckedChange() {
 </script>
 
 <template>
-    <el-form ref="formRef" v-loading="formLoading" :rules="rules" :model="form" label-width="90px">
-        <el-form-item prop="name" label="角色名称">
-            <el-input v-model="form.name" placeholder="请输入角色名称" />
+    <el-form ref="formRef" v-loading="formLoading" :rules="rules" :model="form" :label-width="['en'].includes(lang) ? '130px' :'90px'">
+        <el-form-item prop="name" :label="t('roleName')">
+            <el-input v-model="form.name" :placeholder="ti('roleName')" />
         </el-form-item>
-        <el-form-item prop="key" label="角色标识">
-            <el-input v-model="form.key" placeholder="请输入角色标识" />
+        <el-form-item prop="key" :label="t('roleKey')">
+            <el-input v-model="form.key" :placeholder="ti('roleKey')" />
         </el-form-item>
-        <el-form-item prop="menuIds" label="菜单权限">
+        <el-form-item prop="menuIds" :label="t('menu')">
             <el-tree-select
                 v-model="form.menuIds"
                 :data="menuTreeList"
@@ -117,7 +120,7 @@ function onCheckedChange() {
                 show-checkbox
                 clearable
                 :default-expanded-keys="form.menuIds || []"
-                placeholder="请选择菜单权限"
+                :placeholder="ts('menu')"
                 :props="{ label: 'title' }"
             >
                 <template #header>
@@ -125,14 +128,33 @@ function onCheckedChange() {
                 </template>
             </el-tree-select>
         </el-form-item>
-        <el-form-item prop="sort" label="排序">
-            <el-input-number v-model="form.sort" placeholder="请输入排序" />
+        <el-form-item prop="sort" :label="t('sort')">
+            <el-input-number v-model="form.sort" :placeholder="ts('sort')" />
         </el-form-item>
-        <el-form-item prop="status" label="状态">
+        <el-form-item prop="status" :label="$t('status.name')">
             <el-radio-group v-model="form.status">
-                <el-radio value="1">启用</el-radio>
-                <el-radio value="0">禁用</el-radio>
+                <el-radio value="1">{{ $t("status.enable") }}</el-radio>
+                <el-radio value="0">{{ $t("status.disable") }}</el-radio>
             </el-radio-group>
         </el-form-item>
     </el-form>
 </template>
+
+<i18n lang="yaml">
+zh:
+  role: 角色
+  roleName: 角色名称
+  roleKey: 角色标识
+  key: 请输入数字字母_-
+  menu: 菜单权限
+  updateBy: 更新人
+  sort: 排序
+en:
+  role: role
+  roleName: roleName
+  roleKey: roleKey
+  key: Please enter letters and numbers_-
+  menu: menuPermissions
+  updateBy: updateBy
+  sort: sort
+</i18n>

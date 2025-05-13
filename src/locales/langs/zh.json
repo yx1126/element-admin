@@ -39,7 +39,9 @@
     },
     "index": "序号",
     "remark": "备注",
-    "updatedAt": "创建时间",
+    "updatedBy": "更新人",
+    "updatedAt": "更新时间",
+    "createdBy": "创建人",
     "createdAt": "创建时间",
     "operate": "操作"
 }

@@ -17,6 +17,10 @@ interface LocalBack extends I18nBack {
     ts: I18nBack["t"];
     tv: I18nBack["t"];
     tp: I18nBack["t"];
+    $ti: I18nBack["t"];
+    $ts: I18nBack["t"];
+    $tv: I18nBack["t"];
+    $tp: I18nBack["t"];
 }
 
 export function useLocal(...args: Parameters<typeof useI18n>): LocalBack {
@@ -27,15 +31,24 @@ export function useLocal(...args: Parameters<typeof useI18n>): LocalBack {
     function ti(...args: Parameters<I18nBack["t"]>) {
         return t("input", [i18n.t(...args)]);
     }
+    function $ti(...args: Parameters<I18nBack["t"]>) {
+        return t("input", [t(...args)]);
+    }
 
     // select placeholder t
     function ts(...args: Parameters<I18nBack["t"]>) {
         return t("select", [i18n.t(...args)]);
     }
+    function $ts(...args: Parameters<I18nBack["t"]>) {
+        return t("select", [t(...args)]);
+    }
 
     // form rules validator t
     function tv(...args: Parameters<I18nBack["t"]>) {
         return t("valid.not-null", [i18n.t(...args)]);
+    }
+    function $tv(...args: Parameters<I18nBack["t"]>) {
+        return t("valid.not-null", [t(...args)]);
     }
 
     return {
@@ -44,6 +57,9 @@ export function useLocal(...args: Parameters<typeof useI18n>): LocalBack {
         ti,
         ts,
         tv,
+        $ti,
+        $ts,
+        $tv,
     };
 }
 

@@ -6,8 +6,8 @@
     "button": {
         "search": "Search",
         "reset": "Reset",
-        "add": "Add",
-        "edit": "Edit",
+        "add": "Add ",
+        "edit": "Edit ",
         "delete": "Delete",
         "deletes": "Batch Delete",
         "confirm": "Confirm",
@@ -39,7 +39,9 @@
     },
     "index": "index",
     "remark": "remark",
+    "updatedBy": "updatedBy",
     "updatedAt": "updatedAt",
+    "createdBy": "createdBy",
     "createdAt": "createdAt",
     "operate": "operate"
 }

@@ -10,7 +10,7 @@ defineOptions({
 
 const message = useMessage();
 const msgbox = useMessageBox();
-const { t, $t, ti, ts } = useLocal();
+const { t, $t, ti, ts, $ts } = useLocal();
 
 const { data: deptTreeList } = useRequest({
     request: getDeptSelectTree,
@@ -111,9 +111,9 @@ function onResetPwd(row: UserInfo) {
                     />
                 </el-form-item>
                 <el-form-item prop="status" :label="$t('status.name')">
-                    <el-select v-model="queryForm.status" :placeholder="$t('select', [$t('status.name')])" clearable>
-                        <el-option value="1" label="启用" />
-                        <el-option value="0" label="禁用" />
+                    <el-select v-model="queryForm.status" :placeholder="$ts('status.name')" clearable>
+                        <el-option value="1" :label="$t('status.enable')" />
+                        <el-option value="0" :label="$t('status.disable')" />
                     </el-select>
                 </el-form-item>
             </template>
