@@ -19,6 +19,8 @@
         "@ctrl/tinycolor": "^4.1.0",
         "@element-plus/icons-vue": "^2.3.1",
         "@vueuse/core": "^13.0.0",
+        "@wangeditor-next/editor": "^5.6.34",
+        "@wangeditor-next/editor-for-vue": "^5.1.14",
         "axios": "^1.8.3",
         "clipboard": "^2.0.11",
         "dayjs": "^1.11.13",

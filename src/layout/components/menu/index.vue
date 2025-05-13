@@ -62,7 +62,7 @@ const themeType = computed(() => theme ?? set.navMode);
 
 function onMenuSelect(index: string, menu: MenuItemType) {
     if(isLink(menu.link) && menu.isIframe === "0") {
-        window.open(menu.link);
+        window.open(menu.link, menu.title, "noopener,noreferrer");
         nextTick(() => {
             // @ts-ignore
             menuRef.value?.updateActiveIndex(defaultActive.value);
