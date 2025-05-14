@@ -47,7 +47,7 @@ const dialog = useDialog({
 
 const columns = defineColumns<UserInfo>([{
     type: "selection",
-    selectable: row => row?.id !== 1,
+    selectable: row => row?.id !== "1",
 }, {
     type: "index",
     label: () => $t("index"),

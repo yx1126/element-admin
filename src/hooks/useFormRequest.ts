@@ -15,7 +15,7 @@ type Form<T extends object> = {
 
 export interface FormOptions<T extends object = any, D extends object = T> {
     request: {
-        info?: (id: number) => Promise<Result<Form<T>>>;
+        info?: (id: string) => Promise<Result<Form<T>>>;
         add?: (data: T) => Promise<Result>;
         edit?: (data: T) => Promise<Result>;
     };

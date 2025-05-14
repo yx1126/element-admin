@@ -153,7 +153,6 @@ defineExpose({
     <div class="wangeditor-wrapper" :style="styles">
         <Toolbar
             class="wangeditor-bar"
-            style="border-bottom: 1px solid #ccc"
             :editor="editorRef"
             :default-config="defaultToolbarConfig"
             :mode="mode"

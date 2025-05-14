@@ -18,7 +18,7 @@ export function dictUpdate(data: DictType) {
     return http.put("/system/dict", data);
 }
 
-export function dictDelete(ids: number[]) {
+export function dictDelete(ids: string[]) {
     return http.delete("/system/dict", ids);
 }
 
@@ -34,6 +34,6 @@ export function dictDataUpdate(data: DictData) {
     return http.put("/system/dict/data", data);
 }
 
-export function dictDataDelete(ids: number[]) {
+export function dictDataDelete(ids: string[]) {
     return http.delete("/system/dict/data", ids);
 }

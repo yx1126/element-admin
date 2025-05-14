@@ -10,7 +10,7 @@ export function getUserAllList<T extends object>(params?: T) {
     return http.get<UserInfo[]>("/system/user/all", params);
 }
 
-export function getUserInfo(id: number) {
+export function getUserInfo(id: string) {
     return http.get("/system/user/" + id);
 }
 
@@ -26,6 +26,6 @@ export function userDelete(ids: number[]) {
     return http.delete("/system/user", ids);
 }
 
-export function userResetPwd(id: number) {
+export function userResetPwd(id: string) {
     return http.put(`/system/user/reset/${id}`);
 }

@@ -18,6 +18,6 @@ export function postUpdate(data: Post) {
     return http.put("/system/post", data);
 }
 
-export function postDelete(ids: number[]) {
+export function postDelete(ids: string[]) {
     return http.delete("/system/post", ids);
 }

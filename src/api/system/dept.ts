@@ -21,6 +21,6 @@ export function deptUpdate(data: Dept) {
     return http.put("/system/dept", data);
 }
 
-export function deptDelete(ids: number[]) {
+export function deptDelete(ids: string[]) {
     return http.delete("/system/dept", ids);
 }

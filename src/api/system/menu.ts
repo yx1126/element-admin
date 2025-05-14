@@ -21,6 +21,6 @@ export function menuUpdate(data: MenuItem) {
     return http.put("/system/menu", data);
 }
 
-export function menuDelete(ids: number[]) {
+export function menuDelete(ids: string[]) {
     return http.delete("/system/menu", ids);
 }
