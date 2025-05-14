@@ -31,7 +31,16 @@ const {
 
 const rules = defineFormRules({
     name: Require(() => t("dictName")),
-    type: Require(() => t("dictType")),
+    type: [
+        Require(() => t("dictType")),
+        RequiredValidator((_, value, cb) => {
+            if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
+                cb();
+            } else {
+                cb(new Error(t("key")));
+            }
+        }),
+    ],
     nodeType: Require(() => ts("dictType"), "change"),
     status: Require(() => $ts("status.name"), "change"),
 });
@@ -91,6 +100,7 @@ zh:
   sort: 排序
   text: 文本
   tag: 标签
+  key: 请输入数字字母_-
 en:
   dict: dict
   dictType: dictType
@@ -98,4 +108,5 @@ en:
   sort: sort
   text: text
   tag: tag
+  key: Please enter letters and numbers_-
 </i18n>

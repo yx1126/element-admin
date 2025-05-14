@@ -47,7 +47,7 @@ declare global {
     export type EventOn<T extends string> = `on${Capitalize<T>}`;
 
     export interface TableModels {
-        readonly id?: number;
+        readonly id?: string;
         readonly createdBy?: string;
         readonly createdAt?: string;
         readonly updatedBy?: string;
