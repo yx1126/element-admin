@@ -16,7 +16,7 @@ const { data: treeData, query } = useRequest({
     default: [],
     formatter: data => {
         return [{
-            id: 0,
+            id: "0",
             title: "顶级菜单",
             children: data,
         }];
@@ -42,7 +42,7 @@ const {
         isCache: "0",
         isIframe: "0",
         link: undefined,
-        parentId: 0,
+        parentId: "0",
         name: undefined,
         type: 0,
         path: undefined,

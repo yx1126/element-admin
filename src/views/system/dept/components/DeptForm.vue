@@ -15,7 +15,7 @@ const { data: treeData, query } = useRequest({
     default: [],
     formatter: data => {
         return [{
-            id: 0,
+            id: "0",
             name: "顶级部门",
             children: data,
         }];
@@ -40,7 +40,7 @@ const {
     },
     form: () => ({
         id: undefined,
-        parentId: 0,
+        parentId: "0",
         name: undefined,
         leaderId: undefined,
         email: undefined,

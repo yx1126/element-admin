@@ -10,7 +10,7 @@ export interface RouteMeta {
 }
 
 export interface MenuItem extends Writable<RouteMeta>, TableModels {
-    parentId?: number;
+    parentId?: string;
     name: string;
     type: MenuType;
     path: string;
@@ -70,7 +70,7 @@ export interface UserInfo extends TableModels {
 }
 
 export interface Dept extends TableModels {
-    parentId: number;
+    parentId: string;
     name: string;
     sort: number;
     leaderId?: number;
