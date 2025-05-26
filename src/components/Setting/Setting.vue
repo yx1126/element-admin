@@ -15,7 +15,7 @@ const set = useSetStore();
 const { lang } = useLocales();
 const { currentZIndex } = useZIndex();
 const { t } = useLocal();
-const { theme, themeColor } = useTheme();
+const { theme, themeColor, menuThemeColor } = useTheme();
 const mitt = useMitt("toggleSetting");
 
 const isShowDrawer = computed({
@@ -88,8 +88,16 @@ function onReset() {
                     </template>
                 </div>
                 <el-divider>{{ t("sysTheme") }}</el-divider>
-                <div class="flex justify-center">
+                <!-- <div class="flex justify-center">
                     <el-color-picker v-model="themeColor" class="color-picker" :predefine="Configs.themes" />
+                    </div> -->
+                <div class="divider-content-item">
+                    <el-text>{{ t("sysTheme") }}</el-text>
+                    <el-color-picker v-model="themeColor" class="color-picker" :predefine="Configs.themes" />
+                </div>
+                <div class="divider-content-item mt-[10px]">
+                    <el-text>{{ t("menuTheme") }}</el-text>
+                    <el-color-picker v-model="menuThemeColor" class="color-picker" :predefine="Configs.themes" />
                 </div>
                 <el-divider>{{ t("layoutMode") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
@@ -229,6 +237,7 @@ zh:
   title: 项目配置
   navTheme: 主题
   sysTheme: 系统主题
+  menuTheme: 菜单主题
   layoutMode: 导航模式
   pageDisplay: 界面显示
   isShowLogo: 显示 Logo
@@ -254,6 +263,7 @@ en:
   title: Project Configuration
   navTheme: Theme
   sysTheme: System Theme
+  menuTheme: Menu Theme
   layoutMode: Navigation Mode
   pageDisplay: Page Display
   isShowLogo: Show logo

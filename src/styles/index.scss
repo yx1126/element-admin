@@ -15,13 +15,13 @@
     --menu-hover-bg-inverted-color: rgba(255, 255, 255, 0.09);
     // 边框颜色
     --border-light-color: rgb(239, 239, 245);
-    --border-inverted-color: rgb(0, 20, 40);
     --border-dark-color: rgba(255, 255, 255, 0.09);
     // 动画
     --el-cubic-bezier: cubic-bezier(0.4, 0, 0.2, 1);
     // 页面背景色
     --page-bg-color: #f5f7f9;
     --el-border-radius-base: 3px;
+    --menu-bg-base-color: #001428;
 }
 
 *,
@@ -36,7 +36,7 @@ html {
     // 菜单背景色
     --menu-bg-color: #fff;
     &.inverted {
-        --menu-bg-color: #001428;
+        --menu-bg-color: var(--menu-bg-base-color);
         // 菜单文字颜色
         --menu-text-color: #bbb;
     }

@@ -140,7 +140,7 @@ export default defineComponent((_, { slots }) => {
             background-color var(--el-transition-duration);
         @include border(right, var(--border-light-color)) {
             @include when-inverted {
-                background-color: var(--border-inverted-color);
+                background-color: var(--menu-bg-base-color);
             }
             @include when-dark {
                 background-color: var(--border-dark-color);

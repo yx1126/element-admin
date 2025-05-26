@@ -17,6 +17,13 @@ export function useTheme() {
         },
     });
 
+    const menuThemeColor = computed({
+        get: () => set.menuColor,
+        set: value => {
+            set.setState("menuColor", value || "#001428");
+        },
+    });
+
     watch(() => set.navMode, (value, oldValue) => {
         if(oldValue) {
             html.classList.remove(oldValue);
@@ -29,5 +36,6 @@ export function useTheme() {
     return {
         theme,
         themeColor,
+        menuThemeColor,
     };
 }

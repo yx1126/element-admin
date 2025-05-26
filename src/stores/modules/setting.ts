@@ -5,6 +5,7 @@ import type { SetState } from "#/stores";
 const defaultSetting: SetState = {
     isShowDrawer: false, // 全局设置
     themeColor: "#409EFF", // 系统主题
+    menuColor: "#001428", // 菜单颜色
     navMode: "inverted", // 导航模式
     layoutMode: "aside", // 分栏模式
     isShowLogo: true, // 显示 logo
@@ -42,6 +43,12 @@ export const useSetStore = defineStore("setting", () => {
         if(value) {
             state.isKeepHeader = value;
         }
+    }, {
+        immediate: true,
+    });
+
+    watch(() => state.menuColor, value => {
+        document.documentElement.style.setProperty("--menu-bg-base-color", value);
     }, {
         immediate: true,
     });

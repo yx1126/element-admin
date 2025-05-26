@@ -67,7 +67,7 @@ function onCopy(icon: string) {
                                     <Icon :icon size="26" />
                                     <span>{{ icon }}</span>
                                 </div>
-                                <el-link class="link" type="primary" :underline="false" @click="onCopy(icon)">copy</el-link>
+                                <el-link class="link" type="primary" underline="never" @click="onCopy(icon)">copy</el-link>
                             </div>
                         </template>
                     </div>
@@ -81,7 +81,7 @@ function onCopy(icon: string) {
                                     <Icon :icon size="26" />
                                     <span>{{ icon }}</span>
                                 </div>
-                                <el-link class="link" type="primary" :underline="false" @click="onCopy(icon)">copy</el-link>
+                                <el-link class="link" type="primary" underline="never" @click="onCopy(icon)">copy</el-link>
                             </div>
                         </template>
                     </div>

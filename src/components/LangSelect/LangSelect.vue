@@ -1,50 +1,31 @@
-<script lang="tsx">
+<script setup lang="ts">
 import { langList } from "@/locales";
-import type { SlotsType, VNode } from "vue";
+import type { VNode } from "vue";
 
-export default defineComponent({
-    name: "LangSelect",
-    props: {
-        type: { type: String as PropType<"select" | "dropdown">, default: "select" },
-    },
-    slots: Object as SlotsType<{ default?: () => VNode[] }>,
-    setup(props, { slots }) {
-        const { lang, setLang } = useLocales();
-        return () => {
-            const { type } = props;
-            if(type === "dropdown") {
-                return (
-                    <el-dropdown trigger="click" persistent={false} onCommand={setLang}>
-                        {{
-                            default: () => renderSlot(slots, "default"),
-                            dropdown: () => {
-                                return (
-                                    <el-dropdown-menu>
-                                        {
-                                            langList.map(item => {
-                                                return <el-dropdown-item key={item.value} command={item.value}>{item.label}</el-dropdown-item>;
-                                            })
-                                        }
-                                    </el-dropdown-menu>
-                                );
-                            },
-                        }}
-                    </el-dropdown>
-                );
-            }
-            if(type === "select") {
-                return (
-                    <el-select modelValue={lang.value} onChange={setLang}>
-                        {
-                            langList.map(item => {
-                                return (<el-option key={item.value} value={item.value} label={item.label} />);
-                            })
-                        }
-                    </el-select>
-                );
-            }
-            return null;
-        };
-    },
-});
+const { type = "select" } = defineProps<{
+    type?: "select" | "dropdown";
+}>();
+
+defineSlots<{
+    default?: () => VNode[];
+}>();
+const { lang, setLang } = useLocales();
 </script>
+
+<template>
+    <el-dropdown v-if="type === 'dropdown'" trigger="click" :persistent="false" @command="setLang">
+        <slot />
+        <template #dropdown>
+            <el-dropdown-menu>
+                <template v-for="item in langList" :key="item.value">
+                    <el-dropdown-item :command="item.value">{{ item.label }}</el-dropdown-item>
+                </template>
+            </el-dropdown-menu>
+        </template>
+    </el-dropdown>
+    <el-select v-else-if="type === 'select'" v-model="lang">
+        <template v-for="item in langList" :key="item.value">
+            <el-option :label="item.label" :value="item.value" />
+        </template>
+    </el-select>
+</template>

@@ -131,7 +131,7 @@ function onResetPwd(row: UserInfo) {
                     <table-action>
                         <el-link type="primary" icon="EleRefresh" @click="onResetPwd(row)" />
                         <el-link type="primary" icon="EleEdit" @click="dialog.open(row)" />
-                        <el-link v-if="row.id !== 1" type="danger" icon="EleDelete" @click="onDelete(row.id)" />
+                        <el-link v-if="row.id != 1" type="danger" icon="EleDelete" @click="onDelete(row.id)" />
                     </table-action>
                 </template>
             </base-table>

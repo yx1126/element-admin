@@ -14,6 +14,7 @@ export type Lang = "zh" | "en";
 export interface SetState {
     isShowDrawer: boolean;
     themeColor: string;
+    menuColor: string;
     navMode: NavTheme;
     layoutMode: LayoutMode;
     isShowLogo: boolean;

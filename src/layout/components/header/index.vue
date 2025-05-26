@@ -111,7 +111,7 @@ function onDropDown(command: string) {
     @include when(inverted) {
         background-color: var(--menu-bg-color);
         color: #fff;
-        @include border(bottom, var(--border-inverted-color));
+        @include border(bottom, var(--menu-bg-base-color));
         .header-item {
             color: #fff;
             &:hover {
