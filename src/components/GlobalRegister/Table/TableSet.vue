@@ -3,6 +3,7 @@
 // import type { AllowDropType } from "element-plus";
 import { VerticalLeftOutlined, VerticalRightOutlined } from "@vicons/antd";
 import { tableContextKey, type TableColumnFormat } from "./table";
+import { isFn } from "@/utils/validata";
 
 defineOptions({
     name: "TableSet",
@@ -73,10 +74,10 @@ function onFixedClick(item: TableColumnFormat, value: TableColumnFormat["fixed"]
                         node-key="id"
                     >
                         <template #default="{ data }">
-                            <div class="table-set__list-item">
+                            <div class="table-set__list-item gap-10px">
                                 <div class="flex items-center gap-10px">
                                     <el-checkbox v-model="data.checked" />
-                                    <span>{{ data.label }}</span>
+                                    <span>{{ isFn(data.label) ? data.label() : data.label }}</span>
                                 </div>
                                 <div v-if="data.deep === 0" class="flex items-center">
                                     <el-button-group size="small">
