@@ -11,7 +11,7 @@ export function getUserAllList<T extends object>(params?: T) {
 }
 
 export function getUserInfo(id: string) {
-    return http.get("/system/user/" + id);
+    return http.get<UserInfo>("/system/user/" + id);
 }
 
 export function userCreate(data: UserInfo) {

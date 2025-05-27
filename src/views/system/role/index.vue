@@ -35,6 +35,8 @@ const dialog = useDialog<Role>({
 });
 
 const columns = defineColumns<Role>([{
+    type: "selection",
+}, {
     type: "index",
     label: () => $t("index"),
 }, {
@@ -85,6 +87,7 @@ const columns = defineColumns<Role>([{
             >
                 <template #action>
                     <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
+                    <el-button type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
                 </template>
                 <template #operate="{ row }">
                     <table-action @edit="dialog.open(row)" @delete="onDelete(row.id)" />

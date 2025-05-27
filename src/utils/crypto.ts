@@ -1,11 +1,14 @@
 import Encrypt from "jsencrypt-ext";
 
-const publicKey = `
------BEGIN PUBLIC KEY-----
-MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAKfSt+NNYfJ0Pb54LyYaoBkU8aRopv9T
-s1UASMq05ztPXxLNskUWpc4g+GoGQDEiT14uNXNXkYB91GtlPMMlnCkCAwEAAQ==
------END PUBLIC KEY-----
-`;
+const publicKey = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAimgQx3B2n6jQecToVqdm
+AUpaLnOT+0DoRdiIRncOkSUrDWR5oz3VrCE8kmhw4VaBzQs3nH9fXt3cMLGQq7MN
+lCYEx+pEbx2+etrRzPV7oW1hZdkd8SodS1LaFWGElTbPlhpqjZwFvFXa5rukLuqE
+velxirLYurRAcbMSRsr/HJkuSviY7Nez9sJj8eHnlarJB3N2/vHSyK8upg3Frsgg
+8hXuPUX3FFhxTvntqiCvF1mlAvtjKqf99dmbwYPgaFSUqBmT1SVuEATHDavQKwTQ
+RLlQ8etYVgdYIdm9sXU6rYLuaHOi8yubnPfboUCDjF0bM/dD2OZVM5DTElJ+tb0E
+JQIDAQAB
+-----END PUBLIC KEY-----`;
 
 const privateKey = ``;
 

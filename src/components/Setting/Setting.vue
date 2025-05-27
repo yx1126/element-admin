@@ -15,7 +15,6 @@ const set = useSetStore();
 const { lang } = useLocales();
 const { currentZIndex } = useZIndex();
 const { t } = useLocal();
-const { theme, themeColor, menuThemeColor } = useTheme();
 const mitt = useMitt("toggleSetting");
 
 const isShowDrawer = computed({
@@ -84,20 +83,17 @@ function onReset() {
                 <el-divider>{{ t("navTheme") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
                     <template v-for="n in navTheme" :key="n">
-                        <nav-mode :mode="n" :chose="theme === n" :color="set.themeColor" @click="theme = n" />
+                        <nav-mode :mode="n" :chose="set.theme === n" :color="set.themeColor" @click="set.theme = n" />
                     </template>
                 </div>
                 <el-divider>{{ t("sysTheme") }}</el-divider>
-                <!-- <div class="flex justify-center">
-                    <el-color-picker v-model="themeColor" class="color-picker" :predefine="Configs.themes" />
-                    </div> -->
                 <div class="divider-content-item">
                     <el-text>{{ t("sysTheme") }}</el-text>
-                    <el-color-picker v-model="themeColor" class="color-picker" :predefine="Configs.themes" />
+                    <el-color-picker v-model="set.themeColor" class="color-picker" :predefine="Configs.themes" />
                 </div>
                 <div class="divider-content-item mt-[10px]">
                     <el-text>{{ t("menuTheme") }}</el-text>
-                    <el-color-picker v-model="menuThemeColor" class="color-picker" :predefine="Configs.themes" />
+                    <el-color-picker v-model="set.menuBgColor" class="color-picker" :predefine="Configs.themes" />
                 </div>
                 <el-divider>{{ t("layoutMode") }}</el-divider>
                 <div class="flex justify-center gap-x-[8px] gap-y-[12px]">
@@ -136,12 +132,12 @@ function onReset() {
                     <el-switch v-model="set.isKeepTags" :disabled="!set.isShowTabs" />
                 </div>
                 <div class="divider-content-item">
-                    <el-text>{{ t("isCutMenu") }}</el-text>
-                    <el-switch v-model="set.isCutMenu" :disabled="set.layoutMode !== 'mixin'" />
-                </div>
-                <div class="divider-content-item">
                     <el-text>{{ t("uniqueMenuOpened") }}</el-text>
                     <el-switch v-model="set.uniqueMenuOpened" />
+                </div>
+                <div class="divider-content-item">
+                    <el-text>{{ t("isCutMenu") }}</el-text>
+                    <el-switch v-model="set.isCutMenu" :disabled="set.layoutMode !== 'mixin'" />
                 </div>
                 <div class="divider-content-item">
                     <el-text>{{ t("inverted") }}</el-text>

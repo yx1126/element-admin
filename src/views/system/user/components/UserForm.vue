@@ -4,6 +4,7 @@ import { getDeptAllList } from "@/api/system/dept";
 import { getPostAllList } from "@/api/system/post";
 import { getRoleAppList } from "@/api/system/role";
 import type { UserInfo } from "#/system";
+import { isEmail } from "@/utils/validata";
 
 defineOptions({
     name: "UserForm",
@@ -43,6 +44,7 @@ const {
         id: undefined,
         deptId: undefined,
         postIds: [],
+        roleIds: [],
         userName: undefined,
         nickName: undefined,
         email: undefined,
@@ -59,6 +61,13 @@ const rules = defineFormRules<UserInfo>({
     nickName: Require(() => ti("nickname")),
     phone: Require(() => ti("phone")),
     deptId: Require(() => ts("dept"), "change"),
+    email: Validator((_, value, cb) => {
+        if(!value || (value && isEmail(value))) {
+            cb();
+        } else {
+            cb(new Error(t("validEmail")));
+        }
+    }),
 });
 
 onDialogOpen(data => {
@@ -157,6 +166,7 @@ zh:
   sex-1: 女
   post: 岗位
   role: 角色
+  validEmail: 请输入正确的邮箱格式
 en:
   username: username
   nickname: nickname
@@ -169,4 +179,5 @@ en:
   sex-1: female
   post: post
   role: role
+  validEmail: Please enter the correct email format
 </i18n>

@@ -4,7 +4,7 @@ import type { SetState } from "#/stores";
 
 const defaultSetting: SetState = {
     isShowDrawer: false, // 全局设置
-    themeColor: "#409EFF", // 系统主题
+    primaryColor: "#409EFF", // 系统主题
     menuColor: "#001428", // 菜单颜色
     navMode: "inverted", // 导航模式
     layoutMode: "aside", // 分栏模式
@@ -28,8 +28,29 @@ const defaultSetting: SetState = {
     lastNavMode: undefined, // 记录上次navMode
 };
 
+const html = document.documentElement;
+
 export const useSetStore = defineStore("setting", () => {
     const state: SetState = reactive(Object.assign({}, defaultSetting));
+
+    const theme = computed({
+        get: () => state.navMode,
+        set: v => state.navMode = v,
+    });
+
+    const themeColor = computed({
+        get: () => state.primaryColor,
+        set: value => {
+            state.primaryColor = value || "#409EFF";
+        },
+    });
+
+    const menuBgColor = computed({
+        get: () => state.menuColor,
+        set: value => {
+            state.menuColor = value || "#001428";
+        },
+    });
 
     watch(() => state.isKeepHeader, value => {
         if(!value) {
@@ -53,11 +74,23 @@ export const useSetStore = defineStore("setting", () => {
         immediate: true,
     });
 
-    watch(() => [state.navMode, state.themeColor], ([mode, color]) => {
+    watch(() => [state.navMode, state.primaryColor], ([mode, color]) => {
         const root = document.documentElement;
         const colorMap = createTheme(color, mode === "dark");
         for(const key in colorMap) {
             root.style.setProperty(key, colorMap[key]);
+        }
+    }, {
+        immediate: true,
+    });
+
+    watch(() => state.navMode, (value, oldValue) => {
+        if(oldValue) {
+            html.classList.remove(oldValue);
+        }
+        html.classList.add(value);
+        if(oldValue && oldValue !== "dark") {
+            state.lastNavMode = oldValue;
         }
     }, {
         immediate: true,
@@ -77,6 +110,9 @@ export const useSetStore = defineStore("setting", () => {
 
     return {
         ...toRefs(state),
+        theme,
+        themeColor,
+        menuBgColor,
         onNavModeChange,
     };
 }, {

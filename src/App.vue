@@ -2,18 +2,6 @@
 import { LangMap } from "@/locales";
 import Setting from "@/components/Setting";
 import { Configs } from "./config";
-// import { decrypt, encrypt } from "@/utils/crypto";
-// import { login } from "@/api/login";
-// import type { LoginInfo } from "#/views";
-
-// const info: LoginInfo = {
-//     username: "admin",
-//     password: "123456",
-//     code: "12",
-//     uuid: "11-22-33-13-55",
-// };
-// const str = encrypt(JSON.stringify(info));
-// console.log("decrypt", decrypt(str));
 
 const { lang } = useLocales({ immediate: true });
 const set = useSetStore();
@@ -25,7 +13,6 @@ const local = computed(() => {
 });
 
 onBeforeMount(() => {
-    // login(str).then(() => {});
     const { headerHeight, tagsHeight } = Configs;
     const root = document.documentElement;
     root.style.setProperty("--header-height", headerHeight + "px");

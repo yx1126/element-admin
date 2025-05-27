@@ -1,3 +1,4 @@
+import { tryOnScopeDispose } from "@vueuse/core";
 import { debounce } from "lodash-es";
 
 interface ResizeFn {
@@ -48,7 +49,7 @@ export function useWindowResize(fn: ResizeFn, options?: Options) {
         }
     }
 
-    onScopeDispose(stop);
+    tryOnScopeDispose(stop);
 
     return {
         width,
