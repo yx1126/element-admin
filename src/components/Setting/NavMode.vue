@@ -15,10 +15,12 @@ const {
     chose?: boolean;
     color?: string;
 }>();
+
+const { t } = useLocal();
 </script>
 
 <template>
-    <el-tooltip placement="top" :content="mode">
+    <el-tooltip placement="top" :content="t(mode)">
         <div class="nav-mode" :class="'nav-mode-' + mode" v-bind="$attrs">
             <div v-if="mode === 'asideMixin'" class="nav-mode-asideMixin-item"></div>
             <div class="nav-icon-box">
@@ -34,7 +36,7 @@ const {
 
 <style lang="scss" scoped>
 $light-color: #fff;
-$inverted-color: #304156;
+$inverted-color: #{var(--menu-bg-color, #304156)};
 $dark-color: rgba(0, 0, 0, 0.7);
 $body-color: var(--page-bg-color);
 
@@ -148,3 +150,22 @@ $body-color: var(--page-bg-color);
     }
 }
 </style>
+
+<i18n lang="yaml">
+zh:
+  light: 亮色主题
+  inverted: 暗色主题
+  dark: 暗黑主题
+  aside: 左侧菜单模式
+  top: 顶部菜单模式
+  mixin: 混合模式
+  asideMixin: 左侧菜单混合模式
+en:
+  light: Light Theme
+  inverted: Inverted Theme
+  dark: Dark Theme
+  aside: Left Menu Mode
+  top: Top Menu Mode
+  mixin: Blending Mode
+  asideMixin: Left menu blending mode
+</i18n>

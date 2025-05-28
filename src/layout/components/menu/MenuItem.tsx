@@ -14,7 +14,8 @@ export function useIsHideAside() {
             const parent = user.routerList.find(v => v.path === parentPath);
             return (set.isCutMenu && (parent?.children?.length || 0) <= 0);
         }
-        return (set.isCutMenu && route.matched[1]?.children?.length <= 0);
+        const isNoChild = route.matched[1]?.children?.length <= 0;
+        return set.layoutMode === "mixin" ? (set.isCutMenu && isNoChild) : isNoChild;
     });
 
     return {
