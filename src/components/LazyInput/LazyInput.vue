@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { debounce } from "lodash-es";
+import { debounce, type DebouncedFunc } from "lodash-es";
 
 defineOptions({
     name: "LazyInput",
@@ -12,9 +12,11 @@ const { delay = 500, modelModifiers = { lazy: false } } = defineProps<{
     delay?: number;
 }>();
 
+const inputRef = useTemplateRef("inputRef");
+
 const inputValue = ref<Noable<string>>(modelValue.value);
 
-let updateValue: Nullable<ReturnType<typeof debounce>> = null;
+let updateValue: Nullable<DebouncedFunc<(value?: string) => void>> = null;
 
 watch(() => delay, value => {
     updateValue = debounce((value?: string) => {
@@ -37,10 +39,21 @@ watch(inputValue, value => {
 watch(modelValue, value => {
     inputValue.value = value;
 });
+
+defineExpose(new Proxy({}, {
+    get(_, key, receiver) {
+        if(!inputRef.value) return;
+        return Reflect.get(inputRef.value, key, receiver);
+    },
+    has(_, key) {
+        if(!inputRef.value) return false;
+        return Reflect.has(inputRef.value, key);
+    },
+}));
 </script>
 
 <template>
-    <el-input v-model="inputValue" v-bind="$attrs">
+    <el-input ref="inputRef" v-model="inputValue" v-bind="$attrs">
         <template v-for="slot in Object.keys($slots)" #[slot] :key="slot">
             <slot :name="slot" />
         </template>
