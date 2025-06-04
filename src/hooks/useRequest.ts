@@ -5,9 +5,11 @@ import type { Ref } from "vue";
 
 type Request<T, D extends any[]> = (...args: D) => Promise<Result<T>>;
 
+type DefValue<T> = T extends object ? DeepPartial<T> : T;
+
 export interface RequestOptions<T, D extends any[]> {
     request: Request<T, D>;
-    default: T extends object ? Partial<T> : T;
+    default: DefValue<T>;
     formatter?: (data: any) => any;
     immediate?: boolean;
     delay?: number;
@@ -22,8 +24,8 @@ export interface UseRequest<T, R extends (...args: any) => any> {
 }
 
 export function useRequest<T, D extends any[] = any[]>(options: RequestOptions<T, D>): UseRequest<T, RequestOptions<T, D>["request"]>;
-export function useRequest<T, D extends any[] = any[]>(request: Request<T, D>, defaultValue: T): UseRequest<T, Request<T, D>>;
-export function useRequest<T, D extends any[] = any[]>(request: Request<T, D>, defaultValue: T, immediate: boolean): UseRequest<T, Request<T, D>>;
+export function useRequest<T, D extends any[] = any[]>(request: Request<T, D>, defaultValue: DefValue<T>): UseRequest<T, Request<T, D>>;
+export function useRequest<T, D extends any[] = any[]>(request: Request<T, D>, defaultValue: DefValue<T>, immediate: boolean): UseRequest<T, Request<T, D>>;
 export function useRequest<T, D extends any[]>(options: RequestOptions<T, D> | Request<T, D>, defaultValue?: T, immediate?: boolean) {
     const defOptions = isFn(options)
         ? { request: options, default: defaultValue, immediate: immediate ?? true } as RequestOptions<T, D>

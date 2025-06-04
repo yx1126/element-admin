@@ -44,7 +44,7 @@ export default defineComponent((_, { slots }) => {
         return (
             <el-container class="layout-container">
                 <el-aside v-show={!isMainFull} class="layout-aside">
-                    {isShowLogo ? <Logo collapsed={collapsed} width={menuWidth} indent={16} /> : null}
+                    {isShowLogo ? <Logo collapsed={collapsed} theme={navMode} width={menuWidth} indent={16} /> : null}
                     <el-scrollbar class={{ "layout-aside-scrollbar": isShowLogo }}>
                         <Menu collapse={collapsed} />
                     </el-scrollbar>

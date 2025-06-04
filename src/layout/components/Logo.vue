@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { parseNum, parseUnit } from "@/utils/unit";
+import type { NavTheme } from "#/stores";
 
 const {
     width = 200,
@@ -10,6 +11,7 @@ const {
     collapsed,
     minWidth,
     showText = true,
+    size = 32,
 } = defineProps<{
     collapsed?: boolean;
     width?: Unit;
@@ -19,6 +21,8 @@ const {
     text?: string;
     indent?: number;
     showText?: boolean;
+    theme?: NavTheme;
+    size?: Unit;
 }>();
 
 const slots = defineSlots<Slotsable<"default" | "icon">>();
@@ -38,10 +42,10 @@ const logoStyle = computed(() => {
 </script>
 
 <template>
-    <div class="logo" :style="logoStyle">
+    <div class="logo" :class="{ [`is-${theme}`]: !!theme }" :style="logoStyle">
         <div class="logo-icon" :title="text">
             <slot name="icon">
-                <Icon :size="32" icon="vue" />
+                <Icon :size icon="vue" />
             </slot>
         </div>
         <div v-if="showText && (slots.default || text)" class="logo-text">
@@ -60,6 +64,11 @@ const logoStyle = computed(() => {
     padding: var(--logo-padding);
     transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), color var(--el-transition-duration);
     position: relative;
+    @include when(inverted) {
+        .logo-text {
+            color: #fff;
+        }
+    }
     &-icon {
         margin-right: var(--logo-icon-margin-right);
         display: flex;
@@ -71,9 +80,6 @@ const logoStyle = computed(() => {
         opacity: var(--logo-opacity);
         white-space: nowrap;
         transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        @include when-inverted {
-            color: #fff;
-        }
     }
 }
 </style>

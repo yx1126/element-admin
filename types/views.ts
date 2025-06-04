@@ -8,3 +8,8 @@ export interface LoginInfo {
     code: string;
     uuid: string;
 }
+
+export interface CodeInfo {
+    uuid: string;
+    image: string;
+}
