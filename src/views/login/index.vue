@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { LoginInfo } from "#/views";
-import { getCode } from "@/api/login";
+import { getCode, login } from "@/api/login";
 import Logo from "@/layout/components/Logo.vue";
 import LangSelect from "@/components/LangSelect";
+import { encrypt } from "@/utils/crypto";
 
 defineOptions({
     name: "Login",
@@ -22,16 +23,26 @@ const form = ref<Omit<LoginInfo, "uuid">>({
     code: "",
 });
 
+const loading = ref(false);
+
 const rules = defineFormRules<Omit<LoginInfo, "uuid">>({
     username: Require(() => ti("username")),
     password: Require(() => ti("password")),
     code: Require(() => ti("code")),
 });
 
-function onLogin() {
-    formRef.value?.validate(valid => {
+async function onLogin() {
+    formRef.value?.validate(async valid => {
         if(valid) {
-            router.replace("/");
+            try {
+                loading.value = true;
+                const str = encrypt(form.value);
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                const token = await login(str);
+                router.replace("/");
+            } finally {
+                loading.value = false;
+            }
         }
     });
 }
@@ -68,7 +79,7 @@ function onLogin() {
                         </div>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="w-full" type="primary" @click="onLogin">{{ t('login') }}</el-button>
+                        <el-button class="w-full" :loading type="primary" @click="onLogin">{{ t('login') }}</el-button>
                     </el-form-item>
                 </el-form>
             </div>
