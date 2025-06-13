@@ -76,7 +76,7 @@ function onLogin() {
                         </div>
                     </el-form-item>
                     <el-form-item>
-                        <el-button class="w-full" type="primary" @click="onLogin">{{ t('login') }}</el-button>
+                        <el-button class="w-full" :loading type="primary" @click="onLogin">{{ t('login') }}</el-button>
                     </el-form-item>
                 </el-form>
             </div>
