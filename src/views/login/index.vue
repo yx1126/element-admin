@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { LoginInfo } from "#/views";
-import { getCode } from "@/api/login";
+import { getCode, login } from "@/api/login";
 import Logo from "@/layout/components/Logo.vue";
 import LangSelect from "@/components/LangSelect";
+import { encrypt } from "@/utils/crypto";
 
 defineOptions({
     name: "Login",
@@ -16,6 +17,7 @@ const { t, ti } = useLocal();
 
 const { data: codeData, query: onCodeChange } = useRequest(getCode, {});
 
+const loading = ref(false);
 const form = ref<Omit<LoginInfo, "uuid">>({
     username: "",
     password: "",
@@ -29,24 +31,30 @@ const rules = defineFormRules<Omit<LoginInfo, "uuid">>({
 });
 
 function onLogin() {
-    formRef.value?.validate(valid => {
+    formRef.value?.validate(async valid => {
         if(valid) {
-            router.replace("/");
+            try {
+                loading.value = true;
+                await login(encrypt(form.value));
+                router.replace("/");
+            } finally {
+                loading.value = false;
+            }
         }
     });
 }
 </script>
 
 <template>
-    <div class="size-full">
+    <div class="size-full login-wrapper">
         <el-scrollbar>
-            <div class="h-[42px] fixed rounded-[42px] flex items-center right-[20px] top-[20px] shadow-[var(--el-box-shadow-dark)] px-[15px] py-[5px]">
+            <div class="action">
                 <lang-select class="h-[100%]" type="dropdown">
-                    <div class="size-[32px] cursor-pointer box-center">
+                    <div class="action-item">
                         <Icon icon="language" />
                     </div>
                 </lang-select>
-                <div class="size-[32px] cursor-pointer box-center" @click="set.onNavModeChange">
+                <div class="action-item" @click="set.onNavModeChange">
                     <Icon :icon="set.navMode === 'dark' ? 'light' : 'dark'" />
                 </div>
             </div>
@@ -75,6 +83,33 @@ function onLogin() {
         </el-scrollbar>
     </div>
 </template>
+
+<style lang="scss" scoped>
+.login-wrapper {
+    .action {
+        height: 42px;
+        position: fixed;
+        border-radius: 42px;
+        display: flex;
+        align-items: center;
+        right: 20px;
+        top: 20px;
+        padding: 5px 15px;
+        box-shadow: var(--el-box-shadow-light);
+        @include when-dark {
+            box-shadow: var(--el-box-shadow-dark);
+        }
+        &-item {
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
+</style>
 
 <i18n lang="yaml">
 zh:

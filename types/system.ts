@@ -53,8 +53,8 @@ export interface DictLabelProps {
 
 export interface UserInfo extends TableModels {
     deptId: number;
-    postIds: number[];
-    roleIds: number[];
+    postIds: string[];
+    roleIds: string[];
     userName: string;
     nickName: string;
     userType: string;
@@ -95,5 +95,5 @@ export interface Role extends TableModels {
     sort: number;
     status: NumFlag;
     remark: string;
-    menuIds: number[];
+    menuIds: string[];
 }

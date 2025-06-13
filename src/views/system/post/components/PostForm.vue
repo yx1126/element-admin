@@ -35,7 +35,7 @@ const rules = defineFormRules<Post>({
     code: [
         Require(() => ti("code")),
         RequiredValidator((_, value, cb) => {
-            if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
+            if(/^[a-zA-Z0-9_-]+$/.test(value)) {
                 cb();
             } else {
                 cb(new Error(t("valid")));

@@ -34,7 +34,7 @@ const rules = defineFormRules({
     type: [
         Require(() => t("dictType")),
         RequiredValidator((_, value, cb) => {
-            if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
+            if(/^[a-zA-Z0-9_-]+$/.test(value)) {
                 cb();
             } else {
                 cb(new Error(t("key")));

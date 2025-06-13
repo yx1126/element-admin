@@ -54,7 +54,7 @@ const rules = defineFormRules<Role>({
     key: [
         Require(() => ti("roleKey")),
         RequiredValidator((_, value, cb) => {
-            if(/^^[a-zA-Z0-9_-]+$$/.test(value)) {
+            if(/^[a-zA-Z0-9_-]+$/.test(value)) {
                 cb();
             } else {
                 cb(new Error(t("key")));
@@ -85,7 +85,7 @@ onDialogSubmit(async (instance, close) => {
 });
 
 function getTreeIds(tree: MenuItem[]) {
-    return tree.reduce<number[]>((pre, item) => {
+    return tree.reduce<string[]>((pre, item) => {
         pre.push(item.id!, ...getTreeIds(item?.children || []));
         return pre;
     }, []);
