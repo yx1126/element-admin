@@ -13,5 +13,13 @@ export default defineConfig({
             /^(c|text)-(primary|success|info|warning|danger)$/,
             ([,,type]) => ({ color: `var(--el-color-${type})` }),
         ],
+        [
+            /^rounded-(none|small|base|round)$/,
+            ([,type]) => ({ "border-radius": `var(--el-border-radius-${type})` }),
+        ],
+        [
+            /^shadow-(base|light|lighter|dark)$/,
+            ([_, type]) => ({ "box-shadow": `var(--el-box-shadow${type != "base" ? "-" + type : ""})` }),
+        ],
     ],
 });

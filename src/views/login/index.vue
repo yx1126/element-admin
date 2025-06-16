@@ -35,8 +35,11 @@ function onLogin() {
         if(valid) {
             try {
                 loading.value = true;
-                await login(encrypt(form.value));
+                await login(encrypt({ ...form.value, uuid: codeData.value.uuid }));
                 router.replace("/");
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (e) {
+                onCodeChange();
             } finally {
                 loading.value = false;
             }
@@ -58,7 +61,7 @@ function onLogin() {
                     <Icon :icon="set.navMode === 'dark' ? 'light' : 'dark'" />
                 </div>
             </div>
-            <div class="w-[380px] h-[calc(100%-100px)] p-[20px] m-[100px_auto]">
+            <div class="login-form w-[380px] h-[calc(100%-100px)] p-[20px] m-[100px_auto]">
                 <div class="text-[38px] flex justify-center mb-[20px]">
                     <Logo theme="light" size="38" width="auto" />
                 </div>
@@ -85,27 +88,35 @@ function onLogin() {
 </template>
 
 <style lang="scss" scoped>
-.login-wrapper {
-    .action {
-        height: 42px;
-        position: fixed;
-        border-radius: 42px;
-        display: flex;
-        align-items: center;
-        right: 20px;
-        top: 20px;
-        padding: 5px 15px;
-        box-shadow: var(--el-box-shadow-light);
+.login {
+    &-form {
+        box-shadow: var(--el-box-shadow);
         @include when-dark {
             box-shadow: var(--el-box-shadow-dark);
         }
-        &-item {
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
+    }
+    &-wrapper {
+        .action {
+            height: 42px;
+            position: fixed;
+            border-radius: 42px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            right: 20px;
+            top: 20px;
+            padding: 5px 15px;
+            box-shadow: var(--el-box-shadow-light);
+            @include when-dark {
+                box-shadow: var(--el-box-shadow-dark);
+            }
+            &-item {
+                width: 32px;
+                height: 32px;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
         }
     }
 }
