@@ -6,5 +6,9 @@ export function getCode() {
 }
 
 export function login(data: string) {
-    return http.post("/login", data);
+    return http.post<string>("/login", data);
+}
+
+export function logout() {
+    return http.post("/logout");
 }

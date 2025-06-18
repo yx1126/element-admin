@@ -6,6 +6,7 @@ import { parseUnit } from "@/utils/unit";
 import LangSelect from "@/components/LangSelect";
 import Search from "./Search.vue";
 import type { NavTheme } from "#/stores";
+import { logout } from "@/api/login";
 
 const { height } = defineProps<{
     height?: number | string;
@@ -18,6 +19,8 @@ const { t } = useLocal();
 const router = useRouter();
 const user = useUserStore();
 const set = useSetStore();
+const tags = useTagStore();
+const msgbox = useMessageBox();
 const { isFullScreen, onToggle } = useFullscreen();
 const [setMitt, pwdMitt] = useMitt("toggleSetting", "updatePwd");
 const updatePwdRef = useTemplateRef("updatePwdRef");
@@ -44,7 +47,26 @@ function onDropDown(command: string) {
         return;
     }
     if(command === "logout") {
-        router.push("/login");
+        msgbox.confirm(t("confirmLogout"), {
+            beforeClose: async (action, instance, done) => {
+                if(action === "confirm") {
+                    try {
+                        instance.confirmButtonLoading = true;
+                        logout();
+                        tags.$reset();
+                        done();
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        instance.confirmButtonLoading = false;
+                    }
+                    return;
+                }
+                done();
+            },
+        }).then(() => {
+            router.push("/login");
+        });
         return;
     }
 }
@@ -86,7 +108,7 @@ function onDropDown(command: string) {
                         <el-dropdown-item command="userinfo" :icon="UserOutlined">{{ t('userCenter') }}</el-dropdown-item>
                         <el-dropdown-item command="password" :icon="renderIcon('password')">{{ t('password') }}</el-dropdown-item>
                         <el-dropdown-item command="github" :icon="renderIcon('github')" divided>Github</el-dropdown-item>
-                        <el-dropdown-item command="logout" :icon="LogoutOutlined" divided>{{ t('loutOut') }}</el-dropdown-item>
+                        <el-dropdown-item command="logout" :icon="LogoutOutlined" divided>{{ t('logout') }}</el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -147,9 +169,11 @@ function onDropDown(command: string) {
 zh:
   userCenter: 个人中心
   password: 修改密码
-  loutOut: 退出登录
+  logout: 退出登录
+  confirmLogout: 确认要退出登录吗？
 en:
   userCenter: Personal Center
   password: Change Password
-  loutOut: Logout
+  logout: Logout
+  confirmLoginout: Are you sure you want to logout?
 </i18n>

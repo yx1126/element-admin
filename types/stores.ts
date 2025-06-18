@@ -56,6 +56,7 @@ export interface TagsState {
 
 export interface UserState {
     routerList: MenuItem[];
+    token: string;
     userInfo?: {
         username: string;
         nickName: string;

@@ -9,6 +9,7 @@ export const useUserStore = defineStore("user", () => {
     const state: UserState = reactive({
         routerList: [],
         redirectName: "",
+        token: "",
         userInfo: {
             username: "admin",
             nickName: "Admin",
@@ -34,6 +35,11 @@ export const useUserStore = defineStore("user", () => {
         ...toRefs(state),
         initRoutes,
     };
+}, {
+    persistedstate: {
+        enabled: true,
+        paths: ["token"],
+    },
 });
 
 if(import.meta.hot) {

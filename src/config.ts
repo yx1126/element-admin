@@ -7,6 +7,7 @@ function createConfig<T extends object>(config: T) {
 }
 
 interface ConfigOptions {
+    whiteList: string[];
     headerHeight: number;
     tagsHeight: number;
     menuWidth: number;
@@ -24,6 +25,10 @@ interface ConfigOptions {
  * 全局配置
  */
 const Configs: ConfigOptions = createConfig({
+    /**
+     * 菜单白名单
+     */
+    whiteList: ["/login"],
     /**
      * 头部高度
      * @default 50

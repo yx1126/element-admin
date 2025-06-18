@@ -26,12 +26,20 @@ router.beforeEach(async (to, _, next) => {
         Nprogress.start();
         const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
         title.value = getTitle(to);
-        const route = useUserStore();
-        if(route.routerList.length > 0) {
+        if(Configs.whiteList.includes(to.path)) {
             next();
         } else {
-            await route.initRoutes();
-            next({ path: to.fullPath, query: to.query, replace: true });
+            const user = useUserStore();
+            if(!user.token) {
+                next({ path: "/login", replace: true });
+            } else {
+                if(user.routerList.length > 0) {
+                    next();
+                } else {
+                    await user.initRoutes();
+                    next({ path: to.fullPath, query: to.query, replace: true });
+                }
+            }
         }
     } catch (error) {
         console.error(error);

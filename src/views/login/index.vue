@@ -13,6 +13,7 @@ const formRef = useTemplateRef("formRef");
 
 const router = useRouter();
 const set = useSetStore();
+const user = useUserStore();
 const { t, ti } = useLocal();
 
 const { data: codeData, query: onCodeChange } = useRequest(getCode, {});
@@ -35,7 +36,8 @@ function onLogin() {
         if(valid) {
             try {
                 loading.value = true;
-                await login(encrypt({ ...form.value, uuid: codeData.value.uuid }));
+                const res = await login(encrypt({ ...form.value, uuid: codeData.value.uuid }));
+                user.token = res.data;
                 router.replace("/");
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
@@ -61,7 +63,7 @@ function onLogin() {
                     <Icon :icon="set.navMode === 'dark' ? 'light' : 'dark'" />
                 </div>
             </div>
-            <div class="login-form w-[380px] h-[calc(100%-100px)] p-[20px] m-[100px_auto]">
+            <div class="login-form w-[380px] p-[20px]">
                 <div class="text-[38px] flex justify-center mb-[20px]">
                     <Logo theme="light" size="38" width="auto" />
                 </div>
@@ -90,12 +92,20 @@ function onLogin() {
 <style lang="scss" scoped>
 .login {
     &-form {
+        border-radius: 5px;
         box-shadow: var(--el-box-shadow);
         @include when-dark {
             box-shadow: var(--el-box-shadow-dark);
         }
     }
     &-wrapper {
+        :deep(.el-scrollbar__view) {
+            min-height: 370px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
         .action {
             height: 42px;
             position: fixed;
@@ -106,6 +116,7 @@ function onLogin() {
             top: 20px;
             padding: 5px 15px;
             box-shadow: var(--el-box-shadow-light);
+            @include no-select;
             @include when-dark {
                 box-shadow: var(--el-box-shadow-dark);
             }

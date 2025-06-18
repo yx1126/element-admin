@@ -6,6 +6,10 @@ Http.setConfig({
 });
 
 Http.request.use(config => {
+    const user = useUserStore();
+    if(user.token) {
+        config.headers["Authorization"] = `Bearer ${user.token}`;
+    }
     return config;
 });
 
