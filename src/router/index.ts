@@ -21,28 +21,35 @@ function getTitle(to: RouteLocationNormalizedGeneric) {
     return before.map(r => r.meta.title).filter(v => v).reverse().join("-");
 }
 
-router.beforeEach(async (to, _, next) => {
+router.beforeEach(async (to, from, next) => {
+    Nprogress.start();
+    const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
+    title.value = getTitle(to);
+    const user = useUserStore();
+    if(user.token && to.path === "/login") {
+        next({ path: from.fullPath, replace: true });
+        return;
+    }
+    if(Configs.whiteList.includes(to.path)) {
+        next();
+        return;
+    }
+    if(!user.token) {
+        next({ path: "/login", replace: true });
+        return;
+    }
     try {
-        Nprogress.start();
-        const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
-        title.value = getTitle(to);
-        if(Configs.whiteList.includes(to.path)) {
+        if(user.routerList.length > 0) {
             next();
         } else {
-            const user = useUserStore();
-            if(!user.token) {
-                next({ path: "/login", replace: true });
-            } else {
-                if(user.routerList.length > 0) {
-                    next();
-                } else {
-                    await user.initRoutes();
-                    next({ path: to.fullPath, query: to.query, replace: true });
-                }
-            }
+            await user.initRoutes();
+            await user.initUserInfo();
+            next({ path: to.fullPath, query: to.query, replace: true });
         }
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
-        console.error(error);
+        user.$reset();
+        next({ path: "/login", replace: true });
     }
 });
 

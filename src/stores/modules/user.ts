@@ -2,21 +2,19 @@ import { acceptHMRUpdate, defineStore } from "pinia";
 import router from "@/router";
 import { getMenus } from "@/layout/menu";
 import { parseRoute, getRedirectPath, formatMenuList } from "@/utils/route";
+import { getUserInfo } from "@/api/login";
 import type { RouteRecordRaw } from "vue-router";
 import type { UserState } from "#/stores";
 
+const getDefaultState = (): UserState => ({
+    routerList: [],
+    redirectName: "",
+    token: "",
+    userInfo: undefined,
+});
+
 export const useUserStore = defineStore("user", () => {
-    const state: UserState = reactive({
-        routerList: [],
-        redirectName: "",
-        token: "",
-        userInfo: {
-            username: "admin",
-            nickName: "Admin",
-            sex: 1,
-            avatar: "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
-        },
-    });
+    const state: UserState = reactive(getDefaultState());
 
     async function initRoutes() {
         const menuList = await getMenus();
@@ -31,14 +29,27 @@ export const useUserStore = defineStore("user", () => {
         });
     }
 
+    async function initUserInfo() {
+        const res = await getUserInfo();
+        state.userInfo = {
+            ...res.data,
+            avatar: res.data.avatar || "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
+        };
+    }
+
     return {
         ...toRefs(state),
         initRoutes,
+        initUserInfo,
     };
 }, {
     persistedstate: {
         enabled: true,
         paths: ["token"],
+        reset: () => {
+            useTagStore().$reset();
+            return getDefaultState();
+        },
     },
 });
 

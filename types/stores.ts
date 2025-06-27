@@ -1,5 +1,5 @@
 import type { RouteMeta } from "vue-router";
-import type { MenuItem } from "./system";
+import type { MenuItem, UserInfo } from "./system";
 
 export type NavTheme = "light" | "inverted" | "dark";
 
@@ -57,10 +57,6 @@ export interface TagsState {
 export interface UserState {
     routerList: MenuItem[];
     token: string;
-    userInfo?: {
-        username: string;
-        nickName: string;
-        sex: number;
-        avatar: string;
-    };
+    redirectName: string;
+    userInfo?: UserInfo;
 }

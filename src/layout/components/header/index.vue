@@ -19,7 +19,6 @@ const { t } = useLocal();
 const router = useRouter();
 const user = useUserStore();
 const set = useSetStore();
-const tags = useTagStore();
 const msgbox = useMessageBox();
 const { isFullScreen, onToggle } = useFullscreen();
 const [setMitt, pwdMitt] = useMitt("toggleSetting", "updatePwd");
@@ -52,8 +51,9 @@ function onDropDown(command: string) {
                 if(action === "confirm") {
                     try {
                         instance.confirmButtonLoading = true;
-                        logout();
-                        tags.$reset();
+                        await logout();
+                        user.$reset();
+                        router.push("/login");
                         done();
                     } catch (error) {
                         console.error(error);
