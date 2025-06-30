@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import type { FormRules } from "element-plus";
+import { cloneDeep } from "lodash-es";
+import { userUpdate } from "@/api/system/user";
+import { uploadAvatar } from "@/api/upload";
+import type { FormRules, UploadRawFile } from "element-plus";
 
 defineOptions({
     name: "Person",
@@ -7,30 +10,53 @@ defineOptions({
 
 type TabsName = "base" | "safety";
 
+const msgbox = useMessageBox();
 const user = useUserStore();
-const { t } = useLocal();
+const { ti, t, $t } = useLocal();
 const pwdMitt = useMitt("updatePwd");
 const formRef = useTemplateRef("formRef");
 
 const tabsActive = ref<TabsName>("base");
-const form = ref(getForm());
+const form = ref(cloneDeep(user.userInfo!));
 
 const rules: FormRules = {
-    username: Require(t("username2")),
-    nickName: Require(t("nickname2")),
-    sex: Require(t("sex"), "change"),
-    email: Require(t("email2")),
+    userName: Require(() => ti("username2")),
+    nickName: Require(() => ti("nickname2")),
+    sex: Require(() => ti("sex"), "change"),
+    email: Require(() => ti("email2")),
 };
 
-function getForm() {
-    return {
-        ...user.userInfo,
-        email: "test1234@163.com",
-        description: "你在干什么！",
-    };
+function onSubmit() {
+    formRef.value?.validate(async valid => {
+        if(valid) {
+            msgbox.confirm($t("button.sure", [$t("button.save")]), {
+                beforeClose: async (action, instance, done) => {
+                    if(action === "confirm") {
+                        try {
+                            instance.confirmButtonLoading = true;
+                            await userUpdate(form.value);
+                            done();
+                        } finally {
+                            instance.confirmButtonLoading = false;
+                        }
+                        return;
+                    }
+                    done();
+                },
+            }).then(() => {
+                user.initUserInfo();
+            });
+        }
+    });
 }
 
-function onSubmit() {}
+async function onBeforeUpload(rawFile: UploadRawFile) {
+    await uploadAvatar({
+        file: rawFile,
+    });
+    // console.log(res);
+    return Promise.reject(false);
+}
 
 function onReset() {
     formRef.value?.resetFields();
@@ -50,7 +76,14 @@ function onEditPwd() {
                         <div class="avatar">
                             <el-avatar :size="120" :src="user.userInfo?.avatar" />
                         </div>
-                        <el-button class="mt-[20px]" type="primary" link>{{ t('picture') }}</el-button>
+                        <el-upload
+                            action="#"
+                            :limit="1"
+                            :before-upload="onBeforeUpload"
+                            :show-file-list="false"
+                        >
+                            <el-button class="mt-[20px]" type="primary" link>{{ t('picture') }}</el-button>
+                        </el-upload>
                         <div class="w-[90%] mt-[30px]">
                             <div class="item-justify">
                                 <div>{{ t('nickname') }}</div>
@@ -58,11 +91,11 @@ function onEditPwd() {
                             </div>
                             <div class="item-justify">
                                 <div>{{ t('username') }}</div>
-                                <div>{{ user.userInfo?.username }}</div>
+                                <div>{{ user.userInfo?.userName }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>{{ t('phone') }}</div>
-                                <div>166****3090</div>
+                                <div>{{ user.userInfo?.phone }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>{{ t('department') }}</div>
@@ -70,11 +103,11 @@ function onEditPwd() {
                             </div>
                             <div class="item-justify">
                                 <div>{{ t('email') }}</div>
-                                <div>test1234@163.com</div>
+                                <div>{{ user.userInfo?.email }}</div>
                             </div>
                             <div class="item-justify">
                                 <div>{{ t('create') }}</div>
-                                <div>2022-08-12</div>
+                                <div>{{ user.userInfo?.createdAt?.split(" ").at(0) }}</div>
                             </div>
                         </div>
                     </div>
@@ -93,24 +126,21 @@ function onEditPwd() {
                                 label-suffix="："
                                 require-asterisk-position="right"
                             >
-                                <el-form-item prop="username" :label="t('username2')">
-                                    <el-input v-model="form.username" :placeholder="$t('input', [t('username2')])" readonly />
+                                <el-form-item prop="userName" :label="t('username2')">
+                                    <el-input v-model="form.userName" :placeholder="$t('input', [t('username2')])" readonly />
                                 </el-form-item>
                                 <el-form-item prop="nickName" :label="t('nickname2')">
-                                    <el-input v-model="form.nickName" :placeholder="$t('input', [t('nickname2')])" clearable />
+                                    <el-input v-model="form.nickName" :placeholder="$t('input', [t('nickname2')])" />
                                 </el-form-item>
                                 <el-form-item prop="sex" :label="t('sex')">
                                     <el-radio-group v-model="form.sex">
-                                        <el-radio label="男" :value="1" />
-                                        <el-radio label="女" :value="2" />
-                                        <el-radio label="未知" :value="0" />
+                                        <el-radio value="2">{{ t('sex-unknow') }}</el-radio>
+                                        <el-radio value="0">{{ t('sex-0') }}</el-radio>
+                                        <el-radio value="1">{{ t('sex-1') }}</el-radio>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item prop="email" :label="t('email2')">
-                                    <el-input v-model="form.email" :placeholder="$t('input', [t('email2')])" clearable />
-                                </el-form-item>
-                                <el-form-item prop="description" :label="t('personalProfile')">
-                                    <el-input v-model="form.description" type="textarea" :placeholder="$t('input', [t('personalProfile')])" clearable />
+                                    <el-input v-model="form.email" :placeholder="$t('input', [t('email2')])" />
                                 </el-form-item>
                                 <el-form-item>
                                     <el-button type="primary" @click="onSubmit">{{ $t('button.save') }}</el-button>
@@ -119,7 +149,7 @@ function onEditPwd() {
                             </el-form>
                         </el-tab-pane>
                         <el-tab-pane :label="t('securitySettings')" name="safety" lazy>
-                            <el-list class="list-no-padd">
+                            <el-list>
                                 <el-list-item>
                                     <el-thing :title="t('pwd')">
                                         <template #description>
@@ -133,7 +163,7 @@ function onEditPwd() {
                                 <el-list-item>
                                     <el-thing :title="t('bindPhone')">
                                         <template #description>
-                                            <span class="description">{{ t('bindPhoneDesc') }}：+86 177****3090</span>
+                                            <span class="description">{{ t('bindPhoneDesc') }}：+86 {{ user.userInfo?.phone }}</span>
                                         </template>
                                     </el-thing>
                                     <template #suffix>
@@ -143,7 +173,7 @@ function onEditPwd() {
                                 <el-list-item>
                                     <el-thing :title="t('bindEmail')">
                                         <template #description>
-                                            <span class="description">{{ t('bindEmailDesc') }}：test****@163.com</span>
+                                            <span class="description">{{ t('bindEmailDesc') }}：{{ user.userInfo?.email }}</span>
                                         </template>
                                     </el-thing>
                                     <template #suffix>
@@ -213,7 +243,7 @@ zh:
   phone: 手机号码
   department: 所属部门
   email: 邮箱地址
-  create: 邮箱地址
+  create: 创建日期
   basicInfo: 基本资料
   securitySettings: 安全设置
   username2: 用户名
@@ -231,6 +261,9 @@ zh:
   destroy: 账号注销
   destroyDesc: 该账号将被注销，且不支持找回！
   comfirm: 注销
+  sex-unknow: 未知
+  sex-0: 男
+  sex-1: 女
 en:
   userinfo: User information
   nickname: Nickname
@@ -256,4 +289,7 @@ en:
   destroy: Account cancellation
   destroyDesc: The account will be cancelled and cannot be retrieved！
   comfirm: Comfirm
+  sex-unknow: unknow
+  sex-0: male
+  sex-1: female
 </i18n>

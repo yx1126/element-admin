@@ -24,7 +24,7 @@ Http.response.use(response => {
     } if(data.code !== 200) {
         if(data.code === 401) {
             user.$reset();
-            router.push("/login");
+            router.push("/");
         }
         message.error(data.message || "Error");
         return Promise.reject(data.message);
