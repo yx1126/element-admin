@@ -22,6 +22,9 @@ const IMPORT_FNS: Record<string, string[]> = {
 // https://vitejs.dev/config/
 export default defineConfig(() => {
     return {
+        experimental: {
+            enableNativePlugin: true,
+        },
         resolve: {
             alias: {
                 "@": resolve("./src"),
