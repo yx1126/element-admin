@@ -116,6 +116,16 @@ export class Http {
         });
     }
 
+    down<T = Blob>(url: string, params?: any, headers?: AxiosRequestConfig["headers"]) {
+        return this.service.get<T, T>(url, {
+            params,
+            headers: {
+                ...headers,
+                isFile: true,
+            },
+        });
+    }
+
     download<T = Blob, R = AxiosResponse<T>>(url: string, data?: any, headers?: AxiosRequestConfig["headers"]) {
         return this.service.post<T, R>(url, data, {
             responseType: "blob",

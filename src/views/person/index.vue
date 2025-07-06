@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cloneDeep } from "lodash-es";
 import { userUpdate } from "@/api/system/user";
-import { uploadAvatar } from "@/api/upload";
+import { uploadAvatar, getFile } from "@/api/upload";
 import type { FormRules, UploadRawFile } from "element-plus";
 
 defineOptions({
@@ -16,6 +16,7 @@ const { ti, t, $t } = useLocal();
 const pwdMitt = useMitt("updatePwd");
 const formRef = useTemplateRef("formRef");
 
+const loading = ref(false);
 const tabsActive = ref<TabsName>("base");
 const form = ref(cloneDeep(user.userInfo!));
 
@@ -51,9 +52,19 @@ function onSubmit() {
 }
 
 async function onBeforeUpload(rawFile: UploadRawFile) {
-    await uploadAvatar({
-        file: rawFile,
-    });
+    try {
+        loading.value = true;
+        const res = await uploadAvatar({
+            file: rawFile,
+        });
+        await userUpdate({
+            ...form.value,
+            avatar: res.data.path,
+        });
+        user.initUserInfo();
+    } finally {
+        loading.value = false;
+    }
     // console.log(res);
     return Promise.reject(false);
 }
@@ -73,8 +84,8 @@ function onEditPwd() {
             <el-col :span="7">
                 <el-card :header="t('userinfo')" shadow="never">
                     <div class="userinfo">
-                        <div class="avatar">
-                            <el-avatar :size="120" :src="user.userInfo?.avatar" />
+                        <div v-loading="loading" class="avatar">
+                            <el-avatar :size="120" :src="getFile(user.userInfo?.avatar)" />
                         </div>
                         <el-upload
                             action="#"

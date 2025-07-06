@@ -18,7 +18,7 @@ export function userCreate(data: UserInfo) {
     return http.post("/system/user", data);
 }
 
-export function userUpdate(data: UserInfo) {
+export function userUpdate(data: Partial<UserInfo>) {
     return http.put("/system/user", data);
 }
 
