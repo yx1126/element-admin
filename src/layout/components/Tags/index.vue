@@ -195,7 +195,7 @@ function onFullClick() {
             @include when-dark {
                 background-color: var(--border-dark-color);
             }
-        };
+        }
     }
     &-list {
         flex: 1;

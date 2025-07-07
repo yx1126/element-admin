@@ -67,8 +67,8 @@ function onCopySuccess() {
 </template>
 
 <style lang="scss" scoped>
-:global([data-theme='dark'] .shiki),
-:global([data-theme='dark'] .shiki span) {
+:global([data-theme="dark"] .shiki),
+:global([data-theme="dark"] .shiki span) {
     background-color: var(--shiki-dark-bg) !important;
     color: var(--shiki-dark) !important;
 }

@@ -100,7 +100,9 @@ function onCopy(icon: string) {
         align-items: center;
         justify-content: space-between;
         border: 1px solid var(--border-light-color);
-        transition: color var(--el-transition-duration), background-color var(--el-transition-duration);
+        transition:
+            color var(--el-transition-duration),
+            background-color var(--el-transition-duration);
         will-change: background-color, color;
         border-radius: 3px;
         &:hover {
@@ -118,11 +120,11 @@ function onCopy(icon: string) {
                 background-color: transparent;
             }
         }
-        &>div {
+        & > div {
             display: flex;
             align-items: center;
             gap: 10px;
-            &>span {
+            & > span {
                 font-size: 12px;
             }
         }

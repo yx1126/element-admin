@@ -87,12 +87,12 @@ const shadow = computed(() => always ? "always" : hover ? "hover" : "never");
     }
     @include when(border-header) {
         .el-card__header {
-            border-bottom: 1px solid var(--el-card-border-color)
+            border-bottom: 1px solid var(--el-card-border-color);
         }
     }
     @include when(border-footer) {
         .el-card__footer {
-            border-top: 1px solid var(--el-card-border-color)
+            border-top: 1px solid var(--el-card-border-color);
         }
     }
     .el-card__body {

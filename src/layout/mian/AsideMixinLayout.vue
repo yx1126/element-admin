@@ -136,7 +136,8 @@ export default defineComponent((_, { slots }) => {
     &-aside {
         --el-aside-width: auto;
         background-color: var(--menu-bg-color);
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transition:
+            width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
             background-color var(--el-transition-duration);
         @include border(right, var(--border-light-color)) {
             @include when-inverted {
@@ -145,7 +146,7 @@ export default defineComponent((_, { slots }) => {
             @include when-dark {
                 background-color: var(--border-dark-color);
             }
-        };
+        }
         &-scrollbar {
             height: calc(100% - 50px);
         }
@@ -168,7 +169,7 @@ export default defineComponent((_, { slots }) => {
             @include when-dark {
                 background-color: var(--border-dark-color);
             }
-        };
+        }
         &-scrollbar {
             height: calc(100% - 42px);
         }
@@ -185,9 +186,9 @@ export default defineComponent((_, { slots }) => {
             .el-icon {
                 font-size: 20px !important;
                 margin: 0;
-                transition: all .25s ease;
+                transition: all 0.25s ease;
             }
-            &>span {
+            & > span {
                 font-size: 12px;
             }
             &:hover .el-icon {

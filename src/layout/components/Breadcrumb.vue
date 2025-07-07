@@ -65,7 +65,7 @@ function onCommand(path: string) {
 <style lang="scss" scoped>
 .breadcrumb {
     position: relative;
-    :deep(.el-breadcrumb__item){
+    :deep(.el-breadcrumb__item) {
         .el-breadcrumb__inner {
             display: inline-flex;
             align-items: center;
@@ -81,7 +81,6 @@ function onCommand(path: string) {
                 color: var(--el-color-primary);
             }
         }
-
     }
 }
 </style>

@@ -76,7 +76,8 @@ export default defineComponent((_, { slots }) => {
     &-aside {
         --el-aside-width: auto;
         background-color: var(--menu-bg-color);
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transition:
+            width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
             background-color var(--el-transition-duration);
         overflow: hidden;
         &-scrollbar {
@@ -89,7 +90,7 @@ export default defineComponent((_, { slots }) => {
             @include when-dark {
                 background-color: var(--border-dark-color);
             }
-        };
+        }
     }
 }
 </style>

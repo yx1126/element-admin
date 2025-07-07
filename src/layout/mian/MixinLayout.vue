@@ -88,7 +88,8 @@ export default defineComponent((_, { slots }) => {
         width: calc(100% - var(--menu-width));
     }
     &-aside {
-        transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        transition:
+            width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
             background-color var(--el-transition-duration);
         overflow: hidden;
         @include when(inverted) {
@@ -98,7 +99,7 @@ export default defineComponent((_, { slots }) => {
             @include when-dark {
                 background-color: var(--border-dark-color);
             }
-        };
+        }
         &-scrollbar {
             height: calc(100% - 42px);
         }

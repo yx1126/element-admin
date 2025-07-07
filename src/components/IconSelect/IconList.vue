@@ -83,7 +83,7 @@ defineExpose({
 <style lang="scss" scoped>
 .icon-list {
     .icon-select-list {
-        --n-bezier: cubic-bezier(.4, 0, .2, 1);
+        --n-bezier: cubic-bezier(0.4, 0, 0.2, 1);
         height: 166px;
         margin: 10px 0;
         display: grid;
@@ -98,7 +98,11 @@ defineExpose({
             line-height: 34px;
             font-size: 20px;
             cursor: pointer;
-            transition: color .3s var(--n-bezier), background-color .3s var(--n-bezier), opacity .3s var(--n-bezier), border-color .3s var(--n-bezier);
+            transition:
+                color 0.3s var(--n-bezier),
+                background-color 0.3s var(--n-bezier),
+                opacity 0.3s var(--n-bezier),
+                border-color 0.3s var(--n-bezier);
             &:hover,
             &:active,
             &.is-active {

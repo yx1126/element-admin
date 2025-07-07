@@ -113,7 +113,7 @@ function onFixedClick(item: TableColumnFormat, value: TableColumnFormat["fixed"]
         padding: 8px 14px 8px 24px;
         gap: 10px;
         border-bottom: 1px solid var(--el-border-color);
-        &>* {
+        & > * {
             margin-right: 0;
         }
     }

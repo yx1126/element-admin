@@ -120,7 +120,7 @@ const underwayList = ref([
 
 <style lang="scss" scoped>
 .workbench {
-    .header{
+    .header {
         &-title {
             font-size: 14px;
             color: #767c82;

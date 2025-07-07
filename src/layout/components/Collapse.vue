@@ -60,7 +60,8 @@ function onClick() {
     padding: var(--collapse-padding);
     display: flex;
     align-items: center;
-    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    transition:
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
         color var(--el-transition-duration),
         background-color var(--el-transition-duration) !important;
     @include hover;
@@ -73,13 +74,13 @@ function onClick() {
             }
         }
     }
-    @each $var in top,right,bottom,left {
+    @each $var in top, right, bottom, left {
         &-border--#{$var} {
             @include border($var, var(--border-light-color)) {
                 @include when-dark {
                     background-color: var(--border-dark-color);
                 }
-            };
+            }
             @include when-inverted {
                 @include when(inverted) {
                     &::after {

@@ -2,6 +2,7 @@
 import { defineEslint } from "@yx1126/lint-config";
 
 export default defineEslint({
+    css: true,
     vue: {
         sfcBlocks: {
             blocks: {

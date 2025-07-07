@@ -180,7 +180,7 @@ defineExpose({
             --w-e-textarea-slight-border-color: #e8e8e8;
             --w-e-textarea-slight-color: #d4d4d4;
             --w-e-textarea-slight-bg-color: #f5f2f0;
-            --w-e-textarea-selected-border-color: #B4D5FF; // 选中的元素，如选中了分割线
+            --w-e-textarea-selected-border-color: #b4d5ff; // 选中的元素，如选中了分割线
             --w-e-textarea-handler-bg-color: #4290f7; // 工具，如图片拖拽按钮
 
             // toolbar - css vars

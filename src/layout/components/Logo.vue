@@ -62,7 +62,10 @@ const logoStyle = computed(() => {
     display: flex;
     align-items: center;
     padding: var(--logo-padding);
-    transition: padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), color var(--el-transition-duration);
+    transition:
+        padding 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        width 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        color var(--el-transition-duration);
     position: relative;
     @include when(inverted) {
         .logo-text {

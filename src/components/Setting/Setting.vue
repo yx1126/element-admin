@@ -195,7 +195,7 @@ function onReset() {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    transition: right .3s;
+    transition: right 0.3s;
 }
 .drawer-set-container {
     padding: 0 15px 10px;

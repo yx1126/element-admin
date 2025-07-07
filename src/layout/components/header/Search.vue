@@ -86,13 +86,13 @@ function formatMenuList(menus: MenuItem[], split = " -> ") {
             box-shadow: none;
             border-bottom: 1px solid transparent;
             background-color: transparent;
-            .el-select{
+            .el-select {
                 &__prefix {
                     cursor: pointer;
                 }
                 &__selection {
                     width: 0;
-                    transition: width 0.2s cubic-bezier(.4, 0, .2, 1);
+                    transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
                 }
             }
             @include when(focused) {
