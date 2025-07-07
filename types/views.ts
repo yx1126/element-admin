@@ -13,3 +13,10 @@ export interface CodeInfo {
     uuid: string;
     image: string;
 }
+
+export interface UploadAvatar {
+    fileName: string;
+    size: number;
+    lastModified: string;
+    path: string;
+}
