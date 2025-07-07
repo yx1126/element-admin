@@ -2,6 +2,7 @@
 import { getUserList, userDelete, userResetPwd } from "@/api/system/user";
 import { getDeptSelectTree } from "@/api/system/dept";
 import UserForm from "./components/UserForm.vue";
+import { getAvatar } from "@/api/upload";
 import type { UserInfo } from "#/system";
 
 defineOptions({
@@ -57,6 +58,9 @@ const columns = defineColumns<UserInfo>([{
 }, {
     label: () => t("nickname"),
     prop: "nickName",
+}, {
+    label: () => t("avatar"),
+    slotName: "avatar",
 }, {
     label: () => t("phone"),
     prop: "phone",
@@ -123,6 +127,11 @@ function onResetPwd(row: UserInfo) {
                 v-bind="tableAttrs"
                 @refresh="onSearch"
             >
+                <template #avatar="{row}">
+                    <div v-if="row.avatar" class="box-center">
+                        <el-avatar :src="getAvatar(row.avatar)" />
+                    </div>
+                </template>
                 <template #action>
                     <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
                     <el-button type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
@@ -145,6 +154,7 @@ zh:
   user: 用户
   username: 用户名
   nickname: 用户昵称
+  avatar: 头像
   dept: 部门
   phone: 手机号
   reset: 确定要重置用户“{0}”的密码吗？
@@ -153,6 +163,7 @@ en:
   user: User
   username: username
   nickname: nickname
+  avatar: avatar
   dept: dept
   phone: phone
   reset: Are you sure you want to reset the password of the user "{0}"?

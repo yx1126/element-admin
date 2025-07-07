@@ -32,6 +32,7 @@ function onClick2() {
         <el-card-v2>
             <el-button type="primary" @click="onClick2">Encrypt</el-button>
             <el-button type="primary" @click="onClick">Login</el-button>
+            <el-button @click="onClick">Login1</el-button>
         </el-card-v2>
     </div>
 </template>

@@ -20,8 +20,8 @@ const { data: codeData, query: onCodeChange } = useRequest(getCode, {});
 
 const loading = ref(false);
 const form = ref<Omit<LoginInfo, "uuid">>({
-    username: "",
-    password: "",
+    username: "admin",
+    password: "123456",
     code: "",
 });
 

@@ -3,6 +3,7 @@ import router from "@/router";
 import { getMenus } from "@/layout/menu";
 import { parseRoute, getRedirectPath, formatMenuList } from "@/utils/route";
 import { getUserInfo } from "@/api/login";
+import { getAvatar } from "@/api/upload";
 import type { RouteRecordRaw } from "vue-router";
 import type { UserState } from "#/stores";
 
@@ -37,8 +38,13 @@ export const useUserStore = defineStore("user", () => {
         };
     }
 
+    function getUserAvatar() {
+        return getAvatar(state.userInfo?.avatar);
+    }
+
     return {
         ...toRefs(state),
+        getUserAvatar,
         initRoutes,
         initUserInfo,
     };

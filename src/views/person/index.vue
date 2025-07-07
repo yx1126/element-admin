@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { cloneDeep } from "lodash-es";
 import { userUpdate } from "@/api/system/user";
-import { uploadAvatar, getFile } from "@/api/upload";
+import { uploadAvatar } from "@/api/upload";
 import type { FormRules, UploadRawFile } from "element-plus";
 
 defineOptions({
@@ -85,16 +85,19 @@ function onEditPwd() {
                 <el-card :header="t('userinfo')" shadow="never">
                     <div class="userinfo">
                         <div v-loading="loading" class="avatar">
-                            <el-avatar :size="120" :src="getFile(user.userInfo?.avatar)" />
+                            <el-avatar :size="120" :src="user.getUserAvatar()" />
+                            <div class="avatar-action">
+                                <el-upload
+                                    action="#"
+                                    :limit="1"
+                                    :before-upload="onBeforeUpload"
+                                    :show-file-list="false"
+                                >
+                                    <Icon icon="EleEdit" size="20" color="#fff" />
+                                </el-upload>
+                                <Icon icon="EleDelete" size="20" cursor color="#fff" />
+                            </div>
                         </div>
-                        <el-upload
-                            action="#"
-                            :limit="1"
-                            :before-upload="onBeforeUpload"
-                            :show-file-list="false"
-                        >
-                            <el-button class="mt-[20px]" type="primary" link>{{ t('picture') }}</el-button>
-                        </el-upload>
                         <div class="w-[90%] mt-[30px]">
                             <div class="item-justify">
                                 <div>{{ t('nickname') }}</div>
@@ -223,10 +226,10 @@ function onEditPwd() {
             font-size: 14px;
             position: relative;
             padding-bottom: 10px;
-            &+.item-justify {
+            & + .item-justify {
                 margin-top: 10px;
             }
-            &>div:first-child::after {
+            & > div:first-child::after {
                 content: "：";
             }
             &::after {
@@ -237,6 +240,35 @@ function onEditPwd() {
                 width: 100%;
                 height: 1px;
                 background-color: var(--el-border-color);
+            }
+        }
+        .avatar {
+            position: relative;
+            overflow: hidden;
+            width: 120px;
+            height: 120px;
+            &:hover {
+                .avatar-action {
+                    opacity: 1;
+                }
+            }
+            &-action {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background-color: var(--el-overlay-color-lighter);
+                gap: 10px;
+                transition: opacity var(--el-transition-duration);
+                opacity: 0;
+                & > div {
+                    height: 20px;
+                }
             }
         }
     }
