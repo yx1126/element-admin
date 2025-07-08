@@ -3,6 +3,7 @@ import { cloneDeep } from "lodash-es";
 import { userUpdate } from "@/api/system/user";
 import { uploadAvatar } from "@/api/upload";
 import type { FormRules, UploadRawFile } from "element-plus";
+import type { UserInfo } from "#/system";
 
 defineOptions({
     name: "Person",
@@ -30,23 +31,7 @@ const rules: FormRules = {
 function onSubmit() {
     formRef.value?.validate(async valid => {
         if(valid) {
-            msgbox.confirm($t("button.sure", [$t("button.save")]), {
-                beforeClose: async (action, instance, done) => {
-                    if(action === "confirm") {
-                        try {
-                            instance.confirmButtonLoading = true;
-                            await userUpdate(form.value);
-                            done();
-                        } finally {
-                            instance.confirmButtonLoading = false;
-                        }
-                        return;
-                    }
-                    done();
-                },
-            }).then(() => {
-                user.initUserInfo();
-            });
+            updateUser($t("button.save"), form.value);
         }
     });
 }
@@ -76,6 +61,33 @@ function onReset() {
 function onEditPwd() {
     pwdMitt.emit();
 }
+
+function onRemoveAvatar() {
+    updateUser(t("deleteAvatar"), {
+        ...form.value,
+        avatar: "",
+    });
+}
+
+function updateUser(value: string, form: UserInfo) {
+    msgbox.confirm($t("button.sure", [value]), {
+        beforeClose: async (action, instance, done) => {
+            if(action === "confirm") {
+                try {
+                    instance.confirmButtonLoading = true;
+                    await userUpdate(form);
+                    done();
+                } finally {
+                    instance.confirmButtonLoading = false;
+                }
+                return;
+            }
+            done();
+        },
+    }).then(() => {
+        user.initUserInfo();
+    });
+}
 </script>
 
 <template>
@@ -95,7 +107,7 @@ function onEditPwd() {
                                 >
                                     <Icon icon="EleEdit" size="20" color="#fff" />
                                 </el-upload>
-                                <Icon icon="EleDelete" size="20" cursor color="#fff" />
+                                <Icon icon="EleDelete" size="20" cursor color="#fff" @click="onRemoveAvatar" />
                             </div>
                         </div>
                         <div class="w-[90%] mt-[30px]">
@@ -307,6 +319,7 @@ zh:
   sex-unknow: 未知
   sex-0: 男
   sex-1: 女
+  deleteAvatar: 删除头像
 en:
   userinfo: User information
   nickname: Nickname
@@ -335,4 +348,5 @@ en:
   sex-unknow: unknow
   sex-0: male
   sex-1: female
+  deleteAvatar: delete avatar
 </i18n>

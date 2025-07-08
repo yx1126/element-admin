@@ -36,7 +36,7 @@ const { t } = useLocal();
 
 <style lang="scss" scoped>
 $light-color: #fff;
-$inverted-color: #{var(--menu-bg-color, #304156)};
+$inverted-color: #{var(--menu-bg-base-color, #304156)};
 $dark-color: rgba(0, 0, 0, 0.7);
 $body-color: var(--page-bg-color);
 

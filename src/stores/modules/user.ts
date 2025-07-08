@@ -34,11 +34,13 @@ export const useUserStore = defineStore("user", () => {
         const res = await getUserInfo();
         state.userInfo = {
             ...res.data,
-            avatar: res.data.avatar || "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg",
         };
     }
 
     function getUserAvatar() {
+        if(!state.userInfo?.avatar) {
+            return "https://07akioni.oss-cn-beijing.aliyuncs.com/07akioni.jpeg";
+        }
         return getAvatar(state.userInfo?.avatar);
     }
 

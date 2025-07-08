@@ -142,8 +142,10 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
     <div class="dict flex gap-10px">
         <el-card-v2 class="w-400px min-w-400px" header="字典">
             <template #extra>
-                <el-button icon="EleRefresh" size="small" @click="onQueryDictType" />
-                <el-button type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />
+                <el-button-group>
+                    <el-button icon="EleRefresh" size="small" @click="onQueryDictType" />
+                    <el-button type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />
+                </el-button-group>
             </template>
             <div class="flex flex-col gap-10px">
                 <lazy-input v-model.lazy="keyword" :placeholder="t('dictName')" clearable suffix-icon="EleSearch" />
