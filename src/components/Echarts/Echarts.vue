@@ -40,11 +40,6 @@ onScopeDispose(() => {
 });
 
 async function init() {
-    /**
-     * fix warning:
-     *   [ECharts] Can't get DOM width or height. Please check dom.clientWidth and dom.clientHeight. They should not be 0.For example,
-     */
-    if(!echartsRef.value?.clientWidth || !echartsRef.value?.clientHeight) return;
     if(echarts.value) echarts.value.dispose();
     await nextTick();
     if(beforeRender) beforeRender(Echarts);
@@ -88,7 +83,7 @@ defineExpose({
 </script>
 
 <template>
-    <div class="w-[100%] h-[100%] overflow-hidden">
+    <div class="w-[100%] h-[100%]">
         <div ref="echartsRef" class="w-[100%] h-[100%]" />
     </div>
 </template>

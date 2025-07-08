@@ -26,7 +26,7 @@ const underwayList = ref([
             <div class="text-[18px] mb-[20px]">工作台</div>
             <div class="flex justify-between items-center w-[100%] ">
                 <div class="flex items-center flex-1">
-                    <el-avatar class="min-w-64px" :size="64" :src="user.userInfo?.avatar" />
+                    <el-avatar class="min-w-64px" :size="64" :src="user.getUserAvatar()" />
                     <div class="ml-5 whitespace-nowrap">
                         <p class="m-0 text-[20px] c-[#333] dark:c-white">{{ t("salutation", [user.userInfo?.nickName]) }}</p>
                         <p class="m-0 text-[14px] text-gray-400">{{ t("weather") }}</p>
