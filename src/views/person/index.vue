@@ -25,7 +25,7 @@ const rules: FormRules = {
     userName: Require(() => ti("username2")),
     nickName: Require(() => ti("nickname2")),
     sex: Require(() => ti("sex"), "change"),
-    email: Require(() => ti("email2")),
+    // email: Require(() => ti("email2")),
 };
 
 function onSubmit() {

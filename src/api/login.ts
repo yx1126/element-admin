@@ -1,6 +1,6 @@
 import http from "@/utils/http";
 import type { CodeInfo } from "#/views";
-import type { UserInfo } from "#/system";
+import type { MenuItem, UserInfo } from "#/system";
 
 export function getCode() {
     return http.get<CodeInfo>("/code");
@@ -16,4 +16,8 @@ export function logout() {
 
 export function getUserInfo() {
     return http.get<UserInfo>("/auth/getUserInfo");
+}
+
+export function getUserPermission() {
+    return http.get<{ menus: MenuItem[]; permission: string[] }>("/auth/permission");
 }

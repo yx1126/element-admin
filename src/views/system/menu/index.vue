@@ -106,9 +106,7 @@ function onExpand() {
 }
 
 function onTaleActionClick(item: TableActionItem, row: MenuItem) {
-    if(item.action === "add") {
-        dialog.open({ parentId: row.id });
-    } else if(item.action === "edit") {
+    if(item.action === "edit") {
         dialog.open(row);
     } else if(item.action === "delete") {
         if(!row.id) return;
@@ -155,7 +153,11 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                     <el-tag v-else type="danger">隐藏</el-tag>
                 </template>
                 <template #operate="{ row }">
-                    <table-action :actions="{action: 'add', icon: 'ElePlus', append: 'before', type: 'primary'}" @click="onTaleActionClick($event, row)" />
+                    <table-action @click="onTaleActionClick($event, row)">
+                        <template #before>
+                            <el-link v-if="![2,3].includes(row.type)" type="primary" icon="ElePlus" @click="dialog.open({ parentId: row.id })" />
+                        </template>
+                    </table-action>
                 </template>
             </base-table>
         </table-layout>

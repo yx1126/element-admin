@@ -1,8 +1,7 @@
 import { acceptHMRUpdate, defineStore } from "pinia";
 import router from "@/router";
-import { getMenus } from "@/layout/menu";
 import { parseRoute, getRedirectPath, formatMenuList } from "@/utils/route";
-import { getUserInfo } from "@/api/login";
+import { getUserInfo, getUserPermission } from "@/api/login";
 import { getAvatar } from "@/api/upload";
 import type { RouteRecordRaw } from "vue-router";
 import type { UserState } from "#/stores";
@@ -12,19 +11,21 @@ const getDefaultState = (): UserState => ({
     redirectName: "",
     token: "",
     userInfo: undefined,
+    permission: [],
 });
 
 export const useUserStore = defineStore("user", () => {
     const state: UserState = reactive(getDefaultState());
 
     async function initRoutes() {
-        const menuList = await getMenus();
-        const asyncRoutes = parseRoute(menuList);
+        const res = await getUserPermission();
+        state.permission = res.data.permission;
+        const asyncRoutes = parseRoute(res.data.menus);
         const routes: RouteRecordRaw[] = [
             { path: "/", redirect: getRedirectPath(asyncRoutes) },
             ...asyncRoutes,
         ];
-        state.routerList.push(...formatMenuList(menuList));
+        state.routerList.push(...formatMenuList(res.data.menus));
         routes.forEach(route => {
             router.addRoute("LayoutMain", route);
         });

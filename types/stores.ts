@@ -59,4 +59,5 @@ export interface UserState {
     token: string;
     redirectName: string;
     userInfo?: UserInfo;
+    permission: string[];
 }
