@@ -4,11 +4,14 @@ declare module "vue" {
     export interface ComponentCustomProperties {
         VCopy: typeof import("../src/directive/copy")["default"];
         VCopy: typeof import("../src/directive/drag")["default"];
+        VAuth: typeof import("../src/directive/auth")["default"];
+        $auth: typeof import("../src/utils/permission")["auth"];
     }
 
     export interface GlobalDirectives {
         VCopy: typeof import("../src/directive/copy")["default"];
         VDrag: typeof import("../src/directive/drag")["default"];
+        VAuth: typeof import("../src/directive/auth")["default"];
     }
 
     export interface GlobalComponents {

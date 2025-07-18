@@ -6,6 +6,7 @@ import pinia from "@/stores";
 import Directive from "@/directive";
 import ElementPlus from "@/plugins/element-plus";
 import GlobalRegister from "@/components/GlobalRegister";
+import Auth from "@/utils/permission";
 import "@/components/WebComponents";
 import "@/styles/index.scss";
 import "virtual:svg-icons-load";
@@ -18,7 +19,8 @@ app.use(pinia)
     .use(ElementPlus)
     .use(Directive)
     .use(i18n)
-    .use(GlobalRegister);
+    .use(GlobalRegister)
+    .use(Auth);
 
 router.isReady().then(async () => {
     await loadI18n();
