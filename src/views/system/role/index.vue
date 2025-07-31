@@ -1,7 +1,7 @@
 <script setup lang="tsx">
-import type { Role } from "#/system";
 import { getRoleList, roleDelete } from "@/api/system/role";
-import DeptForm from "./components/RoleForm.vue";
+import RoleForm from "./components/RoleForm.vue";
+import type { Role } from "#/system";
 
 defineOptions({
     name: "Role",
@@ -28,7 +28,7 @@ const {
 });
 
 const dialog = useDialog<Role>({
-    component: DeptForm,
+    component: RoleForm,
     title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("role"),
     width: 500,
     onSubmit: onSearch,
@@ -86,11 +86,14 @@ const columns = defineColumns<Role>([{
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
+                    <el-button v-auth="['system:role:add']" type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
+                    <el-button v-auth="['system:role:del']" type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
                 </template>
                 <template #operate="{ row }">
-                    <table-action @edit="dialog.open(row)" @delete="onDelete(row.id)" />
+                    <table-action>
+                        <el-link v-auth="['system:role:edit']" icon="EleEdit" type="primary" @click="dialog.open(row)" />
+                        <el-link v-auth="['system:role:del']" icon="EleDelete" type="danger" @click="onDelete(row.id)" />
+                    </table-action>
                 </template>
             </base-table>
             <pagination class="mt-10px" v-bind="paging" />

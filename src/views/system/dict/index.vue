@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import LazyInput from "@/components/LazyInput";
 import { dictList, dictDelete, dictDataList, dictDataDelete } from "@/api/system/dictType";
+import LazyInput from "@/components/LazyInput";
 import DictTypeForm from "./components/DictTypeForm.vue";
 import DictDataForm from "./components/DictDataForm.vue";
-import type { DictType, DictData } from "#/system";
-import type { TableActionItem } from "@/components/GlobalRegister/Table";
+import type { DictType } from "#/system";
 
 defineOptions({
     name: "Dict",
@@ -128,14 +127,6 @@ function onNodeClick(dict: DictType) {
     dictId.value = dict.id;
     onRefresh();
 }
-
-function onTaleActionClick(item: TableActionItem, row: DictData) {
-    if(item.action === "edit") {
-        dictDataDialog.open(row);
-    } else if(item.action === "delete") {
-        onDictDataDelete(row.id);
-    }
-}
 </script>
 
 <template>
@@ -144,7 +135,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
             <template #extra>
                 <el-button-group>
                     <el-button icon="EleRefresh" size="small" @click="onQueryDictType" />
-                    <el-button type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />
+                    <el-button v-auth="['system:dict:add']" type="primary" icon="ElePlus" size="small" @click="dictTypeDialog.open()" />
                 </el-button-group>
             </template>
             <div class="flex flex-col gap-10px">
@@ -166,8 +157,8 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                                 <div class="h-100% flex items-center gap-8px" @click.stop>
                                     <div class="group-hover:hidden">{{ data.type }}</div>
                                     <div class="hidden items-center gap-8px group-hover:flex">
-                                        <el-link type="primary" icon="EleEdit" @click="dictTypeDialog.open(data)" />
-                                        <el-link type="danger" icon="EleDelete" @click="onDelete(data)" />
+                                        <el-link v-auth="['system:dict:edit']" type="primary" icon="EleEdit" @click="dictTypeDialog.open(data)" />
+                                        <el-link v-auth="['system:dict:del']" type="danger" icon="EleDelete" @click="onDelete(data)" />
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +189,7 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dictDataDialog.open({ dictId })">{{ $t("button.add") }}</el-button>
+                    <el-button v-auth="['system:dict:data:add']" type="primary" icon="ElePlus" @click="dictDataDialog.open({ dictId })">{{ $t("button.add") }}</el-button>
                 </template>
                 <template #label="{row}">
                     <DictLabel
@@ -220,7 +211,10 @@ function onTaleActionClick(item: TableActionItem, row: DictData) {
                     <DictLabel :value="row.status" type="status" />
                 </template>
                 <template #operate="{row}">
-                    <table-action @click="onTaleActionClick($event, row)" />
+                    <table-action>
+                        <el-link v-auth="['system:dict:data:edit']" icon="EleEdit" type="primary" @click="dictDataDialog.open(row)" />
+                        <el-link v-auth="['system:dict:data:del']" icon="EleDelete" type="danger" @click="onDictDataDelete(row.id)" />
+                    </table-action>
                 </template>
             </base-table>
             <pagination class="mt-10px" v-bind="paging" />

@@ -2,7 +2,6 @@ import { isFn } from "@/utils/validata";
 import { tryOnScopeDispose } from "@vueuse/core";
 import { ElDialog, ElConfigProvider, type DialogProps } from "element-plus";
 import type { AppContext, Component, InjectionKey, Ref, VNode } from "vue";
-import type { TableActionItem } from "@/components/GlobalRegister/Table";
 
 export interface DialogOptions<
     Form extends object = any,
@@ -194,25 +193,7 @@ export function useDialog<Form extends object = any, Comp extends Component = an
                 }
             }
 
-            const actions = computed(() => {
-                const actions: TableActionItem[] = [];
-                if(showCancel) {
-                    actions.push({
-                        action: "cancel",
-                        text: cancelText || $t("button.cancel"),
-                    });
-                }
-                if(showConfirm) {
-                    actions.push({
-                        action: "submit",
-                        type: "primary",
-                        text: confirmText || $t("button.submit"),
-                    });
-                }
-                return actions;
-            });
             return {
-                actions,
                 EventMap,
                 onClick,
             };
@@ -236,8 +217,8 @@ export function useDialog<Form extends object = any, Comp extends Component = an
                                 if(!showActions) return null;
                                 return (
                                     <div class="dialog-footer">
-                                        <el-button onClick={() => onClick("cancel")}>{cancelText || $t("button.cancel")}</el-button>
-                                        <el-button type="primary" loading={state.loading} onClick={() => onClick("submit")}>{confirmText || $t("button.submit")}</el-button>
+                                        {showCancel ? <el-button onClick={() => onClick("cancel")}>{cancelText || $t("button.cancel")}</el-button> : null}
+                                        {showConfirm ? <el-button type="primary" loading={state.loading} onClick={() => onClick("submit")}>{confirmText || $t("button.submit")}</el-button> : null}
                                     </div>
                                 );
                             },

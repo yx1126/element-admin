@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { getUserList, userDelete, userResetPwd } from "@/api/system/user";
 import { getDeptSelectTree } from "@/api/system/dept";
-import UserForm from "./components/UserForm.vue";
 import { getAvatar } from "@/api/upload";
+import UserForm from "./components/UserForm.vue";
 import type { UserInfo } from "#/system";
 
 defineOptions({
@@ -133,14 +133,14 @@ function onResetPwd(row: UserInfo) {
                     </div>
                 </template>
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
+                    <el-button v-auth="['system:user:add']" type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
+                    <el-button v-auth="['system:user:del']" type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
                 </template>
                 <template #operate="{ row }">
                     <table-action>
-                        <el-link type="primary" icon="EleRefresh" @click="onResetPwd(row)" />
-                        <el-link type="primary" icon="EleEdit" @click="dialog.open(row)" />
-                        <el-link v-if="row.id != 1" type="danger" icon="EleDelete" @click="onDelete(row.id)" />
+                        <el-link v-auth="['system:user:reset']" type="primary" icon="EleRefresh" @click="onResetPwd(row)" />
+                        <el-link v-auth="['system:user:edit']" type="primary" icon="EleEdit" @click="dialog.open(row)" />
+                        <el-link v-if="row.id != 1" v-auth="['system:user:del']" type="danger" icon="EleDelete" @click="onDelete(row.id)" />
                     </table-action>
                 </template>
             </base-table>

@@ -93,11 +93,14 @@ const columns = defineColumns<Post>([{
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
+                    <el-button v-auth="['system:post:add']" type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
+                    <el-button v-auth="['system:post:del']" type="danger" icon="EleDelete" @click="onDelete()">{{ $t("button.deletes") }}</el-button>
                 </template>
                 <template #operate="{ row }">
-                    <table-action @edit="dialog.open(row)" @delete="onDelete(row.id)" />
+                    <table-action>
+                        <el-link v-auth="['system:post:edit']" icon="EleEdit" type="primary" @click="dialog.open(row)" />
+                        <el-link v-auth="['system:post:del']" icon="EleDelete" type="danger" @click="onDelete(row.id)" />
+                    </table-action>
                 </template>
             </base-table>
             <pagination class="mt-10px" v-bind="paging" />

@@ -1,6 +1,6 @@
 import baseTableColumnProps from "element-plus/es/components/table/src/table-column/defaults";
-import type { Component, ExtractPublicPropTypes, VNode, Ref, ComputedRef, WritableComputedRef, InjectionKey } from "vue";
-import type { TableProps as BaseTableProps, TableColumnCtx, LinkProps, ButtonProps } from "element-plus";
+import type { ExtractPublicPropTypes, VNode, Ref, ComputedRef, WritableComputedRef, InjectionKey } from "vue";
+import type { TableProps as BaseTableProps, TableColumnCtx } from "element-plus";
 import { cloneDeep } from "lodash-es";
 
 type BaseTableColumn = ExtractPublicPropTypes<typeof baseTableColumnProps>;
@@ -36,14 +36,6 @@ export type TableColumnFormat = TableColumn & {
     children?: TableColumnFormat[];
     deep: number;
 };
-
-export interface TableActionItem<T extends string = any> {
-    action: T;
-    icon?: string | Component;
-    append?: "before";
-    type?: LinkProps["type"] | ButtonProps["type"];
-    text?: string;
-}
 
 export interface TableContext {
     columns: Ref<TableColumnFormat[]>;

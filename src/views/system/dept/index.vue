@@ -1,8 +1,7 @@
 <script setup lang="tsx">
-import type { Dept } from "#/system";
 import { getDeptTree, deptDelete } from "@/api/system/dept";
 import DeptForm from "./components/DeptForm.vue";
-import type { TableActionItem } from "@/components/GlobalRegister/Table";
+import type { Dept } from "#/system";
 
 defineOptions({
     name: "Dept",
@@ -79,17 +78,6 @@ function onExpand() {
         showTable.value = true;
     });
 }
-
-function onTaleActionClick(item: TableActionItem, row: Dept) {
-    if(item.action === "add") {
-        dialog.open({ parentId: row.id });
-    } else if(item.action === "edit") {
-        dialog.open(row);
-    } else if(item.action === "delete") {
-        if(!row.id) return;
-        onDelete(row.id);
-    }
-}
 </script>
 
 <template>
@@ -119,11 +107,15 @@ function onTaleActionClick(item: TableActionItem, row: Dept) {
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">{{ $t("button.ExpandCollapse") }}</el-button>
+                    <el-button v-auth="['system:dept:add']" type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
+                    <el-button v-auth="['system:dept:del']" type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">{{ $t("button.ExpandCollapse") }}</el-button>
                 </template>
                 <template #operate="{ row }">
-                    <table-action :actions="{action: 'add', icon: 'ElePlus', append: 'before', type: 'primary'}" @click="onTaleActionClick($event, row)" />
+                    <table-action>
+                        <el-link v-auth="['system:dept:add']" icon="ElePlus" type="primary" @click="dialog.open({ parentId: row.id })" />
+                        <el-link v-auth="['system:dept:edit']" icon="EleEdit" type="primary" @click="dialog.open(row)" />
+                        <el-link v-auth="['system:dept:del']" icon="EleDelete" type="danger" @click="onDelete(row.id)" />
+                    </table-action>
                 </template>
             </base-table>
         </table-layout>

@@ -1,8 +1,7 @@
 <script setup lang="tsx">
-import type { MenuItem } from "#/system";
 import { getMenuTree, menuDelete } from "@/api/system/menu";
 import MenuForm from "./components/MenuForm.vue";
-import type { TableActionItem } from "@/components/GlobalRegister/Table";
+import type { MenuItem } from "#/system";
 
 defineOptions({
     name: "Menu",
@@ -104,15 +103,6 @@ function onExpand() {
         showTable.value = true;
     });
 }
-
-function onTaleActionClick(item: TableActionItem, row: MenuItem) {
-    if(item.action === "edit") {
-        dialog.open(row);
-    } else if(item.action === "delete") {
-        if(!row.id) return;
-        onDelete(row.id);
-    }
-}
 </script>
 
 <template>
@@ -142,8 +132,8 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                 @refresh="onSearch"
             >
                 <template #action>
-                    <el-button type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
-                    <el-button type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">{{ $t("button.ExpandCollapse") }}</el-button>
+                    <el-button v-auth="['system:menu:add']" type="primary" icon="ElePlus" @click="dialog.open()">{{ $t("button.add") }}</el-button>
+                    <el-button v-auth="['system:menu:del']" type="warning" :icon="defaultExpandAll ? 'EleArrowDown' : 'EleArrowRight'" @click="onExpand">{{ $t("button.ExpandCollapse") }}</el-button>
                 </template>
                 <template #icon="{ row }">
                     <Icon v-if="row.icon" :icon="row.icon" size="20" />
@@ -153,10 +143,10 @@ function onTaleActionClick(item: TableActionItem, row: MenuItem) {
                     <el-tag v-else type="danger">隐藏</el-tag>
                 </template>
                 <template #operate="{ row }">
-                    <table-action @click="onTaleActionClick($event, row)">
-                        <template #before>
-                            <el-link v-if="![2,3].includes(row.type)" type="primary" icon="ElePlus" @click="dialog.open({ parentId: row.id })" />
-                        </template>
+                    <table-action>
+                        <el-link v-if="![2,3].includes(row.type)" v-auth="['system:menu:add']" type="primary" icon="ElePlus" @click="dialog.open({ parentId: row.id })" />
+                        <el-link v-auth="['system:menu:edit']" icon="EleEdit" type="primary" @click="dialog.open(row)" />
+                        <el-link v-auth="['system:menu:del']" icon="EleDelete" type="danger" @click="onDelete(row.id)" />
                     </table-action>
                 </template>
             </base-table>
