@@ -21,10 +21,11 @@ function getTitle(to: RouteLocationNormalizedGeneric) {
     return before.map(r => r.meta.title).filter(v => v).reverse().join("-");
 }
 
+const documentTitle = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
+
 router.beforeEach(async (to, from, next) => {
     Nprogress.start();
-    const title = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
-    title.value = getTitle(to);
+    documentTitle.value = getTitle(to);
 
     const user = useUserStore();
     if(user.token) {

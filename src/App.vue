@@ -23,13 +23,14 @@ onBeforeMount(() => {
 <template>
     <el-config-provider :locale="local" v-bind="Configs.elConfigProvide">
         <router-view />
-        <el-watermark v-if="set.isShowWatermark" class="h-[100%] watermark" :content="title" />
+        <el-watermark v-if="set.isShowWatermark" class="watermark" :content="title" />
         <Setting />
     </el-config-provider>
 </template>
 
 <style lang="scss">
 .watermark {
+    height: 100%;
     position: fixed !important;
     left: 0;
     top: 0;
