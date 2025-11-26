@@ -1,4 +1,4 @@
-import svgo, { type Config, type Output } from "svgo";
+import { optimize, type Config, type Output } from "svgo";
 import path from "node:path";
 import fg from "fast-glob";
 import fs from "fs-extra";
@@ -31,7 +31,7 @@ function createSymbolId({ name, fileId, symbolId }: SymbolIdOptions): string {
 
 function parseSVG(file: string, id: string, config?: Config): Output {
     try {
-        return svgo.optimize(file, assign<Config, Config>({
+        return optimize(file, assign<Config, Config>({
             plugins: [
                 {
                     name: "preset-default",
@@ -46,7 +46,8 @@ function parseSVG(file: string, id: string, config?: Config): Output {
                 "removeDimensions",
                 "removeXMLNS",
                 "removeStyleElement",
-                "removeScriptElement",
+                "removeScripts",
+                "removeTitle",
                 {
                     name: "removeAttrs",
                     params: {

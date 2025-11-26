@@ -13,7 +13,7 @@ export const lineOptions: EChartsOption = {
     grid: {
         left: "3%",
         right: "4%",
-        bottom: "3%",
+        bottom: "13%",
         containLabel: true,
     },
     toolbox: {
@@ -265,7 +265,7 @@ export const lineOptions2: EChartsOption = {
     grid: {
         left: 10,
         right: 10,
-        bottom: 20,
+        bottom: "15%",
         top: 30,
         containLabel: true,
     },

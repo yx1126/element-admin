@@ -16,20 +16,27 @@ const {
 }>();
 
 const source = ref(0);
+const precision = ref(0);
+
+const disabled = computed(() => source.value === 0);
 
 const outputValue = useTransition(source, {
     ...options,
     duration,
+    disabled,
 });
 
 watch(() => value, val => {
-    source.value = val;
+    const str = val.toString();
+    precision.value = str.includes(".") ? str.split(".").at(-1)!.length : 0;
+    nextTick(() => {
+        source.value = val;
+    });
 }, {
     immediate: true,
-    flush: "post",
 });
 </script>
 
 <template>
-    <el-statistic :value="outputValue" />
+    <el-statistic :value="outputValue" :precision />
 </template>

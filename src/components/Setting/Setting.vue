@@ -212,7 +212,7 @@ function onReset() {
         }
     }
 }
-:deep(.color-picker .el-color-picker__trigger) {
+:deep(.color-picker) {
     width: 120px;
 }
 </style>

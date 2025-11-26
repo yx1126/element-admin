@@ -2,6 +2,7 @@ import { isFn } from "@/utils/validata";
 import { tryOnScopeDispose } from "@vueuse/core";
 import { ElDialog, ElConfigProvider, type DialogProps } from "element-plus";
 import type { AppContext, Component, InjectionKey, Ref, VNode } from "vue";
+import { useI18n } from "vue-i18n";
 
 export interface DialogOptions<
     Form extends object = any,
@@ -109,7 +110,9 @@ export function useDialog<Form extends object = any, Comp extends Component = an
     } = Object.assign({}, options);
 
     const app = useApp();
-    const { $t } = useLocal();
+    const { t: $t } = useI18n({
+        useScope: "global",
+    });
 
     let divWrapper: Nullable<HTMLDivElement> = null;
     let instance: Nullable<VNode> = null;

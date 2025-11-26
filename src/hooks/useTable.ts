@@ -3,9 +3,10 @@ import { Configs } from "@/config";
 import DictLabel from "@/components/GlobalRegister/Dict/DictLabel.vue";
 import type { TableColumn } from "@/components/GlobalRegister/Table";
 import type { PageInfo, Result, TableResult } from "#/axios";
-import type { PaginationProps, TableProps, FormInstance, ElMessageBoxOptions } from "element-plus";
+import type { PaginationProps, TableProps, FormInstance } from "element-plus";
 import type { DictLabelProps } from "#/system";
 import type { ComputedRef, ShallowRef, ToRefs } from "vue";
+import { useI18n } from "vue-i18n";
 
 type ColumnFormatter<Data = any> = (column: TableColumn<Data>, index: number) => TableColumn<Data>;
 
@@ -106,7 +107,9 @@ export function useTable<
     Data extends object = any,
     Query extends object = any,
 >(options: TableOptions<Data, Query>): TableBack<Data, Query> {
-    const { $t } = useLocal();
+    const { t: $t } = useI18n({
+        useScope: "global",
+    });
     const { onDelete: onBaseDelete } = useDataDelete({
         request: options.deleteRequest!,
         rowKey: options.rowKey,
@@ -271,7 +274,9 @@ export interface DeleteOptions {
 export function useDataDelete(options: DeleteOptions) {
     const { request, rowKey, onSuccess, showLoading = true } = options;
 
-    const { $t } = useLocal();
+    const { t: $t } = useI18n({
+        useScope: "global",
+    });
     const msgBox = useMessageBox();
     const message = useMessage();
 
@@ -291,33 +296,32 @@ export function useDataDelete(options: DeleteOptions) {
     function onDelete<Data extends object>(row?: Data | string[] | number[] | string | number) {
         if(!request || !row) return;
         const ids: any = (isArray<any[]>(row) ? row : isObject(row) ? [getRowKey(row)] : [row]).filter(Boolean);
-        const options: ElMessageBoxOptions = { type: "warning" };
-        if(showLoading) {
-            options.showInput = false;
-            options.beforeClose = async (action, instance, done) => {
-                if(action === "confirm") {
-                    try {
-                        instance.confirmButtonLoading = true;
-                        await request(ids);
-                        done();
-                    } catch (error) {
-                        console.error(error);
-                    } finally {
-                        instance.confirmButtonLoading = false;
-                    }
-                    return;
-                }
-                done();
-            };
-        }
         if(ids.length) {
             if(showLoading) {
-                msgBox.prompt($t("delete.confirm"), options).then(() => {
+                msgBox.prompt($t("delete.confirm"), {
+                    type: "warning",
+                    showInput: false,
+                    beforeClose: async (action, instance, done) => {
+                        if(action === "confirm") {
+                            try {
+                                instance.confirmButtonLoading = true;
+                                await request(ids);
+                                done();
+                            } catch (error) {
+                                console.error(error);
+                            } finally {
+                                instance.confirmButtonLoading = false;
+                            }
+                            return;
+                        }
+                        done();
+                    },
+                }).then(() => {
                     message.success($t("delete.success"));
                     onSuccess?.();
                 }).catch(() => {});
             } else {
-                msgBox.confirm($t("delete.confirm"), options).then(async () => {
+                msgBox.confirm($t("delete.confirm"), { type: "warning" }).then(async () => {
                     try {
                         await request(ids);
                         message.success($t("delete.success"));

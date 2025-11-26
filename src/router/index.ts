@@ -42,8 +42,7 @@ router.beforeEach(async (to, from, next) => {
             next({ path: to.fullPath, query: to.query, replace: true });
         } catch (error) {
             console.error(error);
-            // user.$reset();
-            // next({ path: "/login", replace: true });
+            next();
         }
     } else {
         if(Configs.whiteList.includes(to.path)) {

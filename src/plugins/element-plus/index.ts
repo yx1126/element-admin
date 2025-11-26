@@ -1,5 +1,5 @@
 import { withInstall } from "@/utils/withInstall";
-import { makeInstaller, ElButtonGroup } from "element-plus";
+import { makeInstaller, ElButtonGroup, type ConfigProviderContext as $ConfigProviderContext } from "element-plus";
 import BaseComponents from "element-plus/es/component";
 import Plugin from "element-plus/es/plugin";
 import ElButton from "./components/ElButton";
@@ -8,6 +8,8 @@ import ElTag from "./components/ElTag";
 import ElList from "./components/List";
 import ElCardV2 from "./components/CardV2";
 import ElThing from "./components/Thing";
+import { DelayKey } from "./keys";
+import type { App } from "vue";
 
 const Exclude: Record<`El${string}`, Component> = {
     ElButton,
@@ -29,4 +31,15 @@ const ExtraComponents = withInstall(app => {
     app.use(ElCardV2);
 });
 
-export default makeInstaller([...Components, ExtraComponents, ...Plugin]);
+export interface ConfigProviderContext extends $ConfigProviderContext {
+    delay?: number;
+}
+
+export default {
+    install: (app: App, options?: ConfigProviderContext) => {
+        const ElementPlus = makeInstaller([...Components, ExtraComponents, ...Plugin]);
+        // ElButton、ElLink `click` 事件节流配置
+        app.provide(DelayKey, options?.delay || 1000);
+        app.use(ElementPlus, options);
+    },
+};

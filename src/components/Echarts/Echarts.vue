@@ -31,19 +31,24 @@ watch(() => options, value => {
     flush: "post",
 });
 
-watch(() => [renderer, dark, set.navMode], init);
+watch(() => renderer, init);
+
+watch(() => [dark, set.navMode], () => {
+    echarts.value?.setTheme(dark || set.navMode === "dark" ? "dark" : "default");
+});
 
 onMounted(init);
 
 onScopeDispose(() => {
-    if(echarts.value) echarts.value.dispose();
+    dispose();
 });
 
 async function init() {
-    if(echarts.value) echarts.value.dispose();
+    dispose();
     await nextTick();
+    if(!echartsRef.value?.clientWidth || !echartsRef.value.clientHeight) return;
     if(beforeRender) beforeRender(Echarts);
-    echarts.value = Echarts.init(echartsRef.value!, dark || set.navMode === "dark" ? "dark" : undefined, {
+    echarts.value = Echarts.init(echartsRef.value!, dark || set.navMode === "dark" ? "dark" : "default", {
         renderer: renderer,
     });
     setOption(options);
@@ -73,11 +78,18 @@ function onClear() {
     echarts.value?.clear();
 }
 
+function dispose() {
+    if(echarts.value) {
+        echarts.value.dispose();
+    }
+}
+
 defineExpose({
     onRefresh,
     onResize,
     onClear,
     setOption,
+    dispose,
     instance: echarts,
 });
 </script>
