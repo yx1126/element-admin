@@ -1,6 +1,6 @@
 import { isArray, isFn as isFn, isStr } from "@/utils/validata";
 import type { PiniaPlugin, PiniaPluginContext } from "pinia";
-import type { WatchOptions, Ref } from "vue";
+import type { WatchOptions } from "vue";
 
 const assign = Object.assign;
 
@@ -64,11 +64,6 @@ function createPiniaState(options?: PiniaStateOptions): PiniaPlugin {
                 context.store.$patch({ ...s });
             };
         }
-        context.store.setState = function(key, value) {
-            context.store.$patch(state => {
-                state[key] = value;
-            });
-        };
 
         const store = context.store;
 
@@ -103,10 +98,5 @@ declare module "pinia" {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     export interface DefineStoreOptionsBase<S, Store> {
         persistedstate?: StoreOption<S>;
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    export interface PiniaCustomProperties<Id extends string = string, S extends StateTree = StateTree> {
-        setState: <K extends ObjKeys<S>, V extends S[K] extends Ref<infer V2> ? V2 : S[K]>(key: K, value: V) => void;
     }
 }

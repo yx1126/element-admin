@@ -33,7 +33,7 @@ const logoStyle = computed(() => {
         "--logo-width": parseUnit(collapsed ? collapsedWidth : width),
         "--logo-min-width": parseUnit(minWidth),
         "--logo-height": parseUnit(height),
-        "--logo-padding": collapsed ? `0 ${(cw - 32) / 2}px` : `0 18px 0 ${indent}px`,
+        "--logo-padding": collapsed ? `0 ${(cw - parseNum(size)) / 2}px` : `0 18px 0 ${indent}px`,
         "--logo-icon-margin-right": collapsed ? 0 : "8px",
         "--logo-text-width": collapsed ? 0 : "auto",
         "--logo-opacity": collapsed ? 0 : 1,

@@ -1,10 +1,9 @@
 import { isObject, isStr } from "@/utils/validata";
 import type {
     ElMessageBoxOptions,
-    MessageOptions,
+    MessageParamsWithType,
     NotificationOptions,
-    messageType,
-    MessageParams,
+    MessageType,
     NotificationParamsTyped,
 } from "element-plus";
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
@@ -22,23 +21,24 @@ function getOptions<T, O>(option: T, opt?: O) {
     return assign(opt || {}, option);
 }
 
-export function useMessage(options?: MessageOptions, appContext?: Nullable<AppContext>) {
+export function useMessage(options?: MessageParamsWithType, appContext?: Nullable<AppContext>) {
     const def = options;
     const ctx = appContext;
     return {
-        success: (options?: MessageParams, appContext?: null | AppContext) => {
+        instance: ElMessage,
+        success: (options?: MessageParamsWithType, appContext?: null | AppContext) => {
             return ElMessage.success(getOptions(options, def), appContext ?? ctx);
         },
-        warning: (options?: MessageParams, appContext?: null | AppContext) => {
+        warn: (options?: MessageParamsWithType, appContext?: null | AppContext) => {
             return ElMessage.warning(getOptions(options, def), appContext ?? ctx);
         },
-        info: (options?: MessageParams, appContext?: null | AppContext) => {
+        info: (options?: MessageParamsWithType, appContext?: null | AppContext) => {
             return ElMessage.info(getOptions(options, def), appContext ?? ctx);
         },
-        error: (options?: MessageParams, appContext?: null | AppContext) => {
+        error: (options?: MessageParamsWithType, appContext?: null | AppContext) => {
             return ElMessage.error(getOptions(options, def), appContext ?? ctx);
         },
-        closeAll: (type?: messageType) => ElMessage.closeAll(type),
+        closeAll: (type?: MessageType) => ElMessage.closeAll(type),
     };
 }
 
@@ -54,6 +54,7 @@ export function useMessageBox(options?: ElMessageBoxOptions, appContext?: Nullab
     const def = options;
     const ctx = appContext;
     return {
+        instance: ElMessageBox,
         alert: (message: ElMessageBoxOptions["message"], title?: ElMessageBoxOptions["title"], options?: ElMessageBoxOptions, appContext?: AppContext | null) => {
             return ElMessageBox.alert(message, getMsgBox(title, getOptions(options, def)), appContext ?? ctx);
         },
@@ -98,6 +99,7 @@ export function useNotification(options?: NotificationOptions, appContext?: Null
     const def = options;
     const ctx = appContext;
     return {
+        instance: ElNotification,
         success: (options?: NotificationParamsTyped, appContext?: null | AppContext) => {
             return ElNotification.success(getOptions(options, def), appContext ?? ctx);
         },

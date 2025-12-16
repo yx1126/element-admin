@@ -33,17 +33,20 @@ const mixinStyle = computed<CSSProperties>(() => {
 });
 
 function onClick() {
-    set.setState("collapsed", !set.collapsed);
+    set.collapsed = !set.collapsed;
 }
 </script>
 
 <template>
     <div
         class="collapse pointer"
-        :class="[border ? `collapse-border--${border}` : '', {
-            'is-inverted': inverted,
-            'is-border': border,
-        }]"
+        :class="[
+            border ? `collapse-border--${border}` : '',
+            {
+                'is-inverted': inverted,
+                'is-border': border,
+            }
+        ]"
         :style="mixinStyle"
         @click="onClick"
     >

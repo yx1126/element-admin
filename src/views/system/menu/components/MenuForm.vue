@@ -106,6 +106,7 @@ function onPathChange(path: string) {
     if(name) {
         name = name.replace(/-\w/g, match => match.replace("-", "").toUpperCase());
         form.value.name = name.charAt(0).toUpperCase() + name.slice(1);
+        formRef.value?.validateField("name");
     }
 }
 </script>

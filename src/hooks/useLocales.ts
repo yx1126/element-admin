@@ -16,37 +16,50 @@ interface LocalBack extends I18nBack {
     ti: I18nBack["t"];
     ts: I18nBack["t"];
     tv: I18nBack["t"];
-    tp: I18nBack["t"];
     $ti: I18nBack["t"];
     $ts: I18nBack["t"];
     $tv: I18nBack["t"];
-    $tp: I18nBack["t"];
 }
 
 export function useLocal(...args: Parameters<typeof useI18n>): LocalBack {
     const i18n = useI18n(...args);
     const { t } = useI18n({ useScope: "global" });
 
-    // input placeholder t
+    /**
+     * 输入框本地翻译 `请输入{0}`
+     */
     function ti(...args: Parameters<I18nBack["t"]>) {
         return t("input", [i18n.t(...args)]);
     }
+    /**
+     * 输入框全局翻译 `请输入{0}`
+     */
     function $ti(...args: Parameters<I18nBack["t"]>) {
         return t("input", [t(...args)]);
     }
 
-    // select placeholder t
+    /**
+     * 选择框本地翻译 `请选择{0}`
+     */
     function ts(...args: Parameters<I18nBack["t"]>) {
         return t("select", [i18n.t(...args)]);
     }
+    /**
+     * 选择框全局翻译 `请选择{0}`
+     */
     function $ts(...args: Parameters<I18nBack["t"]>) {
         return t("select", [t(...args)]);
     }
 
-    // form rules validator t
+    /**
+     * 表单本地翻译 `{0}不能为空`
+     */
     function tv(...args: Parameters<I18nBack["t"]>) {
         return t("valid.not-null", [i18n.t(...args)]);
     }
+    /**
+     * 表单全局翻译 `{0}不能为空`
+     */
     function $tv(...args: Parameters<I18nBack["t"]>) {
         return t("valid.not-null", [t(...args)]);
     }
@@ -84,7 +97,7 @@ export function useLocales(options?: LocalesOptions) {
     });
 
     function setLang(value: Lang) {
-        set.setState("lang", value);
+        set.lang = value;
         setHtmlLang(value);
         locale.value = value;
     }

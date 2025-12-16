@@ -69,7 +69,7 @@ const Configs: ConfigOptions = createConfig({
     },
     /**
      * `defineColumns`表格列默认属性
-     * @see {@link file://./hooks/useTable.ts#L50}
+     * @see {@link file://./hooks/useTable.ts#L78}
      */
     tableColumn: column => {
         // 序号列、多选列
@@ -95,7 +95,7 @@ const Configs: ConfigOptions = createConfig({
     },
     /**
      * 搜索表单按钮固定在容器最右边
-     * @see {@link file://./components/GlobalRegister/TableLayout/TableLayout.vue#L11}
+     * @see {@link file://./components/GlobalRegister/TableLayout/TableLayout.vue#L10}
      */
     formSplit: false,
 });

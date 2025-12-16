@@ -25,7 +25,7 @@ useWindowResize(moveToCurrentTag, { lazy: 200 });
 const currentIndex = computed(() => tags.tagList.findIndex(v => v.path === route.fullPath));
 
 watch(() => route.fullPath, (fullPath, oldFullRoute) => {
-    tags.setState("oldRoute", oldFullRoute || "");
+    tags.oldRoute = oldFullRoute || "";
     if(fullPath.startsWith("/redirect")) return;
     tags.insert("activeTags", {
         closable: true,
@@ -144,7 +144,7 @@ async function moveToCurrentTag() {
 }
 
 function onFullClick() {
-    set.setState("isMainFull", !set.isMainFull);
+    set.isMainFull = !set.isMainFull;
 }
 </script>
 

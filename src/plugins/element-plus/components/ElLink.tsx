@@ -17,7 +17,7 @@ export default defineComponent({
 
         const onClick = throttle(() => {
             emit("click");
-        }, props.delay || delay, { trailing: false });
+        }, props.delay ?? delay, { trailing: false });
         return () => {
             const { icon, underline } = props;
             return (

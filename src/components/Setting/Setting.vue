@@ -17,11 +17,6 @@ const { currentZIndex } = useZIndex();
 const { t } = useLocal();
 const mitt = useMitt("toggleSetting");
 
-const isShowDrawer = computed({
-    get: () => set.isShowDrawer,
-    set: v => set.setState("isShowDrawer", v),
-});
-
 const isInvertedDisabled = computed(() => {
     return !(set.navMode === "inverted" && set.layoutMode !== "top");
 });
@@ -30,16 +25,18 @@ const drawerStyles = computed(() => {
     return {
         "--drawer-set-color": set.themeColor,
         "z-index": currentZIndex.value,
-        right: isShowDrawer.value ? "280px" : "0",
+        right: set.isShowDrawer ? "280px" : "0",
     };
 });
 
-mitt.on(() => {
-    isShowDrawer.value = !isShowDrawer.value;
-});
+mitt.on(onToggleDrawer);
+
+function onToggleDrawer() {
+    set.isShowDrawer = !set.isShowDrawer;
+}
 
 function onDrawerClose() {
-    isShowDrawer.value = false;
+    set.isShowDrawer = false;
 }
 
 function onReset() {
@@ -54,15 +51,15 @@ function onReset() {
         v-drag="{ axis: 'y', eventType: 'right', moveOver: false }"
         class="drawer-set"
         :style="drawerStyles"
-        @click="isShowDrawer = !isShowDrawer"
+        @click="onToggleDrawer"
     >
         <Icon :size="26" color="#fff">
-            <close-outlined v-if="isShowDrawer" />
+            <close-outlined v-if="set.isShowDrawer" />
             <setting-outlined v-else />
         </Icon>
     </div>
     <el-drawer
-        v-model="isShowDrawer"
+        v-model="set.isShowDrawer"
         :title="t('title')"
         :lock-scroll="false"
         modal-class="drawer-wrapper"

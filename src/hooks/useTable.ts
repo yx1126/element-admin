@@ -236,7 +236,7 @@ export function useTable<
     function onDelete(row?: Data | string | number) {
         if(!row) {
             if(state.selections.length <= 0) {
-                useMessage().warning($t("please.select-one"));
+                useMessage().warn($t("please.select-one"));
                 return;
             }
             onBaseDelete(state.selections.map(getRowKey));
