@@ -87,8 +87,8 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
         ref="menuRef"
         class="menu"
         :class="[
-            themeType ? `menu-theme-${themeType}`: '',
-            type ? `menu-type--${type}` : ''
+            themeType ? `is-${themeType}`: '',
+            type ? `is-${type}` : ''
         ]"
         :style="{
             '--menu-width': parseUnit(width, Configs.menuWidth),
@@ -99,7 +99,7 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
         :default-active="defaultActive"
         :unique-opened="set.uniqueMenuOpened"
         :show-timeout="100"
-        :popper-class="'el-menu-aside ' + (themeType ? `menu-theme-${themeType}`: '')"
+        :popper-class="'el-menu-aside ' + (themeType ? `is-${themeType}`: '')"
     >
         <template v-for="menu, i in routerList">
             <el-sub-menu v-if="menu.children && menu.children?.length > 0" :key="menu.path" :index="menu.path">
@@ -129,18 +129,16 @@ function onMouseenter(item: MenuItemType, i: number, e: MouseEvent) {
 %bg-color {
     --el-menu-item-height: 42px;
     --el-menu-sub-item-height: 42px;
-    &.menu-theme {
-        &-light {
-            --el-menu-hover-bg-color: var(--menu-hover-bg-light-color);
-        }
-        &-inverted {
-            --el-menu-bg-color: var(--menu-bg-color);
-            --el-menu-hover-bg-color: var(--menu-hover-bg-inverted-color);
-            --el-menu-text-color: var(--menu-text-color);
-        }
-        &-dark {
-            --el-menu-hover-bg-color: var(--menu-hover-bg-inverted-color);
-        }
+    @include when(light) {
+        --el-menu-hover-bg-color: var(--menu-hover-bg-light-color);
+    }
+    @include when(inverted) {
+        --el-menu-bg-color: var(--menu-bg-color);
+        --el-menu-hover-bg-color: var(--menu-hover-bg-inverted-color);
+        --el-menu-text-color: var(--menu-text-color);
+    }
+    @include when(dark) {
+        --el-menu-hover-bg-color: var(--menu-hover-bg-inverted-color);
     }
 }
 

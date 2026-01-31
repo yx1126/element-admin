@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { SearchOutlined } from "@vicons/antd";
-import type { MenuItem } from "#/system";
 import { isLink } from "@/utils/validata";
+import type { MenuItem } from "#/system";
 
 defineOptions({
     name: "SearchInput",

@@ -95,7 +95,7 @@ onDialogSubmit(async (instance, close) => {
 </script>
 
 <template>
-    <el-form ref="formRef" v-loading="formLoading" :rules="rules" :model="form" label-width="80px">
+    <el-form ref="formRef" v-loading="formLoading" class="column-2" :rules="rules" :model="form" label-width="80px">
         <el-form-item prop="userName" :label="t('username')">
             <el-input v-model="form.userName" :disabled="!!form.id" :placeholder="ti('username')" />
         </el-form-item>
@@ -147,7 +147,7 @@ onDialogSubmit(async (instance, close) => {
                 <el-radio value="0">{{ $t("status.disable") }}</el-radio>
             </el-radio-group>
         </el-form-item>
-        <el-form-item prop="remark" :label="$t('remark')">
+        <el-form-item class="full" prop="remark" :label="$t('remark')">
             <el-input v-model="form.remark" type="textarea" :rows="3" :placeholder="$t('input', [$t('remark')])" />
         </el-form-item>
     </el-form>
@@ -156,7 +156,7 @@ onDialogSubmit(async (instance, close) => {
 <i18n lang="yaml">
 zh:
   username: 用户名
-  nickname: 用户昵称
+  nickname: 昵称
   dept: 部门
   phone: 手机号
   email: 邮箱

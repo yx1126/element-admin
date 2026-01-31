@@ -25,7 +25,7 @@ defineOptions({
 });
 
 const emit = defineEmits<{
-    select: [string, number];
+    select: [type: string, index: number];
 }>();
 
 const divRef = useTemplateRef("divRef");

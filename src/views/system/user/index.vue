@@ -41,7 +41,7 @@ const {
 const dialog = useDialog({
     component: UserForm,
     title: data => $t(`${data?.id ? "button.edit" : "button.add"}`) + t("user"),
-    width: 500,
+    width: 800,
     onSubmit: onSearch,
     destroyOnClose: false,
 });
