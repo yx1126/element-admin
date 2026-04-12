@@ -15,10 +15,6 @@ function resolve(path: string) {
     return fileURLToPath(new URL(path, import.meta.url));
 }
 
-const IMPORT_FNS: Record<string, string[]> = {
-    vue: ["renderSlot", "renderList", "mergeProps", "createVNode", "render"],
-};
-
 // https://vitejs.dev/config/
 export default defineConfig(() => {
     return {
@@ -40,9 +36,9 @@ export default defineConfig(() => {
                 imports: [
                     "vue",
                     "vue-router",
-                    ...Object.keys(IMPORT_FNS).map(key => ({
-                        [key]: IMPORT_FNS[key],
-                    })),
+                    {
+                        vue: ["renderSlot", "renderList", "mergeProps", "createVNode", "render"],
+                    },
                 ],
             }),
             VueI18nPlugin({}),

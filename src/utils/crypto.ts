@@ -1,4 +1,4 @@
-import Encrypt from "jsencrypt-ext";
+import { JSEncrypt } from "jsencrypt-ext";
 
 const publicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAimgQx3B2n6jQecToVqdm
@@ -14,7 +14,7 @@ const privateKey = ``;
 
 // 公钥加密（分段）
 export function encrypt<T = any>(data: T) {
-    const encryptor = new Encrypt();
+    const encryptor = new JSEncrypt();
     // 设置公钥
     encryptor.setPublicKey(publicKey);
     // 对需要加密的数据进行加密
@@ -24,7 +24,7 @@ export function encrypt<T = any>(data: T) {
 
 // 私钥解密（分段）
 export function decrypt(data: string) {
-    const encryptor = new Encrypt();
+    const encryptor = new JSEncrypt();
     // 设置公钥
     encryptor.setPublicKey(privateKey);
     // 对需要加密的数据进行解密

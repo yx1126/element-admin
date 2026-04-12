@@ -39,8 +39,8 @@ function onLogin() {
                 const res = await login(encrypt({ ...form.value, uuid: codeData.value.uuid }));
                 user.token = res.data;
                 router.replace("/");
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (e) {
+                console.error(e);
                 onCodeChange();
             } finally {
                 loading.value = false;

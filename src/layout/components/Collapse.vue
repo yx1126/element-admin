@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import MenuFoldOutlined from "@vicons/antd/MenuFoldOutlined";
-import MenuUnfoldOutlined from "@vicons/antd/MenuUnfoldOutlined";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@vicons/antd";
 import { parseUnit, parseNum } from "@/utils/unit";
 import type { CSSProperties } from "vue";
 import type { Direction } from "#/views";
