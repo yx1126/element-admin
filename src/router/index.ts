@@ -23,34 +23,31 @@ function getTitle(to: RouteLocationNormalizedGeneric) {
 
 const documentTitle = useTitle("", `%s-${import.meta.env.VITE_APP_TITLE}`);
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async (to, from) => {
     Nprogress.start();
     documentTitle.value = getTitle(to);
 
     const user = useUserStore();
     if(user.token) {
         if(to.path === "/login") {
-            next({ path: from.fullPath, replace: true });
-            return;
+            return { path: from.fullPath, replace: true };
         }
         if(user.routerList.length > 0) {
-            next();
             return;
         }
         try {
             await user.initRoutes();
             await user.initUserInfo();
-            next({ path: to.fullPath, query: to.query, replace: true });
+            return { path: to.fullPath, query: to.query, replace: true };
         } catch (error) {
             console.error(error);
-            next();
+            return;
         }
     } else {
         if(Configs.whiteList.includes(to.path)) {
-            next();
             return;
         }
-        next(`/login?redirect=${to.path}`);
+        return `/login?redirect=${to.path}`;
     }
 });
 

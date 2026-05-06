@@ -39,7 +39,7 @@ function onCommand(path: string) {
 <template>
     <el-breadcrumb class="breadcrumb" :class="{ 'is-inverted': inverted }">
         <TransitionGroup name="list-breadcrumb">
-            <template v-for="b in breadcrumbList" :key="b.path">
+            <template v-for="b, i in breadcrumbList" :key="b.path || i">
                 <el-breadcrumb-item class="breadcrumb-item">
                     <Icon v-if="set.isShowBreadIcon && b.meta?.icon" :icon="b.meta.icon" size="16" />
                     <el-dropdown v-if="b.children?.length" :persistent="false" trigger="click" @command="onCommand">

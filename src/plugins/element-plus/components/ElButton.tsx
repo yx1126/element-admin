@@ -1,13 +1,13 @@
 import { renderIcon } from "../renderIcon";
-import type { Component, PropType } from "vue";
-import { ElButton as EButton } from "element-plus";
+import type { PropType } from "vue";
+import { ElButton as EButton, type ButtonProps } from "element-plus";
 import { throttle } from "lodash-es";
 import { DelayKey } from "../keys";
 
 export default defineComponent({
     name: "ElButton",
     props: {
-        icon: [String, Object] as PropType<string | Component>,
+        icon: [String, Object] as PropType<ButtonProps["icon"]>,
         delay: { type: Number },
     },
     emits: ["click"],

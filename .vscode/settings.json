@@ -97,5 +97,7 @@
         "package.nls.json": "package.nls.*.json",
         "vite.config.*": "index.html, uno.config.*, unocss.config.*",
         "eslint.config.*": ".editorconfig"
-    }
+    },
+    "js/ts.tsdk.path": "./node_modules/typescript/lib",
+    "js/ts.tsdk.promptToUseWorkspaceVersion": true
 }

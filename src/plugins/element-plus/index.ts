@@ -1,6 +1,8 @@
 import { withInstall } from "@/utils/withInstall";
 import { makeInstaller, ElButtonGroup, type ConfigProviderContext as $ConfigProviderContext } from "element-plus";
+// @ts-ignore
 import BaseComponents from "element-plus/es/component";
+// @ts-ignore
 import Plugin from "element-plus/es/plugin";
 import ElButton from "./components/ElButton";
 import ElLink from "./components/ElLink";
@@ -18,7 +20,7 @@ const Exclude: Record<`El${string}`, Component> = {
     ElTag,
 };
 
-const Components = BaseComponents.filter(comp => !Object.keys(Exclude).includes((comp as any).name));
+const Components = BaseComponents.filter((comp: any) => !Object.keys(Exclude).includes((comp).name));
 
 const ExtraComponents = withInstall(app => {
     // rewrite

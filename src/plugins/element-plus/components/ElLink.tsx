@@ -1,6 +1,6 @@
 import { renderIcon } from "../renderIcon";
 import type { Component, PropType } from "vue";
-import { ElLink as ELink, linkProps } from "element-plus";
+import { ElLink as ELink, type LinkProps } from "element-plus";
 import { throttle } from "lodash-es";
 import { DelayKey } from "../keys";
 
@@ -8,7 +8,7 @@ export default defineComponent({
     name: "ElLink",
     props: {
         icon: [String, Object] as PropType<string | Component>,
-        underline: { type: linkProps.underline.type as PropType<"always" | "never" | "hover">, default: "never" },
+        underline: { type: [Boolean, String] as PropType<LinkProps["underline"]>, default: "never" },
         delay: { type: Number },
     },
     emits: ["click"],
